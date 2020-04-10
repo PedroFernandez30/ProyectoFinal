@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -54,6 +56,28 @@ class Canal implements UserInterface
      * @ORM\Column(type="date")
      */
     private $fnac;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="idCanal", orphanRemoval=true)
+     */
+    private $videos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="idCanal")
+     */
+    private $misSuscripciones;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="idCanalComentado")
+     */
+    private $comentarios;
+
+    public function __construct()
+    {
+        $this->videos = new ArrayCollection();
+        $this->misSuscripciones = new ArrayCollection();
+        $this->comentarios = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -177,6 +201,99 @@ class Canal implements UserInterface
     public function setFnac(\DateTimeInterface $fnac): self
     {
         $this->fnac = $fnac;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setIdCanal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+            // set the owning side to null (unless already changed)
+            if ($video->getIdCanal() === $this) {
+                $video->setIdCanal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Suscripcion[]
+     */
+    public function getMisSuscripciones(): Collection
+    {
+        return $this->misSuscripciones;
+    }
+
+    public function addMisSuscripcione(Suscripcion $misSuscripcione): self
+    {
+        if (!$this->misSuscripciones->contains($misSuscripcione)) {
+            $this->misSuscripciones[] = $misSuscripcione;
+            $misSuscripcione->setIdCanal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMisSuscripcione(Suscripcion $misSuscripcione): self
+    {
+        if ($this->misSuscripciones->contains($misSuscripcione)) {
+            $this->misSuscripciones->removeElement($misSuscripcione);
+            // set the owning side to null (unless already changed)
+            if ($misSuscripcione->getIdCanal() === $this) {
+                $misSuscripcione->setIdCanal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comentario[]
+     */
+    public function getComentarios(): Collection
+    {
+        return $this->comentarios;
+    }
+
+    public function addComentario(Comentario $comentario): self
+    {
+        if (!$this->comentarios->contains($comentario)) {
+            $this->comentarios[] = $comentario;
+            $comentario->setIdCanalComentado($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComentario(Comentario $comentario): self
+    {
+        if ($this->comentarios->contains($comentario)) {
+            $this->comentarios->removeElement($comentario);
+            // set the owning side to null (unless already changed)
+            if ($comentario->getIdCanalComentado() === $this) {
+                $comentario->setIdCanalComentado(null);
+            }
+        }
 
         return $this;
     }

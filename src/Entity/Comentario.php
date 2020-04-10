@@ -26,6 +26,22 @@ class Comentario
      */
     private $fechaComentario;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Video", inversedBy="comentarios")
+     */
+    private $idVideo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Canal", inversedBy="comentarios")
+     */
+    private $idCanalComentado;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Canal")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idCanalQueComenta;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +67,42 @@ class Comentario
     public function setFechaComentario(\DateTimeInterface $fechaComentario): self
     {
         $this->fechaComentario = $fechaComentario;
+
+        return $this;
+    }
+
+    public function getIdVideo(): ?Video
+    {
+        return $this->idVideo;
+    }
+
+    public function setIdVideo(?Video $idVideo): self
+    {
+        $this->idVideo = $idVideo;
+
+        return $this;
+    }
+
+    public function getIdCanalComentado(): ?Canal
+    {
+        return $this->idCanalComentado;
+    }
+
+    public function setIdCanalComentado(?Canal $idCanalComentado): self
+    {
+        $this->idCanalComentado = $idCanalComentado;
+
+        return $this;
+    }
+
+    public function getIdCanalQueComenta(): ?Canal
+    {
+        return $this->idCanalQueComenta;
+    }
+
+    public function setIdCanalQueComenta(?Canal $idCanalQueComenta): self
+    {
+        $this->idCanalQueComenta = $idCanalQueComenta;
 
         return $this;
     }
