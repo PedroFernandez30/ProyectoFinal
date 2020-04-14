@@ -5,14 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
 parameters:
-    # ...
-    app_locales: [es_ES, en_EN]
-
-twig:
-    # ...
-    globals:
-        locales: "%app_locales%"
-        # ...
+   locale: en
 
 services:
     # default configuration for services in *this* file
