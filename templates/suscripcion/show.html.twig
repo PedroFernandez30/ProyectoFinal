@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suscripcion{% endblock %}
+
+{% block body %}
+    <h1>Suscripcion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ suscripcion.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('suscripcion_index') }}">back to list</a>
+
+    <a href="{{ path('suscripcion_edit', {'id': suscripcion.id}) }}">edit</a>
+
+    {{ include('suscripcion/_delete_form.html.twig') }}
+{% endblock %}

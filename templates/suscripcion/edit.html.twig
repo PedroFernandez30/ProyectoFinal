@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Suscripcion{% endblock %}
+
+{% block body %}
+    <h1>Edit Suscripcion</h1>
+
+    {{ include('suscripcion/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('suscripcion_index') }}">back to list</a>
+
+    {{ include('suscripcion/_delete_form.html.twig') }}
+{% endblock %}
