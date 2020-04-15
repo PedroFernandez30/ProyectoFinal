@@ -11,13 +11,15 @@ class SecurityController extends AbstractController
 {
    
     /**
-     * @Route({"es": "/inicia_sesión","en": "/login"} , name="app_login") 
+     * @Route({"es": "/inicia_sesión/","en": "/login/","fr": "/bonjour/","de": "/gutentag/"} , name="app_login") 
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, $locale = ''): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
+
+        //requirements="_locale={en|fr|de}"
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

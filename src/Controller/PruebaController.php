@@ -10,16 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
 class PruebaController extends AbstractController
 {
     /**
-     * @Route("/prueba", name="prueba")
+     * @Route("/prueba/", name="prueba")
      */
     public function index(Request $request)
     {
+        //{_locale}
+        //, requirements={"_locale"="en|fr|es"}
         // lógica para determinar el $locale
         $locale = $request->getLocale();
-        $request->getSession()->set('_locale', 'es');
-        $locale = $request->getLocale();
-        return $this->render('prueba/index.html.twig', [
-            'controller_name' => $locale,
+        return $this->redirectToRoute('app_login', [
+            '_locale' => 'de',
         ]);
     }
 }
