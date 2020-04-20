@@ -18,8 +18,9 @@ class PruebaController extends AbstractController
         //, requirements={"_locale"="en|fr|es"}
         // lógica para determinar el $locale
         $locale = $request->getLocale();
-        return $this->redirectToRoute('app_login', [
-            '_locale' => 'de',
-        ]);
+        /*return $this->redirectToRoute('app_login', [
+            '_locale' => 'es',
+        ]);*/
+        return $this->render('prueba/index.html.twig');
     }
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register")
+     * @Route({"es": "/registro/","en": "/register/"}, name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
@@ -31,10 +31,32 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setRoles($user->getRoles());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            //Guardar foto perfil si la ha subido
+
+             /** @var UploadedFile $fotoPerfil */
+             $fotoPerfil = $form->get('fotoPerfil')->getData();
+
+             // this condition is needed because the 'brochure' field is not required
+             // so the PDF file must be processed only when a file is uploaded
+             if ($fotoPerfil != 'imgPerfil/profile.jpg') {
+                 
+                 $newFilename = $user->getId();
+                 // Move the file to the directory where brochures are stored
+                 try {
+                     $fotoPerfil->move(
+                         $this->getParameter('imagenesPerfil'),
+                         $newFilename
+                     );
+                 } catch (FileException $e) {
+                     // ... handle exception if something happens during file upload
+                 }
+            }
 
             // do anything else you need here, like send an email
 

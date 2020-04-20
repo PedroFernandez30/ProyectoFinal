@@ -72,6 +72,7 @@ class Canal implements UserInterface
      */
     private $comentarios;
 
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -297,4 +298,9 @@ class Canal implements UserInterface
 
         return $this;
     }
+
+    public function __toString(): string {
+        return $this->nombre;
+    }
+
 }

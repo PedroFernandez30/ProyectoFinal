@@ -91,4 +91,6 @@ class CanalController extends AbstractController
 
         return $this->redirectToRoute('canal_index');
     }
+
+    
 }

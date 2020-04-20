@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Suscripcion;
 use App\Form\SuscripcionType;
 use App\Repository\SuscripcionRepository;
+use App\Repository\CanalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,11 @@ class SuscripcionController extends AbstractController
     /**
      * @Route("/", name="suscripcion_index", methods={"GET"})
      */
-    public function index(SuscripcionRepository $suscripcionRepository): Response
+    public function index(SuscripcionRepository $suscripcionRepository, CanalRepository $canalRepository): Response
     {
         return $this->render('suscripcion/index.html.twig', [
             'suscripcions' => $suscripcionRepository->findAll(),
+            'canals' => $canalRepository->findAll()
         ]);
     }
 

@@ -8,14 +8,16 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                
+                <th>Canal que se suscribe</th>
+                <th>Canal al que se ha suscrito</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for suscripcion in suscripcions %}
+        {#{% for suscripcion in suscripcions %}
             <tr>
-                <td>{{ suscripcion.id }}</td>
+                <td>{{ suscripcion.idCanal }}</td>
                 <td>
                     <a href="{{ path('suscripcion_show', {'id': suscripcion.id}) }}">show</a>
                     <a href="{{ path('suscripcion_edit', {'id': suscripcion.id}) }}">edit</a>
@@ -25,6 +27,25 @@
             <tr>
                 <td colspan="2">no records found</td>
             </tr>
+        {% endfor %}#}
+
+        {% for canal in canals %}
+            <tr>
+                <td>{{ canal.nombre }}</td>
+                <td>
+                    <pre>
+                        {{ dump(canal.misSuscripciones) }}
+                    </pre>
+                </td>
+                <td>{{ canal.misSuscripciones|length }}</td>
+            </tr>
+            {#{% for suscripcion in canal.misSuscripciones %}
+            <tr>
+                <td>{{ suscripcion.idCanal }} </td>
+                <td>{{ canal.nombre }}</td>
+            </tr>
+            
+            {% endfor %}#}
         {% endfor %}
         </tbody>
     </table>

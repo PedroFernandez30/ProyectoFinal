@@ -15,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Validator\Constraints\File;
 
 class RegistrationFormType extends AbstractType
 {
@@ -28,7 +31,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Apellidos'
             ])
             ->add('email', EmailType::class,[
-                'label' => 'Correo electrónico'
+                'label' => 'Correo electrónico',
             ])
             /*->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -65,7 +68,24 @@ class RegistrationFormType extends AbstractType
 
             ])
             ->add('fnac', DateType::class, [
-                'label' => 'Fecha de nacimiento'
+                'label' => 'Fecha de nacimiento',
+                'format' => 'dd-MM-yyyy',
+                'years' => range(date('Y'),date('Y')-120),
+
+            ])->add('fotoPerfil', FileType::class,[
+                'required' => false,
+                'mapped' => false,
+                'label' => 'Foto de perfil (la puedes elegir ahora o en cualquier momento)',
+                'empty_data' => 'imgPerfil/profile.jpg',
+                'constraints' => [
+                    new File([
+                         'maxSize' => '1024k',
+                         'mimeTypes' => [
+                             'image/*'
+                         ],
+                         'mimeTypesMessage' => 'Por favor suba un archivo de imagen',
+                     ])
+                 ]
             ])
         ;
     }
