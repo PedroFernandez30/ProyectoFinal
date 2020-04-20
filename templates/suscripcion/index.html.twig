@@ -32,21 +32,22 @@
         {% for canal in canals %}
             <tr>
                 <td>{{ canal.nombre }}</td>
-                <td>
+                <!--<td>
                     <pre>
                         {{ dump(canal.misSuscripciones) }}
                     </pre>
-                </td>
+                </td>-->
                 <td>{{ canal.misSuscripciones|length }}</td>
-            </tr>
-            {#{% for suscripcion in canal.misSuscripciones %}
-            <tr>
-                <td>{{ suscripcion.idCanal }} </td>
-                <td>{{ canal.nombre }}</td>
-            </tr>
             
-            {% endfor %}#}
+            {% for miSuscripcion in canal.misSuscripciones %}
+            
+                <td class="bg-primary">{{ miSuscripcion.id }} </td>
+                
+            
+            
+            {% endfor %}
         {% endfor %}
+    </tr>
         </tbody>
     </table>
 
