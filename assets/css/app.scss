@@ -1,0 +1,8 @@
+// optionally customize some Bootstrap variables
+$primary: darken(#428bca, 20%);
+$dark: lighten(black,10%);
+$light: lighten($dark, 65%);
+$white: darken(#FFFFFF, 5%);
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";
