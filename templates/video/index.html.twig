@@ -26,8 +26,8 @@
                 <td>{{ video.descripcion }}</td>
                 <td>{{ video.mg }}</td>
                 <td>{{ video.dislike }}</td>
-                <td>{{ video.duracion ? video.duracion|date('H:i:s') : '' }}</td>
-                <td>{{ video.fechaPublicacion ? video.fechaPublicacion|date('Y-m-d') : '' }}</td>
+                <td>{{ video.duracion }}</td>
+                <td>{{ video.fechaPublicacion }}</td>
                 <td>
                     <a href="{{ path('video_show', {'id': video.id}) }}">show</a>
                     <a href="{{ path('video_edit', {'id': video.id}) }}">edit</a>

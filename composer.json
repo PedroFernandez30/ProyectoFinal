@@ -2,6 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
+        "james-heinrich/getid3": "*",
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",

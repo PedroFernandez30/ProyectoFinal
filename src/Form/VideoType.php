@@ -29,7 +29,9 @@ class VideoType extends AbstractType
             ->add('dislike', HiddenType::class, [
                 'data' => 0,
             ])
-            ->add('duracion', HiddenType::class)
+            ->add('duracion', HiddenType::class, [
+                'empty_data' => 'Duración'
+            ])
             ->add('fechaPublicacion',HiddenType::class, [
                 'data' => date("Y/m/d")
             ])

@@ -78,6 +78,9 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
+    "james-heinrich/getid3": {
+        "version": "v1.9.19"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
