@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suscripcion index{% endblock %}
+
+{% block body %}
+    <h1>Suscripcion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Canal que se suscribe</th>
+                <th>Canal al que se ha suscrito</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {#{% for suscripcion in suscripcions %}
+            <tr>
+                <td>{{ suscripcion.idCanal }}</td>
+                <td>
+                    <a href="{{ path('suscripcion_show', {'id': suscripcion.id}) }}">show</a>
+                    <a href="{{ path('suscripcion_edit', {'id': suscripcion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}#}
+
+        {% for canal in canals %}
+            <tr>
+                <td>{{ canal.nombre }}</td>
+                <!--<td>
+                    <pre>
+                        {{ dump(canal.misSuscripciones) }}
+                    </pre>
+                </td>-->
+                <td>{{ canal.misSuscripciones|length }}</td>
+            
+            {% for miSuscripcion in canal.misSuscripciones %}
+            
+                <td class="bg-primary">{{ miSuscripcion.id }} </td>
+                
+            
+            
+            {% endfor %}
+        {% endfor %}
+    </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('suscripcion_new') }}">Create new</a>
+{% endblock %}

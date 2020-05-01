@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Canal index{% endblock %}
+
+{% block body %}
+    <h1>Canal index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Sexo</th>
+                <th>Fnac</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for canal in canals %}
+            <tr>
+                <td>{{ canal.id }}</td>
+                <td>{{ canal.email }}</td>
+                <td>{{ canal.roles ? canal.roles|json_encode : '' }}</td>
+                <td>{{ canal.password }}</td>
+                <td>{{ canal.nombre }}</td>
+                <td>{{ canal.apellidos }}</td>
+                <td>{{ canal.sexo }}</td>
+                <td>{{ canal.fnac ? canal.fnac|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('canal_show', {'id': canal.id}) }}">show</a>
+                    <a href="{{ path('canal_edit', {'id': canal.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('canal_new') }}">Create new</a>
+{% endblock %}
