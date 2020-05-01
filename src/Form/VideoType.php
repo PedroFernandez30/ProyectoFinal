@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class VideoType extends AbstractType
 {
@@ -32,8 +34,34 @@ class VideoType extends AbstractType
                 'data' => date("Y/m/d")
             ])
             ->add('idCanal', HiddenType::class)
-            ->add('idCategoria', ChoiceType::class, [
+            ->add('idCategoria', null, [
                 'label' => 'Categoría'
+            ])
+            ->add('miniatura', FileType::class,[
+                'required' => true,
+                'mapped' => false,
+                'label' => 'Miniatura',
+                'constraints' => [
+                    new File([
+                         'maxSize' => '1024K',
+                         'mimeTypes' => [
+                             'image/*'
+                         ],
+                     ])
+                ]
+            ])
+            ->add('video', FileType::class,[
+                'required' => true,
+                'mapped' => false,
+                'label' => 'Vídeo',
+                'constraints' => [
+                    new File([
+                         'maxSize' => '512M',
+                         'mimeTypes' => [
+                             'video/*'
+                         ],
+                     ])
+                ]
             ])
         ;
     }

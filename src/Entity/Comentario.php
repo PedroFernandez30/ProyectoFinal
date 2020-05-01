@@ -34,13 +34,13 @@ class Comentario
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Canal", inversedBy="comentarios")
      */
-    private $idCanalComentado;
+    private $canalComentado;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Canal")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idCanalQueComenta;
+    private $canalQueComenta;
 
     public function getId(): ?int
     {
@@ -83,26 +83,26 @@ class Comentario
         return $this;
     }
 
-    public function getIdCanalComentado(): ?Canal
+    public function getCanalComentado(): ?Canal
     {
-        return $this->idCanalComentado;
+        return $this->canalComentado;
     }
 
-    public function setIdCanalComentado(?Canal $idCanalComentado): self
+    public function setCanalComentado(?Canal $canalComentado): self
     {
-        $this->idCanalComentado = $idCanalComentado;
+        $this->canalComentado = $canalComentado;
 
         return $this;
     }
 
-    public function getIdCanalQueComenta(): ?Canal
+    public function getCanalQueComenta(): ?Canal
     {
-        return $this->idCanalQueComenta;
+        return $this->canalQueComenta;
     }
 
-    public function setIdCanalQueComenta(?Canal $idCanalQueComenta): self
+    public function setCanalQueComenta(?Canal $canalQueComenta): self
     {
-        $this->idCanalQueComenta = $idCanalQueComenta;
+        $this->canalQueComenta = $canalQueComenta;
 
         return $this;
     }

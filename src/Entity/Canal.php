@@ -10,8 +10,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CanalRepository")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- * @UniqueEntity(fields={"nombreCanal"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="EmailDuplicated")
+ * @UniqueEntity(fields={"nombreCanal"}, message="ChannelNameDuplicated")
  */
 class Canal implements UserInterface
 {
@@ -63,22 +63,34 @@ class Canal implements UserInterface
      */
     private $videos;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="idCanal")
-     */
-    private $misSuscripciones;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="idCanalComentado")
      */
     private $comentarios;
 
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $nombreCanal;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="canalAlQueSuscribe")
+     */
+    private $suscritosAMi;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="canalQueSuscribe")
+     */
+    private $misSuscripciones;
+
 
     public function __construct()
     {
         $this->videos = new ArrayCollection();
-        $this->misSuscripciones = new ArrayCollection();
         $this->comentarios = new ArrayCollection();
+        $this->suscritosAMi = new ArrayCollection();
+        $this->misSuscripciones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -239,37 +251,6 @@ class Canal implements UserInterface
     }
 
     /**
-     * @return Collection|Suscripcion[]
-     */
-    public function getMisSuscripciones(): Collection
-    {
-        return $this->misSuscripciones;
-    }
-
-    public function addMisSuscripcione(Suscripcion $misSuscripcione): self
-    {
-        if (!$this->misSuscripciones->contains($misSuscripcione)) {
-            $this->misSuscripciones[] = $misSuscripcione;
-            $misSuscripcione->setIdCanal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMisSuscripcione(Suscripcion $misSuscripcione): self
-    {
-        if ($this->misSuscripciones->contains($misSuscripcione)) {
-            $this->misSuscripciones->removeElement($misSuscripcione);
-            // set the owning side to null (unless already changed)
-            if ($misSuscripcione->getIdCanal() === $this) {
-                $misSuscripcione->setIdCanal(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Comentario[]
      */
     public function getComentarios(): Collection
@@ -302,6 +283,80 @@ class Canal implements UserInterface
 
     public function __toString(): string {
         return $this->nombre;
+    }
+
+    public function getNombreCanal(): ?string
+    {
+        return $this->nombreCanal;
+    }
+
+    public function setNombreCanal(string $nombreCanal): self
+    {
+        $this->nombreCanal = $nombreCanal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Suscripcion[]
+     */
+    public function getSuscritosAMi(): Collection
+    {
+        return $this->suscritosAMi;
+    }
+
+    public function addSuscritosAMi(Suscripcion $suscritosAMi): self
+    {
+        if (!$this->suscritosAMi->contains($suscritosAMi)) {
+            $this->suscritosAMi[] = $suscritosAMi;
+            $suscritosAMi->setCanalAlQueSuscribe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuscritosAMi(Suscripcion $suscritosAMi): self
+    {
+        if ($this->suscritosAMi->contains($suscritosAMi)) {
+            $this->suscritosAMi->removeElement($suscritosAMi);
+            // set the owning side to null (unless already changed)
+            if ($suscritosAMi->getCanalAlQueSuscribe() === $this) {
+                $suscritosAMi->setCanalAlQueSuscribe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Suscripcion[]
+     */
+    public function getMisSuscripciones(): Collection
+    {
+        return $this->misSuscripciones;
+    }
+
+    public function addMisSuscripcione(Suscripcion $misSuscripcione): self
+    {
+        if (!$this->misSuscripciones->contains($misSuscripcione)) {
+            $this->misSuscripciones[] = $misSuscripcione;
+            $misSuscripcione->setCanalQueSuscribe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMisSuscripcione(Suscripcion $misSuscripcione): self
+    {
+        if ($this->misSuscripciones->contains($misSuscripcione)) {
+            $this->misSuscripciones->removeElement($misSuscripcione);
+            // set the owning side to null (unless already changed)
+            if ($misSuscripcione->getCanalQueSuscribe() === $this) {
+                $misSuscripcione->setCanalQueSuscribe(null);
+            }
+        }
+
+        return $this;
     }
 
 }

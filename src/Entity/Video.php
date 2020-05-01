@@ -39,16 +39,6 @@ class Video
     private $dislike;
 
     /**
-     * @ORM\Column(type="time")
-     */
-    private $duracion;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $fechaPublicacion;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Canal", inversedBy="videos")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -64,6 +54,16 @@ class Video
      * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="idVideo")
      */
     private $comentarios;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $duracion;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $fechaPublicacion;
 
     public function __construct()
     {
@@ -123,30 +123,6 @@ class Video
         return $this;
     }
 
-    public function getDuracion(): ?\DateTimeInterface
-    {
-        return $this->duracion;
-    }
-
-    public function setDuracion(\DateTimeInterface $duracion): self
-    {
-        $this->duracion = $duracion;
-
-        return $this;
-    }
-
-    public function getFechaPublicacion(): ?\DateTimeInterface
-    {
-        return $this->fechaPublicacion;
-    }
-
-    public function setFechaPublicacion(\DateTimeInterface $fechaPublicacion): self
-    {
-        $this->fechaPublicacion = $fechaPublicacion;
-
-        return $this;
-    }
-
     public function getIdCanal(): ?Canal
     {
         return $this->idCanal;
@@ -198,6 +174,30 @@ class Video
                 $comentario->setIdVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDuracion(): ?string
+    {
+        return $this->duracion;
+    }
+
+    public function setDuracion(string $duracion): self
+    {
+        $this->duracion = $duracion;
+
+        return $this;
+    }
+
+    public function getFechaPublicacion(): ?string
+    {
+        return $this->fechaPublicacion;
+    }
+
+    public function setFechaPublicacion(string $fechaPublicacion): self
+    {
+        $this->fechaPublicacion = $fechaPublicacion;
 
         return $this;
     }

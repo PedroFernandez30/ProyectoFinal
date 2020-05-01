@@ -25,13 +25,17 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('nombre', TextType::class, [
-                'label' => 'Nombre'
+                'label' => 'Nombre',
+                'translation_domain' => 'form'
             ])
             ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos'
             ])
             ->add('email', EmailType::class,[
                 'label' => 'Correo electrónico',
+            ])
+            ->add('nombreCanal', TextType::class, [
+                'label' => 'Nombre del canal'
             ])
             /*->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
