@@ -1,9 +1,4 @@
 security:
-<<<<<<< HEAD
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        users_in_memory: { memory: null }
-=======
     encoders:
         App\Entity\Canal:
             algorithm: auto
@@ -15,16 +10,12 @@ security:
             entity:
                 class: App\Entity\Canal
                 property: email
->>>>>>> bdb5781b5a582184f2ecfd0beb0743e0837c9b9a
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: lazy
-<<<<<<< HEAD
-            provider: users_in_memory
-=======
             provider: app_user_provider
             guard:
                 authenticators:
@@ -33,7 +24,6 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
->>>>>>> bdb5781b5a582184f2ecfd0beb0743e0837c9b9a
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -46,7 +36,4 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-<<<<<<< HEAD
-=======
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
->>>>>>> bdb5781b5a582184f2ecfd0beb0743e0837c9b9a
