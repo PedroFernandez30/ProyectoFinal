@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 
 /**
  * @Route("/video")
@@ -26,9 +28,9 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="video_new", methods={"GET","POST"})
+     * @Route({"es": "/nuevo/","en": "/new/"}, name="video_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserInterface $canalActivo): Response
     {
         $video = new Video();
         $form = $this->createForm(VideoType::class, $video);
@@ -36,9 +38,17 @@ class VideoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $video->setIdCanal($canalActivo);
+            
             $entityManager->persist($video);
             $entityManager->flush();
+            //Subida de vídeo y miniatura
+            $universalController = new UniversalController();
+            $videoLength = $universalController-> subidaVideo($canalActivo->getId(), $video->getId(), $form, true);
 
+            $video->setDuracion($videoLength);
+            $entityManager->persist($video);
+            $entityManager->flush();
             return $this->redirectToRoute('video_index');
         }
 
