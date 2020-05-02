@@ -38,7 +38,7 @@ class UniversalController extends AbstractController
             $miniatura = $form->get('miniatura')->getData();
             try {
                 $miniatura->move(
-                    "./{$canalId}/miniaturas/",
+                    "./uploads/{$canalId}/miniaturas/",
                     $videoId
                 );
                 
@@ -51,11 +51,11 @@ class UniversalController extends AbstractController
             try {
                 if($videoASubir != null) {
                     $videoASubir->move(
-                        "./{$canalId}/videos/",
+                        "./uploads/{$canalId}/videos/",
                         $videoId
                     );
                     $getID3 = new getID3();
-                    $rutaVideo = "./{$canalId}/videos/{$videoId}";
+                    $rutaVideo = "./uploads/{$canalId}/videos/{$videoId}";
 
                     $video_file = $getID3->analyze($rutaVideo);
 
