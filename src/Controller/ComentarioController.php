@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/comentario")
@@ -28,7 +29,7 @@ class ComentarioController extends AbstractController
     /**
      * @Route("/new", name="comentario_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserInterface $canalActivo): Response
     {
         $comentario = new Comentario();
         $form = $this->createForm(ComentarioType::class, $comentario);
@@ -36,6 +37,7 @@ class ComentarioController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $comentario->setCanalQueComenta($canalActivo);
             $entityManager->persist($comentario);
             $entityManager->flush();
 

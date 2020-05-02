@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/suscripcion")
@@ -30,7 +31,7 @@ class SuscripcionController extends AbstractController
     /**
      * @Route("/new", name="suscripcion_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserInterface $canalActivo): Response
     {
         $suscripcion = new Suscripcion();
         $form = $this->createForm(SuscripcionType::class, $suscripcion);
@@ -38,6 +39,7 @@ class SuscripcionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $suscripcion->setCanalQueSuscribe($canalActivo);
             $entityManager->persist($suscripcion);
             $entityManager->flush();
 

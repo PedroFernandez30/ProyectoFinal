@@ -6,6 +6,8 @@ use App\Entity\Comentario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ComentarioType extends AbstractType
 {
@@ -15,8 +17,10 @@ class ComentarioType extends AbstractType
             ->add('contenido')
             ->add('fechaComentario')
             ->add('idVideo')
-            ->add('idCanalComentado')
-            ->add('idCanalQueComenta')
+            ->add('canalComentado')
+            ->add('canalQueComenta', HiddenType::class, [
+                'data' => null
+            ])
         ;
     }
 

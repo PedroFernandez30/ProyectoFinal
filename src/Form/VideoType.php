@@ -33,7 +33,7 @@ class VideoType extends AbstractType
                 'empty_data' => 'Duración'
             ])
             ->add('fechaPublicacion',HiddenType::class, [
-                'data' => date("Y/m/d")
+                'data' => date("d/m/Y")
             ])
             ->add('idCanal', HiddenType::class)
             ->add('idCategoria', null, [

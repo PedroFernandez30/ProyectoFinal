@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Contenido</th>
                 <th>FechaComentario</th>
+                <th>Canal comentado</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,7 +20,8 @@
             <tr>
                 <td>{{ comentario.id }}</td>
                 <td>{{ comentario.contenido }}</td>
-                <td>{{ comentario.fechaComentario ? comentario.fechaComentario|date('Y-m-d') : '' }}</td>
+                <td>{{ comentario.fechaComentario ? comentario.fechaComentario|date('d/m/Y') : '' }}</td>
+                <td>{{ comentario.canalComentado }}</td>
                 <td>
                     <a href="{{ path('comentario_show', {'id': comentario.id}) }}">show</a>
                     <a href="{{ path('comentario_edit', {'id': comentario.id}) }}">edit</a>

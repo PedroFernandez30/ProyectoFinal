@@ -65,7 +65,7 @@ class Canal implements UserInterface
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="idCanalComentado")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="canalComentado", cascade={"remove"})
      */
     private $comentarios;
 
@@ -75,12 +75,12 @@ class Canal implements UserInterface
     private $nombreCanal;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="canalAlQueSuscribe")
+     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="canalAlQueSuscribe", cascade={"remove"})
      */
     private $suscritosAMi;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="canalQueSuscribe")
+     * @ORM\OneToMany(targetEntity="App\Entity\Suscripcion", mappedBy="canalQueSuscribe", cascade={"remove"})
      */
     private $misSuscripciones;
 

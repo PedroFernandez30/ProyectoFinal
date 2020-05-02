@@ -15,6 +15,7 @@
                 <th>Dislike</th>
                 <th>Duracion</th>
                 <th>FechaPublicacion</th>
+                <th>Canal Creador</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td>{{ video.dislike }}</td>
                 <td>{{ video.duracion }}</td>
                 <td>{{ video.fechaPublicacion }}</td>
+                <td>{{ video.idCanal }}</td>
                 <td>
                     <a href="{{ path('video_show', {'id': video.id}) }}">show</a>
                     <a href="{{ path('video_edit', {'id': video.id}) }}">edit</a>

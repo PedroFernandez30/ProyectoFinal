@@ -41,11 +41,17 @@
             
             {% for miSuscripcion in canal.misSuscripciones %}
             
-                <td class="bg-primary">{{ miSuscripcion.id }} </td>
+                <td class="bg-primary"> Se ha suscrito a {{ miSuscripcion.canalAlQueSuscribe.nombre }} </td>
                 
-            
-            
             {% endfor %}
+
+            {% for suscritoAMi in canal.suscritosAMi %}
+            
+                <td class="bg-secondary"> Se me ha suscrito {{ suscritoAMi.canalQueSuscribe.nombre }} </td>
+                
+            {% endfor %}
+
+            
         {% endfor %}
     </tr>
         </tbody>

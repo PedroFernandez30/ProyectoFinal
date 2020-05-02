@@ -51,7 +51,7 @@ class Video
     private $idCategoria;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="idVideo")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comentario", mappedBy="idVideo", cascade={"remove"})
      */
     private $comentarios;
 
@@ -200,5 +200,10 @@ class Video
         $this->fechaPublicacion = $fechaPublicacion;
 
         return $this;
+    }
+
+    public function __toString():string
+    {
+        return $this->titulo;
     }
 }
