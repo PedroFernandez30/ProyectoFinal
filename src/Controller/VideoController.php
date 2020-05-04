@@ -30,10 +30,12 @@ class VideoController extends AbstractController
     /**
      * @Route({"es": "/nuevo/","en": "/new/"}, name="video_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserInterface $canalActivo): Response
+    public function new(Request $request, UserInterface $canalActivo):Response
     {
         $video = new Video();
-        $form = $this->createForm(VideoType::class, $video);
+        $form = $this->createForm(VideoType::class, $video, [
+            'action' => $this->generateUrl('video_new'),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

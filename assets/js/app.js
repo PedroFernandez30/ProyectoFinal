@@ -26,6 +26,24 @@ require('bootstrap');
 });*/
 
 $(document).ready(function(){
-    $('.dropdown-toggle').dropdown()
+    $('.dropdown-toggle').dropdown();
+    console.log("Hola");
+    function submitForm(form) {
+        console.log('Dentro de submitForm');
+       // document.getElementById('videoForm').submit();
+       form.submit();
+    }
+
+    $("#buttonPrueba").click(function(){
+        console.log("buttonprueba!!!!");
+      });
+    
+
+    /*$("#videoFormButton").click(function(){
+        console.log("SUBMITVIDEOFORM!!!!");
+        $("videoForm").submit();
+        
+      });*/
+    
 });
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

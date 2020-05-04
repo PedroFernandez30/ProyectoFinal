@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Canal;
+use App\Entity\Video;
 use App\Form\CanalType;
+use App\Form\VideoType;
 use App\Repository\CanalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,12 +51,16 @@ class CanalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="canal_show", methods={"GET"})
+     * @Route("/{id}", name="canal_show", methods={"GET", "POST"})
      */
     public function show(Canal $canal): Response
     {
+        //$video = new Video();
+        //$form = $this->createForm(VideoType::class, $video);
         return $this->render('canal/show.html.twig', [
             'canal' => $canal,
+            //'video' => $video,
+            //'form' => $form->createView()
         ]);
     }
 

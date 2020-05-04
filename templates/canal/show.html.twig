@@ -5,46 +5,49 @@
 {% block body %}
     <h1>Canal</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ canal.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ canal.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ canal.roles ? canal.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ canal.password }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ canal.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Apellidos</th>
-                <td>{{ canal.apellidos }}</td>
-            </tr>
-            <tr>
-                <th>Sexo</th>
-                <td>{{ canal.sexo }}</td>
-            </tr>
-            <tr>
-                <th>Fnac</th>
-                <td>{{ canal.fnac ? canal.fnac|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% if app.user %}
+        <button type="button" class="btn btn-primary">Ha iniciado sesión</button>
+        <a href="{{ path('video_new') }}" data-toggle="modal" data-target="#exampleModal">Subir vídeo</a>
+            {% if esTuCuenta is defined %}
+                <button type="button" class="btn btn-primary">Personalizar canal</button>
+                <button type="button" class="btn btn-primary">Subir vídeo</button>
+            {% endif %}
+            <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+        </button>
 
-    <a href="{{ path('canal_index') }}">back to list</a>
+        <button type="button" id="buttonPrueba">ButtonPrueba</button>
+        
+
+         <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="exampleModalLabel"> Subida de vídeo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        {#{% include "video/new.html.twig" with {'form': form, 'video': video} %}#}
+                        {{ render(path('video_new')) }}
+                        {#{{ render(controller(
+                            'App\\Controller\\VideoController::new'
+                        )) }}#}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+       
+            
+    {% endif %}
+
+    <!--<a href="{{ path('canal_index') }}">back to list</a>
 
     <a href="{{ path('canal_edit', {'id': canal.id}) }}">edit</a>
 
-    {{ include('canal/_delete_form.html.twig') }}
+    {{ include('canal/_delete_form.html.twig') }}-->
 {% endblock %}

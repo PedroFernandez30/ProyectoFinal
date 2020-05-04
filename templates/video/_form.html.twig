@@ -1,4 +1,7 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-info">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'id':'videoForm'} })   }}
+    {{ form_widget(form)  }}
+        <button class="btn btn-info" id="videoFormButton">{{ button_label|default('Guardar') }}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        
+    
 {{ form_end(form) }}
