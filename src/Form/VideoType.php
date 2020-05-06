@@ -45,7 +45,7 @@ class VideoType extends AbstractType
                 'label' => 'Miniatura',
                 'constraints' => [
                     new File([
-                         'maxSize' => '1024K',
+                         'maxSize' => '3036K',
                          'mimeTypes' => [
                              'image/*'
                          ],

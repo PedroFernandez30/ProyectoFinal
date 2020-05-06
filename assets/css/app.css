@@ -4,7 +4,11 @@ body {
 }
 
 form {
-    color: #000000 !important;
+    /*color: #000000 !important;*/
+}
+
+.imgCanal {
+    width: 100%;
 }
 
 .table {
@@ -13,3 +17,6 @@ form {
 .dropdown-toggle::after { 
     content: none !important; 
 } 
+span {
+    color: #aaaaaa;
+}

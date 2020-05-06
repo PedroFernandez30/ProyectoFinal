@@ -3,8 +3,20 @@
 {% block title %}Video{% endblock %}
 
 {% block body %}
-    <h1>Video</h1>
+    
+    
+    <div class="row m-4">
+        <div class="col-6 col-md-12 h-25 border border-white">
+            <video width="100%" controls>
+                <source src="{{asset('uploads/'~ video.idCanal.id ~ '/videos/' ~ video.id)}}">
+                
+              Your browser does not support the video tag.
+              </video>
+        </div>
+    </div>
 
+    <h1>{{ video.titulo }}</h1>
+    
     <table class="table">
         <tbody>
             <tr>

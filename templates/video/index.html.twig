@@ -1,47 +1,38 @@
-{% extends 'base.html.twig' %}
-
 {% block title %}Video index{% endblock %}
 
 {% block body %}
-    <h1>Video index</h1>
+<div class="container-fluid m-1">
+    
+    {% if videos is defined  %}
+    <pre>
+    </pre>
+        <div class="row">
+            <!-- -->
+                {% for video in videos %}
+                    <div class="col-10 col-sm-10 col-md-5 col-xl-3 col-lg-4 p-4 m-lg-0 m-md-auto m-auto m-sm-auto">
+                        <a>
+                            <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
+                        </a>
+                        <a href="{{ path('video_show', { 'id': video.id }) }}">
+                            <h3 class="text-white">{{ video.titulo }}</h3>
+                        </a>
+                        {% if index is defined %}
+                            <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}">
+                                <h3 class="text-white">{{ video.idCanal.nombreCanal }}</h3>
+                            </a>
+                            {% else %}
+                                <span>{{ video.fechaPublicacion }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+     </div>
+    {% endif %}
+    
+            
+       
+</div>
+    
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titulo</th>
-                <th>Descripcion</th>
-                <th>Mg</th>
-                <th>Dislike</th>
-                <th>Duracion</th>
-                <th>FechaPublicacion</th>
-                <th>Canal Creador</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for video in videos %}
-            <tr>
-                <td>{{ video.id }}</td>
-                <td>{{ video.titulo }}</td>
-                <td>{{ video.descripcion }}</td>
-                <td>{{ video.mg }}</td>
-                <td>{{ video.dislike }}</td>
-                <td>{{ video.duracion }}</td>
-                <td>{{ video.fechaPublicacion }}</td>
-                <td>{{ video.idCanal }}</td>
-                <td>
-                    <a href="{{ path('video_show', {'id': video.id}) }}">show</a>
-                    <a href="{{ path('video_edit', {'id': video.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('video_new') }}">Create new</a>
+    
+    
 {% endblock %}

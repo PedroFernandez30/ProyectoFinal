@@ -51,6 +51,7 @@ class VideoController extends AbstractController
             $video->setDuracion($videoLength);
             $entityManager->persist($video);
             $entityManager->flush();
+            $this->addFlash('success', 'Vídeo subido correctamente');
             return $this->redirectToRoute('video_index');
         }
 
