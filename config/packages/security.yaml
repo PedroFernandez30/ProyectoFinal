@@ -39,3 +39,6 @@ security:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/video/nuevo, roles: ROLE_USER }
         - { path: ^/video/new, roles: ROLE_USER }
+        - { path: ^/suscripcion/nuevo, roles: ROLE_USER }
+        - { path: ^/suscripcion/new, roles: ROLE_USER }
+

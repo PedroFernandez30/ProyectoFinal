@@ -13,12 +13,12 @@
                         <a>
                             <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
                         </a>
-                        <a href="{{ path('video_show', { 'id': video.id }) }}">
-                            <h3 class="text-white">{{ video.titulo }}</h3>
+                        <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
+                            <h3>{{ video.titulo }}</h3>
                         </a>
                         {% if index is defined %}
-                            <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}">
-                                <h3 class="text-white">{{ video.idCanal.nombreCanal }}</h3>
+                            <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="text-white">
+                                <h3 >{{ video.idCanal.nombreCanal }}</h3>
                             </a>
                             {% else %}
                                 <span>{{ video.fechaPublicacion }}</span>

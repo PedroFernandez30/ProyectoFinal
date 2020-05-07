@@ -66,8 +66,15 @@ class VideoController extends AbstractController
      */
     public function show(Video $video): Response
     {
+        $suscritosAlCanal = $video->getIdCanal()->getSuscritosAMi();
+        $idSuscritosAlCanal = [];
+        foreach ($suscritosAlCanal as $suscritoAlCanal) {
+            $idSuscritosAlCanal[] = $suscritoAlCanal->getCanalQueSuscribe()->getId();
+        }
+
         return $this->render('video/show.html.twig', [
             'video' => $video,
+            'idSuscritosAlCanal' => $idSuscritosAlCanal
         ]);
     }
 
