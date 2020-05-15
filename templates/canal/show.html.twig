@@ -3,22 +3,31 @@
 {% block title %}{{ canal.nombreCanal }}{% endblock %}
 
 {% block body %}
-    <h1>{{ canal.nombreCanal }}</h1>
+    <div class="container-fluid p-4 bg-dark">
+        <h1>{{ canal.nombreCanal }}</h1>
+        <p>{{ canal.suscritosAMi | length }} suscriptores</p>
+        
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                {% set url = path('video_list') %}
+              <a class="nav-link blanco active" href="" id="tabVideos" onclick="event.preventDefault();cambiarTabActiva(this, '{{ url }}', '{{ canal.id }}')">VÍDEOS</a>
+            </li>
+            <li class="nav-item">
+                {% set url = path('comentario_list') %}
+              <a class="nav-link blanco" href="{{ path('comentario_list') }}" id="tabComunidad" onclick="event.preventDefault();cambiarTabActiva(this, '{{ url }}', '{{ canal.id }}', 'canal');">COMUNIDAD</a>
+            </li>
+          </ul>
+    </div>
 
     {% if app.user %}
-        <button type="button" class="btn btn-primary">Ha iniciado sesión</button>
-        <a href="{{ path('video_new') }}" data-toggle="modal" data-target="#exampleModal">Subir vídeo</a>
             {% if esTuCuenta is defined %}
                 <button type="button" class="btn btn-primary">Personalizar canal</button>
-                <button type="button" class="btn btn-primary">Subir vídeo</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Subir vídeo
+                 </button> 
             {% endif %}
             <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-        </button>
-
-        <button type="button" id="buttonPrueba">ButtonPrueba</button>
-        
+               
 
          <!-- Modal -->
         <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -41,7 +50,13 @@
             </div>
         </div>
         {% endif %}
-        {% include "video/index.html.twig" with {'videos': canal.videos} %}
+
+        
+
+        <div id="comunidadOVideos">
+            {% include "video/index.html.twig" with {'videos': canal.videos} %}
+        </div>
+        
        
             
     

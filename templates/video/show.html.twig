@@ -6,7 +6,7 @@
     
     
     <div class="row m-4">
-        <div class="col-6 col-lg-6 col-xl-6 col-md-12 col-sm-12 h-25 border border-white">
+        <div class="col-8 col-lg-8 col-xl-8 col-md-12 col-sm-12 h-25 border border-white">
             <video width="100%" controls>
                 <source src="{{asset('uploads/'~ video.idCanal.id ~ '/videos/' ~ video.id)}}">
                 
@@ -17,6 +17,7 @@
     </div>
     <div class="m-4">
         <h1>{{ video.titulo }}</h1>
+        <h2>{{ video.duracion }}</h2>
         <span> Fecha de publicación: {{ video.fechaPublicacion }}</span>
         <div class="row">
             <div class="col-3">
@@ -24,7 +25,7 @@
                     <h2 class="nombreCanal">{{ video.idCanal.nombreCanal }}</h2>
                 </a>
             </div>
-            <div class="col-2 offset-1">
+            <div class="col-2 offset-3">
                 {% if app.user %}
                     {% if app.user == video.idCanal %}
                         <a href="" class="btn btn-info">Personalizar canal</a>
@@ -36,13 +37,26 @@
                             {% endif %}
                     {% endif %}
                     {% else %}
-                        <a href="{{ path('app_login')}}" class="btn btn-info">Inicia sesión para suscribirte</a>
+                        {% set token = csrf_token(video.id) %}
+                         {# app.request.pathinfo #}
+                        {#<a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'})   })}}" class="btn btn-info" 
+                        onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte</a>#}
+                        <a href="{{ path('prueba') }}" class="btn btn-info" 
+                        onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte o comentar</a>
+                        {{ app.request.uri|replace({'/': '-'}) }}
                 {% endif %}
+
+                
             </div>
+
+            
         </div>
+        
        
         <span>{{ video.idCanal.suscritosAMi | length }} suscriptor(es)</span>
         <p>{{ video.descripcion }}</p>
+
+        {% include "comentario/viewComments.html.twig" with {'nivel' : 'video'}%}
     </div>
 
     

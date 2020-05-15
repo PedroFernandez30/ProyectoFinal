@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -11,22 +12,32 @@ class SecurityController extends AbstractController
 {
    
     /**
-     * @Route({"es": "/inicia_sesión/","en": "/login/"} , name="app_login") 
+     * @Route({"es": "/inicia_sesion/{previo?}","en": "/login/{previo?}"} , name="app_login") 
      */
-    public function login(AuthenticationUtils $authenticationUtils, $locale = '', $returnLastPage = false): Response
+    public function login(Request $request, $previo = '' , AuthenticationUtils $authenticationUtils, $locale = '', $returnLastPage = false): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
 
         //requirements="_locale={en|fr|de}"
+        //$previo = $request->request->get('previo');
+        //$previo = $_REQUEST['previo'];
+        if($previo != '') {
+            throw Exception;
+            $previous = str_replace('-','/', $previo);
+            return $this->render('security/login.html.twig', [/*'last_username' => $lastUsername, 'error' => $error,*/ 'noError' => true,'previo' => $previous]);
+        } else {
+            // get the login error if there is one
+            $error = $authenticationUtils->getLastAuthenticationError();
+            // last username entered by the user
+            $lastUsername = $authenticationUtils->getLastUsername();
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+            
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error , 'previo' => $previo]);
+        }
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        
     }
 
     /**

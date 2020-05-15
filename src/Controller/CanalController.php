@@ -59,6 +59,7 @@ class CanalController extends AbstractController
         //$form = $this->createForm(VideoType::class, $video);
         return $this->render('canal/show.html.twig', [
             'canal' => $canal,
+            'comentario' => 'canal'
             //'video' => $video,
             //'form' => $form->createView()
         ]);
@@ -81,6 +82,11 @@ class CanalController extends AbstractController
         return $this->render('canal/edit.html.twig', [
             'canal' => $canal,
             'form' => $form->createView(),
+            'url' => $request->getUri(),
+            'urlPath' => $request->getPathInfo(),
+            'session' => $request->getSession(),
+            'targetPath' => $request->getBasePath(),
+            'request' => $request
         ]);
     }
 

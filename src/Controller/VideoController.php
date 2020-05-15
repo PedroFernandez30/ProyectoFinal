@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Video;
 use App\Form\VideoType;
 use App\Repository\VideoRepository;
+use App\Repository\CanalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 /**
@@ -25,6 +28,26 @@ class VideoController extends AbstractController
         return $this->render('video/index.html.twig', [
             'videos' => $videoRepository->findAll(),
         ]);
+    }
+
+    /**
+     * @Route("/list", name="video_list", methods={"GET", "POST"})
+     */
+    public function list(Request $request, VideoRepository $videoRepository, CanalRepository $canalRepository): Response
+    {
+        if($request->isXmlHttpRequest()) {
+            $data = $request->request->all();
+            $canalId = json_decode($data['idCanal']);
+            if($canalId != null) {
+                $canalEntity = $canalRepository->findOneBy(['id' => $canalId]);
+                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalEntity]);
+                return new JsonResponse($this->render('video/index.html.twig', [
+                    'videos' => $videosFromCanal,
+                ])->getContent());
+            }
+        }
+        
+        
     }
 
     /**
@@ -74,7 +97,8 @@ class VideoController extends AbstractController
 
         return $this->render('video/show.html.twig', [
             'video' => $video,
-            'idSuscritosAlCanal' => $idSuscritosAlCanal
+            'idSuscritosAlCanal' => $idSuscritosAlCanal,
+            'comentario' => 'video'
         ]);
     }
 

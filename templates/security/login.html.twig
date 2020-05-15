@@ -3,12 +3,15 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<button type="button" class="btn btn-success">Hola</button>
 <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
+    {#{% if noError is not defined %}
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+    {% endif %}#}
+   
+{#{{ noError }}#}
+ Previo {{ previo }}
     {% if app.user %}
         <div class="mb-3">
             Has iniciado sesión como {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
@@ -25,6 +28,11 @@
            value="{{ csrf_token('authenticate') }}"
     >
 
+    
+    {% if previo is defined %}
+    {{ previo }}
+        <input type="hidden" name="_target_path" value = {{ previo }}/>
+    {% endif %}
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
         See https://symfony.com/doc/current/security/remember_me.html
