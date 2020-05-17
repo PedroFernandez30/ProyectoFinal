@@ -57,9 +57,13 @@ class CanalController extends AbstractController
     {
         //$video = new Video();
         //$form = $this->createForm(VideoType::class, $video);
+        $suscripcionController = new SuscripcionController();
+        $idSuscritosAlCanal = $suscripcionController->getSuscritosACanal($canal);
+
         return $this->render('canal/show.html.twig', [
             'canal' => $canal,
-            'comentario' => 'canal'
+            'comentario' => 'canal',
+            'idSuscritosAlCanal' => $idSuscritosAlCanal
             //'video' => $video,
             //'form' => $form->createView()
         ]);

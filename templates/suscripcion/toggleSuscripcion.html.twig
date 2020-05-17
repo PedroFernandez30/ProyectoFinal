@@ -1,4 +1,4 @@
-<div class="container-fluid" id="suscripcionFlash">
+<div class="container-fluid mt-1" id="suscripcionFlash">
     {% for message in app.flashes('success') %}
     <div class="alert alert-success">
         {{ message }}
@@ -9,8 +9,9 @@
     
   {% endfor %}
     {% if app.user %}
-        {% if app.user == video.idCanal %}
-            <a href="" class="btn btn-info">Personalizar canal</a>
+        {% if video is defined %}
+            {% if app.user == video.idCanal %}
+                <a href="" class="btn btn-info">Personalizar canal</a>
             {% else %}
                 {% if app.user.id in idSuscritosAlCanal %}
                     {% set token = csrf_token('delete') %}
@@ -22,7 +23,24 @@
                         <a href="{{ path('suscripcion_new') }}" class="btn btn-danger" id="linkNewSuscripcion" 
                         onclick="event.preventDefault();toggleSuscripcion('crear', '{{ video.id }}', '{{ url }}', '{{ app.user.id }}', ' {{ video.idCanal.id }}');">SUSCRIBIRSE</a>
                 {% endif %}
+            {% endif %}
+            {% elseif canal is defined %}
+                {% if app.user == canal %}
+                <a href="" class="btn btn-info">Personalizar canal</a>
+                {% else %}
+                    {% if app.user.id in idSuscritosAlCanal %}
+                        {% set token = csrf_token('delete') %}
+                        {% set url = path('suscripcion_delete') %}
+                        <a href="{{ path('suscripcion_delete') }}" class="btn btn-danger" id="linkDeleteSuscripcion" 
+                        onclick="event.preventDefault();toggleSuscripcion('borrar', null , '{{ url }}', '{{ app.user.id }}', ' {{ canal.id }}', '{{ token }}');">SUSCRITO</a>
+                        {% else %}
+                            {% set url = path('suscripcion_new') %}
+                            <a href="{{ path('suscripcion_new') }}" class="btn btn-danger" id="linkNewSuscripcion" 
+                            onclick="event.preventDefault();toggleSuscripcion('crear', null, '{{ url }}', '{{ app.user.id }}', ' {{ canal.id }}');">SUSCRIBIRSE</a>
+                    {% endif %}
+                {% endif %}
         {% endif %}
+        
         {% else %}
             {% set token = csrf_token(video.id) %}
              {# app.request.pathinfo #}

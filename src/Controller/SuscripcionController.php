@@ -50,39 +50,35 @@ class SuscripcionController extends AbstractController
                 $entityManager->flush();
 
                 $videoId = json_decode($data ['idVideo']);
-                $videoEntity = $videoRepository->findOneBy(['id' => $videoId]);
+                
 
                 $idSuscritosAlCanal = $this->getSuscritosACanal($canalAlQueSuscribeEntity);
                 $this->addFlash('success', 'Te has suscrito a este canal');
                 
-                return new JsonResponse([
-                    'contenido' => $this->render('suscripcion/toggleSuscripcion.html.twig', [
-                        'idSuscritosAlCanal' => $idSuscritosAlCanal,
-                        'video' => $videoEntity
-                    ])->getContent(),
-                    'numeroSuscriptores' => \count($idSuscritosAlCanal)
-                ]);
+                if($data['idVideo'] != null) {
+                    $videoEntity = $videoRepository->findOneBy(['id' => $videoId]);
+                    return new JsonResponse([
+                        'contenido' => $this->render('suscripcion/toggleSuscripcion.html.twig', [
+                            'idSuscritosAlCanal' => $idSuscritosAlCanal,
+                            'video' => $videoEntity
+                        ])->getContent(),
+                        'numeroSuscriptores' => \count($idSuscritosAlCanal)
+                    ]);
+                }else {
+                    return new JsonResponse([
+                        'contenido' => $this->render('suscripcion/toggleSuscripcion.html.twig', [
+                            'idSuscritosAlCanal' => $idSuscritosAlCanal,
+                            'canal' => $canalAlQueSuscribeEntity
+                        ])->getContent(),
+                        'numeroSuscriptores' => \count($idSuscritosAlCanal)
+                    ]);
+                }
+                
 
             }
 
         }
         
-        /*$form = $this->createForm(SuscripcionType::class, $suscripcion);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $suscripcion->setCanalQueSuscribe($canalActivo);
-            $entityManager->persist($suscripcion);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('suscripcion_index');
-        }
-
-        return $this->render('suscripcion/new.html.twig', [
-            'suscripcion' => $suscripcion,
-            'form' => $form->createView(),
-        ]);*/
     }
 
     /**
@@ -144,13 +140,26 @@ class SuscripcionController extends AbstractController
 
                         $idSuscritosAlCanal = $this->getSuscritosACanal($canalAlQueSuscribeEntity);
                         $this->addFlash('success', 'Ya no estás suscrito a este canal');
-                        return new JsonResponse([
-                            'contenido' => $this->render('suscripcion/toggleSuscripcion.html.twig', [
-                                'idSuscritosAlCanal' => $idSuscritosAlCanal,
-                                'video' => $videoEntity
-                            ])->getContent(),
-                            'numeroSuscriptores' => \count($idSuscritosAlCanal)
-                        ]);
+
+                        if($data['idVideo'] != null) {
+                            $videoEntity = $videoRepository->findOneBy(['id' => $videoId]);
+                            return new JsonResponse([
+                                'contenido' => $this->render('suscripcion/toggleSuscripcion.html.twig', [
+                                    'idSuscritosAlCanal' => $idSuscritosAlCanal,
+                                    'video' => $videoEntity
+                                ])->getContent(),
+                                'numeroSuscriptores' => \count($idSuscritosAlCanal)
+                            ]);
+                        }else {
+                            return new JsonResponse([
+                                'contenido' => $this->render('suscripcion/toggleSuscripcion.html.twig', [
+                                    'idSuscritosAlCanal' => $idSuscritosAlCanal,
+                                    'canal' => $canalAlQueSuscribeEntity
+                                ])->getContent(),
+                                'numeroSuscriptores' => \count($idSuscritosAlCanal)
+                            ]);
+                        }
+                        
                     }
                 }
                 
