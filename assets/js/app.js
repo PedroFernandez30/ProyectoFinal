@@ -26,12 +26,14 @@ require('bootstrap');
 });*/
 
 $(document).ready(function(){
+
+  
   window.irAConfigPorPost = irAConfigPorPost;
   window.escribirOMostrarComentario = escribirOMostrarComentario;
   window.activarBotonComentar = activarBotonComentar;
   window.cambiarTabActiva = cambiarTabActiva;
   window.mostrarVideos = mostrarVideos;
-
+  window.toggleSuscripcion = toggleSuscripcion;
 
     $('.dropdown-toggle').dropdown();
   
@@ -69,7 +71,53 @@ $(document).ready(function(){
       return false;
   }
 
+  //suscribirse o borrar la suscripción mediante AJAX
+  function toggleSuscripcion(modo, idVideo, url, canalSuscritoId, canalAlQueSuscribeId, token = null ) {
+    console.log(token);
+    var that = $(this);
+    if(modo == 'borrar') {
+      var tipo = "DELETE"; 
+      var datos = {
+        "canalSuscritoId": canalSuscritoId,
+        "canalAlQueSuscribeId": canalAlQueSuscribeId,
+        "idVideo": idVideo,
+        "_token": token
+      };
+    }else {
+      var tipo = "POST";
+      var datos = {
+        "canalAlQueSuscribeId": canalAlQueSuscribeId,
+        "idVideo": idVideo
+      };
+    }
+    $.ajax({
+        
+        url: url,
+        type: tipo,
+        dataType: "json",
+        data: datos,
+        async: true,
+        success: function (data)
+        {
+            console.log(data);
+            console.log(data.numeroSuscriptores);
+            var divToggleSuscripcion = document.getElementById("toggleSuscripcion");
+            divToggleSuscripcion.innerHTML = '';
+            divToggleSuscripcion.innerHTML = data.contenido;
+            var numSuscripciones = document.getElementById("numSuscriptores");
+            numSuscripciones.textContent = data.numeroSuscriptores + " suscriptor(es)";
 
+            var suscripcionFlash = $("#suscripcionFlash");
+            if(suscripcionFlash.innerHTML != '') {
+              console.log(suscripcionFlash);
+              suscripcionFlash.delay(5000).slideUp(300);
+            }
+
+        }
+    });
+    return false;
+  }
+    
   //USAR ONKEYUP
   function activarBotonComentar(textArea) {
     var value = textArea.value;

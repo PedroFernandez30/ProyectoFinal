@@ -15,7 +15,7 @@
 <div class="row m-4" id="comentarios">
     {% if video is defined and app.user == video.idCanal %} {#Estamos en los comentarios de un vídeo #}
         {% elseif canal is defined and app.user == canal %} {#Estamos en los comentarios de un canal #}
-        {% else %}
+        {% elseif app.user %}
             <div class="col-7 mb-4">
                 <textarea id="comentario" placeholder="Escribe el comentario que desees" class="bg-dark text-white" rows="5" maxlength="255" onkeyup="activarBotonComentar(this)"></textarea>                            
                     
