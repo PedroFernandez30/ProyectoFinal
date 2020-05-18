@@ -5,11 +5,19 @@
             <h2 id="numComentarios">Sé el primero en comentar</h2>
     {% endif %}
 
-    {% if comentarios is defined and comentarios |length > 0 %}
-        <h2 id="numComentarios">{{ comentarios|length }} comentario(s)</h2>
-        {% elseif comentarios is defined and comentarios | length == 0%}
+    {% if canal.comentarios is defined and canal.comentarios |length > 0 %}
+        <h2 id="numComentarios">{{ canal.comentarios|length }} comentario(s)</h2>
+        {% elseif canal.comentarios is defined and canal.comentarios | length == 0%}
             <h2 id="numComentarios">Sé el primero en comentar</h2>
     {% endif %}
+</div>
+
+<div class="container-fluid mt-1" id="comentarioFlash">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 </div>
 
 <div class="row m-4" id="comentarios">
@@ -32,19 +40,34 @@
             </div>
     {% endif %}
     <div class="row m-4" id="soloComentarios">
-        {% if comentarios is defined and comentarios | length > 0 %}
-            {% for comentario in comentarios | reverse %}
+        {% set url = path('comentario_delete') %}
+        
+        {% if canal.comentarios is defined and canal.comentarios | length > 0 %}
+            {% for comentario in canal.comentarios | reverse %}
+                {% set token = csrf_token('delete'~ comentario.id) %}
                 <div  class="col-8" id='{{ comentario.id }}'>
-                    <span class="text-white"> {{ comentario.canalQueComenta.nombreCanal }}</span>
+                    
+                    
+                    <a class="blanco h4" href="{{ path('canal_show', {'id': comentario.canalQueComenta.id }) }}"><span class="text-white"> {{ comentario.canalQueComenta.nombreCanal }}</span></a>
+                    
                     <span> {{ comentario. fechaComentario | date('d/m/y') }} </span>
+                    {% if app.user and app.user.id == comentario.canalQueComenta.id %}
+                        <button class="btn btn-danger" onclick="borrarComentario('{{ url }}', '{{ comentario.id }}', null, '{{ canal.id }}', '{{ token }}')">Borrar Comentario</button>
+                    {% endif %}
                     <p>{{ comentario.contenido }}</p>
                 </div>
             {% endfor %}
             {% elseif video.comentarios is defined and video.comentarios | length > 0 %}
                 {% for comentario in video.comentarios | reverse %}
+                    {% set token = csrf_token('delete'~ comentario.id) %}
                     <div  class="col-8" id='{{ comentario.id }}'>
-                        <span class="text-white"> {{ comentario.canalQueComenta.nombreCanal }}</span>
+                        
+                        
+                        <a class="blanco h4" href="{{ path('canal_show', {'id': comentario.canalQueComenta.id }) }}"><span class="text-white"> {{ comentario.canalQueComenta.nombreCanal }}</span></a>
                         <span> {{ comentario. fechaComentario | date('d/m/y') }} </span>
+                        {% if app.user and app.user == comentario.canalQueComenta %}
+                            <button class="btn btn-danger ml-1" onclick="borrarComentario('{{ url }}', '{{ comentario.id }}', '{{ video.id }}', null, '{{ token }}')">Borrar Comentario</button>
+                        {% endif %}
                         <p>{{ comentario.contenido }}</p>
                     </div>
                 {% endfor %}

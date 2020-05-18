@@ -1,54 +1,56 @@
 <div class="container-fluid mt-1" id="suscripcionFlash">
     {% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 </div>
-
-<div>
-    
-  {% endfor %}
-    {% if app.user %}
-        {% if video is defined %}
-            {% if app.user == video.idCanal %}
-                <a href="" class="btn btn-info">Personalizar canal</a>
-            {% else %}
-                {% if app.user.id in idSuscritosAlCanal %}
-                    {% set token = csrf_token('delete') %}
-                    {% set url = path('suscripcion_delete') %}
-                    <a href="{{ path('suscripcion_delete') }}" class="btn btn-danger" id="linkDeleteSuscripcion" 
-                    onclick="event.preventDefault();toggleSuscripcion('borrar', '{{ video.id }}', '{{ url }}', '{{ app.user.id }}', ' {{ video.idCanal.id }}', '{{ token }}');">SUSCRITO</a>
-                    {% else %}
-                        {% set url = path('suscripcion_new') %}
-                        <a href="{{ path('suscripcion_new') }}" class="btn btn-danger" id="linkNewSuscripcion" 
-                        onclick="event.preventDefault();toggleSuscripcion('crear', '{{ video.id }}', '{{ url }}', '{{ app.user.id }}', ' {{ video.idCanal.id }}');">SUSCRIBIRSE</a>
-                {% endif %}
-            {% endif %}
-            {% elseif canal is defined %}
-                {% if app.user == canal %}
-                <a href="" class="btn btn-info">Personalizar canal</a>
+<div class="row">
+    <div class="col-12 offset-0 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2">
+        {% if app.user %}
+            {% if video is defined %}
+                {% if app.user == video.idCanal %}
+                    <a href="" class="btn btn-info">Personalizar canal</a>
                 {% else %}
                     {% if app.user.id in idSuscritosAlCanal %}
                         {% set token = csrf_token('delete') %}
                         {% set url = path('suscripcion_delete') %}
                         <a href="{{ path('suscripcion_delete') }}" class="btn btn-danger" id="linkDeleteSuscripcion" 
-                        onclick="event.preventDefault();toggleSuscripcion('borrar', null , '{{ url }}', '{{ app.user.id }}', ' {{ canal.id }}', '{{ token }}');">SUSCRITO</a>
+                        onclick="event.preventDefault();toggleSuscripcion('borrar', '{{ video.id }}', '{{ url }}', '{{ app.user.id }}', ' {{ video.idCanal.id }}', '{{ token }}');">SUSCRITO</a>
                         {% else %}
                             {% set url = path('suscripcion_new') %}
                             <a href="{{ path('suscripcion_new') }}" class="btn btn-danger" id="linkNewSuscripcion" 
-                            onclick="event.preventDefault();toggleSuscripcion('crear', null, '{{ url }}', '{{ app.user.id }}', ' {{ canal.id }}');">SUSCRIBIRSE</a>
+                            onclick="event.preventDefault();toggleSuscripcion('crear', '{{ video.id }}', '{{ url }}', '{{ app.user.id }}', ' {{ video.idCanal.id }}');">SUSCRIBIRSE</a>
                     {% endif %}
                 {% endif %}
+                {% elseif canal is defined %}
+                    {% if app.user == canal %}
+                    <a href="" class="btn btn-info">Personalizar canal</a>
+                    {% else %}
+                        {% if app.user.id in idSuscritosAlCanal %}
+                            {% set token = csrf_token('delete') %}
+                            {% set url = path('suscripcion_delete') %}
+                            <a href="{{ path('suscripcion_delete') }}" class="btn btn-danger" id="linkDeleteSuscripcion" 
+                            onclick="event.preventDefault();toggleSuscripcion('borrar', null , '{{ url }}', '{{ app.user.id }}', ' {{ canal.id }}', '{{ token }}');">SUSCRITO</a>
+                            {% else %}
+                                {% set url = path('suscripcion_new') %}
+                                <a href="{{ path('suscripcion_new') }}" class="btn btn-danger" id="linkNewSuscripcion" 
+                                onclick="event.preventDefault();toggleSuscripcion('crear', null, '{{ url }}', '{{ app.user.id }}', ' {{ canal.id }}');">SUSCRIBIRSE</a>
+                        {% endif %}
+                    {% endif %}
+            {% endif %}
+            
+            {% else %}
+                {% set token = csrf_token(video.id) %}
+                 {# app.request.pathinfo #}
+                {#<a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'})   })}}" class="btn btn-info" 
+                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte</a>#}
+                <a href="{{ path('prueba') }}" class="btn btn-info" 
+                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte o comentar</a>
+                {{ app.request.uri|replace({'/': '-'}) }}
         {% endif %}
         
-        {% else %}
-            {% set token = csrf_token(video.id) %}
-             {# app.request.pathinfo #}
-            {#<a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'})   })}}" class="btn btn-info" 
-            onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte</a>#}
-            <a href="{{ path('prueba') }}" class="btn btn-info" 
-            onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte o comentar</a>
-            {{ app.request.uri|replace({'/': '-'}) }}
-    {% endif %}
+    </div>
     
 </div>
+

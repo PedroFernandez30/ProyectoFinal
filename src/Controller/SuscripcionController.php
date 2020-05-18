@@ -112,7 +112,7 @@ class SuscripcionController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="suscripcion_delete", methods={"DELETE"})
+     * @Route("/deleteSuscripcion", name="suscripcion_delete", methods={"DELETE"})
      */
     public function delete(VideoRepository $videoRepository, CanalRepository $canalRepository, SuscripcionRepository $suscripcionRepository, Request $request): Response
     {

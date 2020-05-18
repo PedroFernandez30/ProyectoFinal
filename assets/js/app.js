@@ -34,6 +34,8 @@ $(document).ready(function(){
   window.cambiarTabActiva = cambiarTabActiva;
   window.mostrarVideos = mostrarVideos;
   window.toggleSuscripcion = toggleSuscripcion;
+  window.borrarComentario = borrarComentario;
+  //window.borrarMensajeFlash = borrarMensajeFlash;
 
     $('.dropdown-toggle').dropdown();
   
@@ -107,15 +109,23 @@ $(document).ready(function(){
             var numSuscripciones = document.getElementById("numSuscriptores");
             numSuscripciones.textContent = data.numeroSuscriptores + " suscriptor(es)";
 
-            var suscripcionFlash = $("#suscripcionFlash");
-            if(suscripcionFlash.innerHTML != '') {
-              console.log(suscripcionFlash);
-              suscripcionFlash.delay(5000).slideUp(300);
-            }
+            borrarMensajeFlash("suscripcionFlash");
+
+            
 
         }
     });
     return false;
+  }
+
+  function borrarMensajeFlash(id) {
+    console.log("borrarSuscripcionFlash");
+    var suscripcionFlash = $("#"+id);
+      if(suscripcionFlash.innerHTML != '') {
+        console.log(suscripcionFlash);
+        console.log("suscripcionFlashDesaparece");
+        suscripcionFlash.delay(5000).hide(300);
+      }
   }
     
   //USAR ONKEYUP
@@ -157,6 +167,42 @@ $(document).ready(function(){
 
   }
 
+  //Borrar un comentario mediante AJAX
+
+  function borrarComentario(url, idComentario, idVideo, idCanal, token) {
+    console.log(token);
+    var that = $(this);
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                dataType: "json",
+                data: {
+                    "idComentario": idComentario,
+                    "idVideo": idVideo,
+                    "idCanal": idCanal,
+                    "_token": token
+                },
+                async: true,
+                success: function (data)
+                {
+                    console.log(data)
+                    var divComentarios = document.getElementById("divComentarios");
+                    var divComunidadOVideos = document.getElementById("comunidadOVideos");
+                    if(divComentarios != null) {
+                      divComentarios.innerHTML = '';
+                      divComentarios.innerHTML = data;
+                    }else if (divComunidadOVideos != null) {
+                      divComunidadOVideos.innerHTML = '';
+                      divComunidadOVideos.innerHTML = data;
+                    }
+
+                    borrarMensajeFlash("comentarioFlash");
+                }
+            });
+            return false;
+  }
+
+
 
   //Crear un comentario mediante ajax
   function escribirOMostrarComentario(url, videoComentado = null, canalComentado = null, crearOMostrar, nivel){
@@ -183,56 +229,21 @@ $(document).ready(function(){
         {
             console.log(data);
             if(crearOMostrar == 'crear') {
-              var numComentarios = document.getElementById("numComentarios");
-              var comentarios = document.getElementById("comentarios");
-              var soloComentarios = document.getElementById("soloComentarios");
-              var textAreaComentarios = document.getElementById("comentario");
-              var buttonComentar = document.getElementById("botonComentar");
-              textAreaComentarios.value = '';
-              soloComentarios.innerHTML = '';
-              buttonComentar.disabled = true;
-              
-              /*<div  class="col-8" id='{{ comentario.id }}'>
-                      <span class="text-white"> {{ comentario.canalQueComenta.nombreCanal }}</span>
-                      <span> {{ comentario. fechaComentario | date('d/m/y') }} </span>
-                      <p>{{ comentario.contenido }}</p>
-                  </div>*/
-
-                  if(data.length > 0) {
-                    numComentarios.textContent = data.length + " comentario(s)";
-                  } else {
-                    numComentarios.textContent = "Sé el primero en comentar";
+                  var divComentarios = document.getElementById("divComentarios");
+                  var divComunidadOVideos = document.getElementById("comunidadOVideos");
+                  if(divComentarios != null) {
+                    divComentarios.innerHTML = '';
+                    divComentarios.innerHTML = data;
+                  }else if (divComunidadOVideos != null) {
+                    divComunidadOVideos.innerHTML = '';
+                    divComunidadOVideos.innerHTML = data;
                   }
 
-                data.reverse().forEach(comentario => {
-                  console.log(comentario);
-                  console.log(comentario.canalQueComenta.nombre);
-                  console.log(comentario.fechaPublicacion);
-                  console.log(comentario.contenido);
-                  var divComentario = document.createElement("div");
-                  divComentario.classList.add('col-8');
-                  divComentario.id = comentario.id;
+                  borrarMensajeFlash("comentarioFlash");
                   
 
-                  var spanNombreCanal = document.createElement("span");
-                  spanNombreCanal.classList.add('text-white');
-                  spanNombreCanal.textContent = comentario.canalQueComenta.nombre;
-                  divComentario.appendChild(spanNombreCanal);
-                  console.log(spanNombreCanal);
-
-                  var spanFechaComentario = document.createElement("span");
-                  spanFechaComentario.textContent =  " "+comentario.fechaPublicacion;
-                  divComentario.appendChild(spanFechaComentario);
-                  console.log(spanFechaComentario);
-
-                  var p = document.createElement("p");
-                  p.textContent = comentario.contenido;
-                  divComentario.appendChild(p);
-                  console.log(divComentario)
-                  soloComentarios.appendChild(divComentario);
-                });
+                
                 console.log(soloComentarios);
-                comentarios.appendChild(soloComentarios);
             } else {
               console.log("ELSE");
               console.log(data);

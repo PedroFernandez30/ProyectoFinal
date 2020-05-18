@@ -8,6 +8,7 @@ use App\Entity\Canal;
 use App\Form\ComentarioType;
 use App\Repository\ComentarioRepository;
 use App\Repository\CanalRepository;
+use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,10 +92,17 @@ class ComentarioController extends AbstractController
                 $comentario->setIdVideo($videoEntity);
                 $entityManager->persist($comentario);
                 $entityManager->flush();
+                $this->addFlash('success', 'Tu comentario se ha creado correctamente');
 
-                $comentariosEnVideo = $comentarioRepository->findBy(['idVideo' => $videoEntity]);
+                /*$comentariosEnVideo = $comentarioRepository->findBy(['idVideo' => $videoEntity]);
                 $universalController = new UniversalController();
-                $comentariosArray = $universalController->crearArray($comentariosEnVideo);
+                $comentariosArray = $universalController->crearArray($comentariosEnVideo);*/
+
+                return new JsonResponse($this->render('comentario/viewComments.html.twig', [
+                    //'comentarios' => $comentariosArray,
+                    'nivel' => 'video',
+                    'video' => $videoEntity
+                ])->getContent());
                 
                 
             }else if($canalComentado != null) {
@@ -104,35 +112,24 @@ class ComentarioController extends AbstractController
                 $comentario->setCanalComentado($canalEntity);
                 $entityManager->persist($comentario);
                 $entityManager->flush();
+                $this->addFlash('success', 'Tu comentario se ha creado correctamente');
 
-                $comentariosEnCanal = $comentarioRepository->findBy(['canalComentado' => $canalEntity]);
+                /*$comentariosEnCanal = $comentarioRepository->findBy(['canalComentado' => $canalEntity]);
                 $universalController = new UniversalController();
-                $comentariosArray = $universalController->crearArray($comentariosEnCanal);
+                $comentariosArray = $universalController->crearArray($comentariosEnCanal);*/
 
+                return new JsonResponse($this->render('comentario/viewComments.html.twig', [
+                    //'comentarios' => $comentariosArray,
+                    'nivel' => 'canal',
+                    'canal' => $canalEntity
+                ])->getContent());
                 
 
             }
 
-            $arrData = $comentariosArray;
-            return new JsonResponse($arrData);
+            
         }
         
-        /*$form = $this->createForm(ComentarioType::class, $comentario);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $comentario->setCanalQueComenta($canalActivo);
-            $entityManager->persist($comentario);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('comentario_index');
-        }
-
-        return $this->render('comentario/new.html.twig', [
-            'comentario' => $comentario,
-            'form' => $form->createView(),
-        ]);*/
     }
 
     /**
@@ -166,14 +163,38 @@ class ComentarioController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="comentario_delete", methods={"DELETE"})
+     * @Route("/deleteComment", name="comentario_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Comentario $comentario): Response
+    public function delete(Request $request, CanalRepository $canalRepository, VideoRepository $videoRepository, ComentarioRepository $comentarioRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$comentario->getId(), $request->request->get('_token'))) {
+        $data = $request->request->all();
+        $token = $data['_token'];
+        $idVideo = \json_decode($data['idVideo']);
+        $idCanal = \json_decode($data['idCanal']);
+        $idComentario = \json_decode($data['idComentario']);
+        //if ($this->isCsrfTokenValid('delete'.$comentario->getId(), $request->request->get('_token'))) {
+        if ($token != null && $this->isCsrfTokenValid('delete'.$idComentario, $token)) {
+            $comentarioABorrar = $comentarioRepository->findOneBy(['id' => $idComentario]);
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($comentario);
+            $entityManager->remove($comentarioABorrar);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Tu comentario se ha borrado correctamente');
+            if($idVideo != null) {
+                $videoEntity = $videoRepository->findOneBy(['id' => $idVideo]);
+                return new JsonResponse($this->render('comentario/viewComments.html.twig', [
+                    //'comentarios' => $comentariosArray,
+                    'nivel' => 'video',
+                    'video' => $videoEntity
+                ])->getContent());
+            } elseif($idCanal != null) {
+                $canalEntity = $canalRepository->findOneBy(['id' => $idCanal]);
+                return new JsonResponse($this->render('comentario/viewComments.html.twig', [
+                    //'comentarios' => $comentariosArray,
+                    'nivel' => 'canal',
+                    'canal' => $canalEntity
+                ])->getContent());
+            }
         }
 
         return $this->redirectToRoute('comentario_index');

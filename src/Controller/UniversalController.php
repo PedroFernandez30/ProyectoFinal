@@ -97,7 +97,7 @@ class UniversalController extends AbstractController
 
     //Devuelve un array con los datos necesarios para la respuesta AJAX de los comentarios de un vídeo o de un canal
 
-    public function crearArray($comentarios) {
+   /* public function crearArray($comentarios) {
         $comentariosArray = [];
         //Creo el canal que comenta
         
@@ -107,7 +107,7 @@ class UniversalController extends AbstractController
             
             $canalQueComenta = (object) [
                 'id' => $comentario->getCanalQueComenta()->getId(),
-                'nombre' => $comentario->getCanalQueComenta()->getNombreCanal()
+                'nombreCanal' => $comentario->getCanalQueComenta()->getNombreCanal()
             ];
 
 
@@ -115,11 +115,11 @@ class UniversalController extends AbstractController
             $comentarioObject = (object) [
                 'id' => $comentario->getId(),
                 'contenido' => $comentario->getContenido(),
-                'fechaPublicacion' => $comentario->getFechaComentario()->format('d/m/Y'),
+                'fechaComentario' => $comentario->getFechaComentario(),
                 'canalQueComenta' => $canalQueComenta
             ];
             $comentariosArray[] = $comentarioObject;
         }
         return $comentariosArray;
-    }
+    }*/
 }
