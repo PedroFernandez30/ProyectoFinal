@@ -26,7 +26,8 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
-                'translation_domain' => 'form'
+                'translation_domain' => 'form',
+                
             ])
             ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos'

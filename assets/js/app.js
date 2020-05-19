@@ -297,6 +297,32 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
   }
 }
 
+$('#editFormCanal').submit(function(e) {
+console.log("ESTOY EN EDIT FORM CANAL");
+  e.preventDefault();
+  //var url = "{{ path('YOUR_PATH') }}";
+  var formSerialize = $(this).serialize();
+  console.log($(this));
+  console.log($(this).data());
+  
+  console.log(JSON.stringify(formSerialize));
+ 
+  $.ajax({
+    url: "http://localhost:8000/canal/6/edit",
+    type: "POST",
+    dataType: "text",
+    data: formSerialize,
+    async: true,
+    success: function (data)
+    {
+        console.log("SUCCESS");
+        console.log(data);
+
+    }
+});
+return false;
+});
+
 
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

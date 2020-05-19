@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Edit Canal</h1>
-    {{ url }}
+    {#{{ url }}
     {{ urlPath }}
      <pre>
         {{ dump(targetPath) }}
@@ -14,9 +14,10 @@
      </pre>
     <pre>
         {{ dump(session) }}
-    </pre>
+    </pre>#}
+    {{ include('canal/editCabecera.html.twig', {'canalId': canal.id}) }}
 
-    {#{{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}#}
+    {{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('canal_index') }}">back to list</a>
 

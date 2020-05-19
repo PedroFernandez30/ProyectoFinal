@@ -6,10 +6,12 @@ use App\Entity\Canal;
 use App\Entity\Video;
 use App\Form\CanalType;
 use App\Form\VideoType;
+use App\Form\CabeceraType;
 use App\Repository\CanalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -74,8 +76,21 @@ class CanalController extends AbstractController
      */
     public function edit(Request $request, Canal $canal): Response
     {
+        //$canal = new
         $form = $this->createForm(CanalType::class, $canal);
         $form->handleRequest($request);
+
+        if($request->isXmlHttpRequest()) {
+            
+            
+            
+            $this->getDoctrine()->getManager()->flush();
+           
+            //return new JsonResponse($object);
+            
+
+        }
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
@@ -83,15 +98,41 @@ class CanalController extends AbstractController
             return $this->redirectToRoute('canal_index');
         }
 
+        
+
+        $formCabecera = $this->createForm(CabeceraType::class);
+        $formCabecera->handleRequest($request);
+
+        if ($formCabecera->isSubmitted() && $formCabecera->isValid()) {
+            //$this->getDoctrine()->getManager()->flush();
+            $dataCabecera = $formCabecera->getData();
+
+            return $this->redirectToRoute('canal_index', [
+                'dataCabecera' => $dataCabecera
+            ]);
+        }
+
         return $this->render('canal/edit.html.twig', [
             'canal' => $canal,
             'form' => $form->createView(),
+            'formCabecera' => $formCabecera->createView(),
             'url' => $request->getUri(),
             'urlPath' => $request->getPathInfo(),
             'session' => $request->getSession(),
             'targetPath' => $request->getBasePath(),
             'request' => $request
         ]);
+    }
+
+    public function convertToObject($array) {
+        $object = new \stdClass();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = convertToObject($value);
+            }
+            $object->$key = $value;
+        }
+        return $object;
     }
 
     /**

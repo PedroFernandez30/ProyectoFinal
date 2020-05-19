@@ -4,21 +4,92 @@ namespace App\Form;
 
 use App\Entity\Canal;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Validator\Constraints\File;
 
 class CanalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('roles')
-            ->add('password')
-            ->add('nombre')
-            ->add('apellidos')
-            ->add('sexo')
-            ->add('fnac')
+            ->add('nombre', TextType::class, [
+                'label' => 'Nombre',
+                'translation_domain' => 'form',
+                
+            ])
+            ->add('apellidos', TextType::class, [
+                'label' => 'Apellidos'
+            ])
+            ->add('email', EmailType::class,[
+                'label' => 'Correo electrónico',
+            ])
+            ->add('nombreCanal', TextType::class, [
+                'label' => 'Nombre del canal'
+            ])
+            /*->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'You should agree to our terms.',
+                    ]),
+                ],
+            ])*/
+            ->add('plainPassword', PasswordType::class, [
+                // instead of being set onto the object directly,
+                // this is read and encoded in the controller
+                'label' => 'Contraseña',
+                'required' => false,
+                'empty_data' => '------',
+                'mapped' => false,
+                'constraints' => [
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ],
+            ])->add('sexo', ChoiceType::class, [
+                'choices'  => [
+                    'Hombre' => 'H',
+                    'Mujer' => 'M',
+                    'Otro' => 'O',
+                ],
+                'label' => 'Sexo',
+                'expanded' => true
+
+            ])
+            ->add('fnac', DateType::class, [
+                'label' => 'Fecha de nacimiento',
+                'format' => 'dd-MM-yyyy',
+                'years' => range(date('Y'),date('Y')-120),
+
+            ])->add('fotoPerfil', FileType::class,[
+                'required' => false,
+                'mapped' => false,
+                'label' => 'Foto de perfil (la puedes elegir ahora o en cualquier momento)',
+                'empty_data' => 'imgPerfil/profile.jpg',
+                'constraints' => [
+                    new File([
+                         'maxSize' => '1024k',
+                         'mimeTypes' => [
+                             'image/*'
+                         ],
+                     ])
+                 ]
+            ])
         ;
     }
 
@@ -26,6 +97,7 @@ class CanalType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Canal::class,
+            'attr' => ['id' => 'editFormCanal']
         ]);
     }
 }
