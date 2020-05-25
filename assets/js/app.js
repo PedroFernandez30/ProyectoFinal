@@ -27,7 +27,9 @@ require('bootstrap');
 
 $(document).ready(function(){
 
-  
+  permitirEditarCanal();
+
+  window.detectarDivVideos = detectarDivVideos;
   window.irAConfigPorPost = irAConfigPorPost;
   window.escribirOMostrarComentario = escribirOMostrarComentario;
   window.activarBotonComentar = activarBotonComentar;
@@ -35,10 +37,11 @@ $(document).ready(function(){
   window.mostrarVideos = mostrarVideos;
   window.toggleSuscripcion = toggleSuscripcion;
   window.borrarComentario = borrarComentario;
-  //window.borrarMensajeFlash = borrarMensajeFlash;
+  window.borrarMensajeFlash = borrarMensajeFlash;
 
     $('.dropdown-toggle').dropdown();
   
+    
     function irAConfigPorPost(event, rutaBoton = '') {
       //Creo un formulario con los datos del enlace
       console.log(event);
@@ -75,6 +78,12 @@ $(document).ready(function(){
 
   //suscribirse o borrar la suscripción mediante AJAX
   function toggleSuscripcion(modo, idVideo, url, canalSuscritoId, canalAlQueSuscribeId, token = null ) {
+    var link = event.target;
+    link.onclick = function() {
+      return false;
+    }
+    link.classList.add('disabled');
+    console.log(link);
     console.log(token);
     var that = $(this);
     if(modo == 'borrar') {
@@ -170,7 +179,9 @@ $(document).ready(function(){
   //Borrar un comentario mediante AJAX
 
   function borrarComentario(url, idComentario, idVideo, idCanal, token) {
-    console.log(token);
+    var button = event.target;
+    button.setAttribute('disabled', 'disabled');
+    //console.log(token);
     var that = $(this);
             $.ajax({
                 url: url,
@@ -185,7 +196,7 @@ $(document).ready(function(){
                 async: true,
                 success: function (data)
                 {
-                    console.log(data)
+                    //console.log(data)
                     var divComentarios = document.getElementById("divComentarios");
                     var divComunidadOVideos = document.getElementById("comunidadOVideos");
                     if(divComentarios != null) {
@@ -206,8 +217,10 @@ $(document).ready(function(){
 
   //Crear un comentario mediante ajax
   function escribirOMostrarComentario(url, videoComentado = null, canalComentado = null, crearOMostrar, nivel){
-    console.log("EESTOY EN ESCRIBIR O MOSTRAR COMENTARIO");
-    console.log(url +","+ videoComentado+","+ canalComentado+","+ crearOMostrar +","+nivel);
+    var button = event.target;
+    button.setAttribute('disabled', 'disabled');
+    //console.log("EESTOY EN ESCRIBIR O MOSTRAR COMENTARIO");
+    //console.log(url +","+ videoComentado+","+ canalComentado+","+ crearOMostrar +","+nivel);
     var that = $(this);
     var contenido = $("#comentario").prop('value');
     console.log(contenido);
@@ -227,7 +240,7 @@ $(document).ready(function(){
         async: true,
         success: function (data)
         {
-            console.log(data);
+            //console.log(data);
             if(crearOMostrar == 'crear') {
                   var divComentarios = document.getElementById("divComentarios");
                   var divComunidadOVideos = document.getElementById("comunidadOVideos");
@@ -297,18 +310,50 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
   }
 }
 
+//impedir que se manden los datos de edición de un canal si no se han modificado
+function permitirEditarCanal() {
+  var form = $('#editFormCanal');
+  var form2 = document.getElementById("editFormCanal");
+  
+  console.log(form);
+  console.log(form2);
+  console.log("Entro en permitir editar canal");
+  if(form.length) {
+    var submit = document.getElementById("submitEditarCanal");
+    submit.setAttribute('disabled','disabled');
+    var origForm = form.serialize();
+
+    $('#editFormCanal :input').on('change input', function() {
+        if(form.serialize() !== origForm) {
+          //var submit = form.querySelector('button[type="submit"]');
+          console.log(submit);
+          submit.removeAttribute('disabled');
+        } else {
+          submit.setAttribute('disabled','disabled');
+        }
+    });
+  }
+  
+}
+
 $('#editFormCanal').submit(function(e) {
 console.log("ESTOY EN EDIT FORM CANAL");
   e.preventDefault();
-  //var url = "{{ path('YOUR_PATH') }}";
+
+  var submit = document.getElementById("submitEditarCanal");
+  submit.setAttribute('disabled','disabled');
+
+  var url = e.target.action;
+  
   var formSerialize = $(this).serialize();
+
   console.log($(this));
   console.log($(this).data());
   
   console.log(JSON.stringify(formSerialize));
  
   $.ajax({
-    url: "http://localhost:8000/canal/6/edit",
+    url: url,
     type: "POST",
     dataType: "text",
     data: formSerialize,
@@ -316,12 +361,49 @@ console.log("ESTOY EN EDIT FORM CANAL");
     success: function (data)
     {
         console.log("SUCCESS");
-        console.log(data);
+        //console.log(data);
+        var dataObject = JSON.parse(data);
+        console.log(dataObject.contenido);
+        if(dataObject.code == 'success') {
+          console.log("borro el flash");
+         
+          
+          var divExitoEdicion = document.getElementById("exitoEdicion");
+          divExitoEdicion.classList.remove("d-none");
+          divExitoEdicion.classList.add("d-block");
+          divExitoEdicion.textContent = dataObject.mensaje;
 
+          permitirEditarCanal();
+
+          setTimeout(function() {
+            divExitoEdicion.classList.add("d-none");
+            divExitoEdicion.classList.remove("d-block");
+          },5000);
+          
+
+          
+        }
     }
 });
 return false;
 });
+
+
+function detectarDivVideos(ruta, canalId) {
+  console.log(ruta);
+  console.log(canalId);
+  var divComVideos = $("#comunidadOVideos");
+  var divVideoIndex = $("#videosIndex");
+  if (divComVideos.length) {
+    $(window).scroll(function() {
+      console.log("DetectarDivComVideo");
+    });
+  } else if (divVideoIndex.length) {
+    $(window).scroll(function() {
+      console.log("DetectarDivVideoIndex");
+    });
+  }
+}
 
 
 

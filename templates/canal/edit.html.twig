@@ -2,24 +2,36 @@
 
 {% block title %}Edit Canal{% endblock %}
 
+
 {% block body %}
-    <h1>Edit Canal</h1>
-    {#{{ url }}
-    {{ urlPath }}
-     <pre>
-        {{ dump(targetPath) }}
-     </pre>
-     <pre>
-         {{ dump(request) }}
-     </pre>
-    <pre>
-        {{ dump(session) }}
-    </pre>#}
-    {{ include('canal/editCabecera.html.twig', {'canalId': canal.id}) }}
+    {% if app.user != canal %}
+    <h1>No puedes acceder a esta página</h1>
+        <a href="{{ path('prueba') }}">Volver a prueba</a>
+        {% else %}
+            <h1>Edit Canal</h1>
+            {#{{ url }}
+            {{ urlPath }}
+            <pre>
+                {{ dump(targetPath) }}
+            </pre>
+            <pre>
+                {{ dump(request) }}
+            </pre>
+            <pre>
+                {{ dump(session) }}
+            </pre>#}
+            {{ include('canal/editCabecera.html.twig', {'canalId': canal.id}) }}
+        
+            
+            
+            <div id="editForm" class="row">
+                {{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        
+            <a href="{{ path('canal_index') }}">back to list</a>
+        
+            {{ include('canal/_delete_form.html.twig') }}
+    {% endif %}
 
-    {{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('canal_index') }}">back to list</a>
-
-    {{ include('canal/_delete_form.html.twig') }}
+    
 {% endblock %}

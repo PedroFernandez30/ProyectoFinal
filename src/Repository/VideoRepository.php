@@ -46,5 +46,19 @@ class VideoRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+     */
+
+    public function findVideoByCategoria($categoria, $idVideo)
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.idCategoria = :categoria')
+            ->andWhere('v.id != :idVideo')
+            ->setParameter('categoria', $categoria)
+            ->setParameter('idVideo', $idVideo)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+   
 }

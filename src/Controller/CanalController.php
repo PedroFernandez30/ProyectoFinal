@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 /**
  * @Route("/canal")
@@ -65,7 +67,8 @@ class CanalController extends AbstractController
         return $this->render('canal/show.html.twig', [
             'canal' => $canal,
             'comentario' => 'canal',
-            'idSuscritosAlCanal' => $idSuscritosAlCanal
+            'idSuscritosAlCanal' => $idSuscritosAlCanal,
+            'extiende' => false
             //'video' => $video,
             //'form' => $form->createView()
         ]);
@@ -74,7 +77,7 @@ class CanalController extends AbstractController
     /**
      * @Route("/{id}/edit", name="canal_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Canal $canal): Response
+    public function edit(Request $request, Canal $canal, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         //$canal = new
         $form = $this->createForm(CanalType::class, $canal);
@@ -82,12 +85,27 @@ class CanalController extends AbstractController
 
         if($request->isXmlHttpRequest()) {
             
+            $password = $form->get('plainPassword')->getData();
+            if($password != '------') {
+                $canal->setPassword($passwordEncoded = $passwordEncoder->encodePassword(
+                    $canal,
+                    $password
+                ));
+    
+            }
             
-            
+            $this->getDoctrine()->getManager()->persist($canal);
+
             $this->getDoctrine()->getManager()->flush();
-           
-            //return new JsonResponse($object);
-            
+
+            $mensaje = 'Datos actualizados con éxito';
+
+            //$form->handleRequest($request);
+            return new JsonResponse([
+                'code' => 'success',
+                'mensaje' => $mensaje
+            ]);
+
 
         }
         

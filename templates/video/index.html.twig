@@ -1,33 +1,53 @@
+
+{% extends extiende == 'true' ? "base.html.twig" : "blank.html.twig" %}
+
 {% block body %}
-<div class="container-fluid m-1">
+{% set listaVideosRuta = path('video_list') %}
+{% if canal is not defined %}
+    {% set canall = null %}
+    {% else %}
+        {% set canall = canal.id %}
+{% endif %}
+<div class="container-fluid m-1" id="videosIndex" onload = "detectarDivVideos('{{ listaVideosRuta }}', '{{ canall }}');alert('Hola');">
     
-    {% if videos is defined  %}
+    {% if videos is defined %}
+    
     <pre>
     </pre>
         <div class="row">
             <!-- -->
                 {% for video in videos %}
-                    <div class="col-10 col-sm-10 col-md-5 col-xl-3 col-lg-4 p-4 m-lg-0 m-md-auto m-auto m-sm-auto">
-                        <a>
-                            <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
-                        </a>
-                        <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
-                            <h3>{{ video.titulo }}</h3>
-                        </a>
-                        {% if index is defined %}
-                            <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="text-white">
-                                <h3 >{{ video.idCanal.nombreCanal }}</h3>
+                    {% if recomendados is defined %}
+                        <div class="col-12 m-auto m-sm-auto mb-4 ">
+                            <a>
+                                <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
                             </a>
-                            {% else %}
-                                <span>{{ video.fechaPublicacion }}</span>
-                        {% endif %}
-                    </div>
+                            <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
+                                <h3>{{ video.titulo }}</h3>
+                            </a>
+                        </div>
+                        {% else %}
+                            <div class="col-10 col-sm-10 col-md-5 col-xl-3 col-lg-4 p-4 m-lg-0 m-md-auto m-auto m-sm-auto">
+                                <a>
+                                    <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
+                                </a>
+                                <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
+                                    <h3>{{ video.titulo }}</h3>
+                                </a>
+                                {% if index is defined %}
+                                    <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="h4">
+                                        <span>{{ video.idCanal.nombreCanal }}</span>
+                                    </a>
+                                    {% else %}
+                                        <span>{{ video.fechaPublicacion }}</span>
+                                {% endif %}
+                            </div>
+                    {% endif %}
+                    
                 {% endfor %}
      </div>
     {% endif %}
-    
-            
-       
+           
 </div>
     
 

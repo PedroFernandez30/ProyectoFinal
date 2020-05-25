@@ -24,9 +24,13 @@ class SecurityController extends AbstractController
         //$previo = $request->request->get('previo');
         //$previo = $_REQUEST['previo'];
         if($previo != '') {
-            throw Exception;
+            //throw Exception;
             $previous = str_replace('-','/', $previo);
-            return $this->render('security/login.html.twig', [/*'last_username' => $lastUsername, 'error' => $error,*/ 'noError' => true,'previo' => $previous]);
+            // get the login error if there is one
+            $error = $authenticationUtils->getLastAuthenticationError();
+            // last username entered by the user
+            $lastUsername = $authenticationUtils->getLastUsername();
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error,/*  'noError' => true,'previo' => $previous*/]);
         } else {
             // get the login error if there is one
             $error = $authenticationUtils->getLastAuthenticationError();

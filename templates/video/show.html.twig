@@ -6,43 +6,55 @@
     
     
     <div class="row m-4">
-        <div class="col-8 col-lg-8 col-xl-8 col-md-12 col-sm-12 h-25 border border-white">
+        <div class="col-8 col-lg-8 col-xl-8 col-md-12 col-sm-12 h-25">
             <video width="100%" controls>
                 <source src="{{asset('uploads/'~ video.idCanal.id ~ '/videos/' ~ video.id)}}">
                 
               Your browser does not support the video tag.
               </video>
+              <div class="row">
+                <div class="col-7">
+                    <h1>{{ video.titulo }}</h1>
+                    <h2>{{ video.duracion }}</h2>
+                    <span> Fecha de publicación: {{ video.fechaPublicacion }}</span>
+                    <div class="row">
+                        <div class="col-3">
+                            <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="text-white">
+                                <h2 class="nombreCanal">{{ video.idCanal.nombreCanal }}</h2>
+                            </a>
+                        </div>
+                        
+                        <div class="container-fluid" id="toggleSuscripcion">
+                            {% include "suscripcion/toggleSuscripcion.html.twig" with {'video' : video} %}
+                        </div>
+                       
+            
+                        
+                    </div>
+                    
+                   
+                    <span id="numSuscriptores">{{ video.idCanal.suscritosAMi | length }} suscriptor(es)</span>
+                    <p>{{ video.descripcion }}</p>
+            
+                    <div id="divComentarios">
+                        {% include "comentario/viewComments.html.twig" with {'nivel' : 'video'} %}
+                    </div>
+                    
+                </div>    
+                
+            </div>
+              
         </div>
+
+        <div class="col-4">
+            {% include "video/index.html.twig" with {'videos': videosCategoria, 'extiende': false, 'recomendados': true} %}
+        </div>
+
+        
         
     </div>
-    <div class="m-4">
-        <h1>{{ video.titulo }}</h1>
-        <h2>{{ video.duracion }}</h2>
-        <span> Fecha de publicación: {{ video.fechaPublicacion }}</span>
-        <div class="row">
-            <div class="col-3">
-                <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="text-white">
-                    <h2 class="nombreCanal">{{ video.idCanal.nombreCanal }}</h2>
-                </a>
-            </div>
-            
-            <div class="container-fluid" id="toggleSuscripcion">
-                {% include "suscripcion/toggleSuscripcion.html.twig" with {'video' : video} %}
-            </div>
-           
-
-            
-        </div>
-        
-       
-        <span id="numSuscriptores">{{ video.idCanal.suscritosAMi | length }} suscriptor(es)</span>
-        <p>{{ video.descripcion }}</p>
-
-        <div id="divComentarios">
-            {% include "comentario/viewComments.html.twig" with {'nivel' : 'video'} %}
-        </div>
-        
-    </div>
+    
+    
 
     {#<a href="{{ path('video_index') }}">back to list</a>
 

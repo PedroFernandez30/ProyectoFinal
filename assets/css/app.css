@@ -14,9 +14,7 @@ body {
 .dropdown-toggle::after { 
     content: none !important; 
 } 
-span {
-    color: #aaaaaa;
-}
+
 
 .nombreCanal {
     font-size: larger;
@@ -40,6 +38,18 @@ textarea {
 
 .imgCabecera {
     width: 60px;
+}
+
+.dropdown-item {
+    color: #ffffff !important;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #000000 !important;
+}
+
+span, .gris {
+    color: #aaaaaa !important;
 }
 
 /* Extra small devices (portrait phones, less than 576px)

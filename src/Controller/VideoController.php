@@ -21,12 +21,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class VideoController extends AbstractController
 {
     /**
-     * @Route("/", name="video_index", methods={"GET"})
+     * @Route({"es": "/inicio/","en": "/index"}, name="video_index", methods={"GET"})
      */
     public function index(VideoRepository $videoRepository): Response
     {
         return $this->render('video/index.html.twig', [
-            'videos' => $videoRepository->findAll(),
+            'videos' => $videoRepository->findBy([],null, 8, 0),
+            'extiende' => 'true',
+            'index' => true
         ]);
     }
 
@@ -43,6 +45,13 @@ class VideoController extends AbstractController
                 $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalEntity]);
                 return new JsonResponse($this->render('video/index.html.twig', [
                     'videos' => $videosFromCanal,
+                    'extiende' => false
+                ])->getContent());
+            } else {
+                $start = \json_decode($data['start']) *4;
+                $videosList = $videoRepository->findBy([], null, 4, $start);
+                return new JsonResponse($this->render('video/index.html.twig', [
+                    'videos' => $videosList,
                 ])->getContent());
             }
         }
@@ -87,7 +96,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/{id}", name="video_show", methods={"GET"})
      */
-    public function show(Video $video): Response
+    public function show(VideoRepository $videoRepository, Video $video): Response
     {
         $suscritosAlCanal = $video->getIdCanal()->getSuscritosAMi();
         $idSuscritosAlCanal = [];
@@ -95,10 +104,14 @@ class VideoController extends AbstractController
             $idSuscritosAlCanal[] = $suscritoAlCanal->getCanalQueSuscribe()->getId();
         }
 
+        //$videosCategoria = $videoRepository->findBy(['idCategoria' => $video->getIdCategoria()]);
+        $videosCategoria = $videoRepository->findVideoByCategoria($video->getIdCategoria(), $video->getId());
+
         return $this->render('video/show.html.twig', [
             'video' => $video,
             'idSuscritosAlCanal' => $idSuscritosAlCanal,
-            'comentario' => 'video'
+            'comentario' => 'video',
+            'videosCategoria' => $videosCategoria
         ]);
     }
 

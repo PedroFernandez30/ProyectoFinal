@@ -6,9 +6,22 @@
     <div class="container-fluid p-4 bg-dark">
         <h1>{{ canal.nombreCanal }}</h1>
         <span id="numSuscriptores">{{ canal.suscritosAMi | length }} suscriptores</span>
-        <div class="col-12 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2" id="toggleSuscripcion">
-            {% include "suscripcion/toggleSuscripcion.html.twig" %}
+        <div class="row">
+            <div class="col-12 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2" id="toggleSuscripcion">
+                {% include "suscripcion/toggleSuscripcion.html.twig" %}
+            </div>
+    
+            <div class="col-12 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2">
+                {% if app.user.id == canal.id %}
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
+                        Subir vídeo
+                     </button> 
+                {% endif %}
+            </div>
         </div>
+        
+
+        
         
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -23,12 +36,7 @@
     </div>
 
     {% if app.user %}
-            {% if esTuCuenta is defined %}
-                <button type="button" class="btn btn-primary">Personalizar canal</button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Subir vídeo
-                 </button> 
-            {% endif %}
+            
             <!-- Button trigger modal -->
                
 
@@ -57,7 +65,7 @@
         
 
         <div id="comunidadOVideos">
-            {% include "video/index.html.twig" with {'videos': canal.videos} %}
+            {% include "video/index.html.twig" with {'videos': canal.videos, 'extiende': 'false'} %}
         </div>
         
        

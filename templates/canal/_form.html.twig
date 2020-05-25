@@ -1,4 +1,8 @@
+<div id="editCanalFlash" class="col-4">
+        <div id="exitoEdicion" class="alert alert-success d-none">
+        </div>
+</div>
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-info">{{ button_label|default('Save') }}</button>
+    <button id="submitEditarCanal" disabled class="btn btn-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

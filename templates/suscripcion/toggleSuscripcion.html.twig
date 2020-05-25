@@ -41,12 +41,12 @@
             {% endif %}
             
             {% else %}
-                {% set token = csrf_token(video.id) %}
+                {#{% set token = csrf_token(video.id) %}#}
                  {# app.request.pathinfo #}
                 {#<a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'})   })}}" class="btn btn-info" 
                 onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte</a>#}
                 <a href="{{ path('prueba') }}" class="btn btn-info" 
-                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte o comentar</a>
+                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión</a>
                 {{ app.request.uri|replace({'/': '-'}) }}
         {% endif %}
         
