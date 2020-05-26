@@ -49,7 +49,9 @@ class PruebaController extends AbstractController
         //, requirements={"_locale"="en|fr|es"}
         // lógica para determinar el $locale
         $locale = $request->getLocale();
-        return $this->redirectToRoute($previo);
+        //return $this->redirectToRoute($previo);
+        return $this->redirectToRoute('video_index');
+        //return $this->generateUrl($previo);
         
         
     }

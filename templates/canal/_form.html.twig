@@ -3,6 +3,13 @@
         </div>
 </div>
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.nombre) }}
+    {{ form_row(form.apellidos) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.nombreCanal) }}
+    {{ form_row(form.fnac) }}
+    {{ form_row(form.sexo) }}
+    {{ form_row(form.plainPassword) }}
+    {{ form_row(form.fotoPerfil) }}
     <button id="submitEditarCanal" disabled class="btn btn-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

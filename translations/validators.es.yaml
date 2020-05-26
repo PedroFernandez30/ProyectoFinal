@@ -1,2 +1,3 @@
 EmailDuplicated: Ya existe una cuenta con el correo electrónico introducido
 ChannelNameDuplicated: Ya existe una cuenta con el nombre de canal introducido
+Invalid Password: La cobtraseña a introducir debe contener al menos 6 caracteres

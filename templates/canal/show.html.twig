@@ -12,7 +12,7 @@
             </div>
     
             <div class="col-12 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2">
-                {% if app.user.id == canal.id %}
+                {% if app.user and app.user.id == canal.id %}
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
                         Subir vídeo
                      </button> 

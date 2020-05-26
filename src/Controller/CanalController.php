@@ -75,7 +75,7 @@ class CanalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="canal_edit", methods={"GET","POST"})
+     * @Route({"es": "/{id}/editar","en": "/{id}/edit"}, name="canal_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Canal $canal, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -84,28 +84,47 @@ class CanalController extends AbstractController
         $form->handleRequest($request);
 
         if($request->isXmlHttpRequest()) {
-            
-            $password = $form->get('plainPassword')->getData();
-            if($password != '------') {
-                $canal->setPassword($passwordEncoded = $passwordEncoder->encodePassword(
-                    $canal,
-                    $password
-                ));
-    
+            if($form->isValid()) {
+                $password = $form->get('plainPassword')->getData();
+                if($password != '------') {
+                    $canal->setPassword($passwordEncoded = $passwordEncoder->encodePassword(
+                        $canal,
+                        $password
+                    ));
+        
+                }
+
+                $this->getDoctrine()->getManager()->persist($canal);
+
+                $this->getDoctrine()->getManager()->flush();
+
+                $mensaje = 'Datos actualizados con éxito';
+
+                //$form->handleRequest($request);
+                return new JsonResponse([
+                    'code' => 'success',
+                    'mensaje' => $mensaje
+                ]);
+
+            } else {
+                $errores = $form->getErrors(true,false);
+                $camposForm = $form->all();
+                //$mensaje = $form->getErrors(true, false)->__toString();
+                $mensaje = [];
+                foreach($camposForm as $key => $value ) {
+                    if($value->getErrors(true, false)->__toString() != ''){
+                        $mensaje[$key] = $value->getErrors(true, false)->__toString();
+
+                    }
+                }
+                return new JsonResponse([
+                    'code' => 'error',
+                    'mensaje' => $mensaje
+                ]);
             }
             
-            $this->getDoctrine()->getManager()->persist($canal);
-
-            $this->getDoctrine()->getManager()->flush();
-
-            $mensaje = 'Datos actualizados con éxito';
-
-            //$form->handleRequest($request);
-            return new JsonResponse([
-                'code' => 'success',
-                'mensaje' => $mensaje
-            ]);
-
+            
+            
 
         }
         

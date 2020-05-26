@@ -382,6 +382,20 @@ console.log("ESTOY EN EDIT FORM CANAL");
           
 
           
+        } else if(dataObject.code == 'error') {
+          console.log(data);
+          var divExitoEdicion = document.getElementById("exitoEdicion");
+          divExitoEdicion.classList.remove("d-none");
+          divExitoEdicion.classList.add("d-block");
+          divExitoEdicion.textContent = dataObject.mensaje;
+          console.log(dataObject.mensaje['plainPassword']);
+
+          /*permitirEditarCanal();*/
+
+          setTimeout(function() {
+            divExitoEdicion.classList.add("d-none");
+            divExitoEdicion.classList.remove("d-block");
+          },5000);
         }
     }
 });
