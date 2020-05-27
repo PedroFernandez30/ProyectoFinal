@@ -52,6 +52,10 @@ span, .gris {
     color: #aaaaaa !important;
 }
 
+.rojo, .rojo:hover {
+    background-color: #ff0000 !important;
+}
+
 /* Extra small devices (portrait phones, less than 576px)
  No media query for `xs` since this is the default in Bootstrap*/
 

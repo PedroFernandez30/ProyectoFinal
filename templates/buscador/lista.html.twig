@@ -1,0 +1,20 @@
+<div class="container">
+    {% if canales | length > 0 %}
+        <h1>Canales</h1>
+    {% endif %}
+    {% for canal in canales %}
+        <div class="row">
+            <h2> {{ canal.nombreCanal }} </h2>
+        </div>
+    {% endfor %}
+
+    {% if videos | length > 0 %}
+        <h1>Vídeos</h1>
+    {% endif %}
+    {% for video in videos %}
+        <div class="row">
+            <h2> {{ video.nombreTitulo }} </h2>
+            
+        </div>
+    {% endfor %}
+</div>

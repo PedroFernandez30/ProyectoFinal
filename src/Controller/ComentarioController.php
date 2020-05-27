@@ -61,7 +61,7 @@ class ComentarioController extends AbstractController
                 ])->getContent());
             }
         }
-        throw Exception;
+        //throw Exception;
     }
 
     /**

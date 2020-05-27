@@ -48,7 +48,28 @@ class VideoRepository extends ServiceEntityRepository
     }
      */
 
-    public function findVideoByCategoria($categoria, $idVideo)
+     public function findSimilarVideos($valor) {
+        $videosBySimilarName = $this->findVideoBySimilarName($valor);
+        $videosBySimilarCategoria = $this->findVideosBySimilarCategoria($valor);
+        //Sacar los repetidos , juntarlos en un array, y devolver ese array
+
+     }
+
+    public function findVideoByName() {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.idCategoria = :categoria')
+            ->andWhere('v.id != :idVideo')
+            ->setParameter('categoria', $categoria)
+            ->setParameter('idVideo', $idVideo)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+
+    //Encuentra los vídeos relacionados cuya categoría sea la misma que la del vídeo que se está visualizando
+    public function findVideosRelacionados($categoria, $idVideo)
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.idCategoria = :categoria')

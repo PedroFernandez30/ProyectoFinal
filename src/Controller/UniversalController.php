@@ -3,10 +3,55 @@
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CanalRepository;
+use App\Repository\VideoRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use getID3;
 
 class UniversalController extends AbstractController
 {
+     /**
+     * @Route("/buscar/", name="buscar")
+     */
+    public function buscar(Request $request, CanalRepository $canalRepository, VideoRepository $videoRepository) {
+        if($request->isXmlHttpRequest()) {
+            $data = $request->request->all();
+            $valor = $data['value'];
+            $canalesAll = $canalRepository->findAll();
+            $canales = $canalRepository->findCanalesByNombreCanal($valor);
+            $videos = $videoRepository->findSimilarVideos($valor);
+            $videosLikeArray = [];
+            $canalesLikeArray = [];
+
+            foreach($canales as $canal) {
+                $canalesLikeArray[] = [
+                    'id' => $canal->getId(),
+                    'nombreCanal' => $canal->getNombreCanal(),
+                    'suscriptores' => \count($canal->getSuscritosAMi())
+                ];
+            }
+
+            foreach($videos as $video) {
+                $videosLikeArray[] = [
+                    'id' => $video->getId(),
+                    'titulo' => $video->getTitulo(),
+                    'fechaPublicacion' => $video->getFechaPublicacion()
+                ];
+            }
+
+            $respuesta = [
+                'code' => 'success',
+                'contenido' => $this->render('buscador/lista.html.twig', [
+                    'canales' => $canalesLikeArray,
+                    'videos' => $videosLikeArray
+                ])->getContent()
+            ];
+            return new JsonResponse($respuesta);
+        } 
+        
+    }
     public function subidaVideo($canalId, $videoId, $form, $video = false, $fotoPerfil = false) :string
     {
         if($fotoPerfil) {
@@ -93,7 +138,7 @@ class UniversalController extends AbstractController
 		$S = (int) round( $seconds - (3600 * $H) - (60 * $M)        );
 		return $sign.($H ? $H.':' : '').($H ? str_pad($M, 2, '0', STR_PAD_LEFT) : intval($M)).':'.str_pad($S, 2, 0, STR_PAD_LEFT);
     }
-    
+
 
     //Devuelve un array con los datos necesarios para la respuesta AJAX de los comentarios de un vídeo o de un canal
 

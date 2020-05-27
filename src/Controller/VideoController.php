@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class VideoController extends AbstractController
 {
     /**
-     * @Route({"es": "/inicio/","en": "/index/"}, name="video_index", methods={"GET"})
+     * @Route({"/"}, name="video_index", methods={"GET"})
      */
     public function index(VideoRepository $videoRepository): Response
     {
@@ -103,7 +103,7 @@ class VideoController extends AbstractController
         }
 
         //$videosCategoria = $videoRepository->findBy(['idCategoria' => $video->getIdCategoria()]);
-        $videosCategoria = $videoRepository->findVideoByCategoria($video->getIdCategoria(), $video->getId());
+        $videosCategoria = $videoRepository->findVideosRelacionados($video->getIdCategoria(), $video->getId());
 
         return $this->render('video/show.html.twig', [
             'video' => $video,

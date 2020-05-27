@@ -28,6 +28,7 @@ require('bootstrap');
 $(document).ready(function(){
 
   permitirEditarCanal();
+  permitirUsoBuscador();
 
   window.detectarDivVideos = detectarDivVideos;
   window.irAConfigPorPost = irAConfigPorPost;
@@ -40,6 +41,70 @@ $(document).ready(function(){
   window.borrarMensajeFlash = borrarMensajeFlash;
 
     $('.dropdown-toggle').dropdown();
+
+    //impedir que se manden los datos de edición de un canal si no se han modificado
+  function permitirUsoBuscador() {
+    var form = $('#formBusqueda');
+    var inputBusqueda = document.getElementById("textoBusqueda");
+    var valorOriginal = inputBusqueda.value;
+    
+    console.log(valorOriginal);
+    
+    console.log(form);
+    console.log("Entro en permitir usar buscador");
+    if(form.length) {
+      var submit = document.getElementById("submitBusqueda");
+      submit.setAttribute('disabled','disabled');
+
+      console.log("Hay form length");
+      inputBusqueda.addEventListener('keyup', function() {
+        console.log(inputBusqueda.value);
+        console.log(valorOriginal);
+        if(inputBusqueda.value != valorOriginal) {
+          submit.removeAttribute('disabled');
+        } else {
+          submit.setAttribute('disabled', 'disabled');
+        }
+      })
+    }
+  }
+  
+    $('#formBusqueda').submit(function(e) {
+      console.log("ESTOY EN FORM BÚSQUEDA");
+        e.preventDefault();
+        var inputBusqueda = document.getElementById("textoBusqueda");
+        console.log(inputBusqueda.value);
+        var submitBuscar = document.getElementById("submitBusqueda");
+        submitBuscar.setAttribute('disabled','disabled');
+    
+        var url = e.target.action;
+
+        $.ajax({
+          url: url,
+          type: "POST",
+          dataType: "text",
+          data: {
+            "value": inputBusqueda.value
+          },
+          async: true,
+          success: function (data)
+          {
+              console.log("SUCCESS");
+              console.log(data);
+              var divContenidoBuscador = document.getElementById("contenidoBuscador");
+              var dataObject = JSON.parse(data);
+              divContenidoBuscador.innerHTML = '';
+              divContenidoBuscador.innerHTML = dataObject.contenido
+              //console.log(data);
+              
+              //console.log(dataObject);
+              inputBusqueda.value = '';
+              permitirUsoBuscador();
+              
+          }
+      });
+      return false;
+      });
   
     
     function irAConfigPorPost(event, rutaBoton = '') {
@@ -274,7 +339,7 @@ $(document).ready(function(){
     return false;
 
   }
-});
+
 
 function cambiarTabActiva(tab, url, canalId, nivel) {
   console.log(tab+","+url+","+canalId + ","+nivel);
@@ -310,115 +375,114 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
   }
 }
 
-//impedir que se manden los datos de edición de un canal si no se han modificado
-function permitirEditarCanal() {
-  var form = $('#editFormCanal');
-  var form2 = document.getElementById("editFormCanal");
-  
-  console.log(form);
-  console.log(form2);
-  console.log("Entro en permitir editar canal");
-  if(form.length) {
+  //impedir que se manden los datos de edición de un canal si no se han modificado
+  function permitirEditarCanal() {
+    var form = $('#editFormCanal');
+    var form2 = document.getElementById("editFormCanal");
+    
+    console.log(form);
+    console.log(form2);
+    console.log("Entro en permitir editar canal");
+    if(form.length) {
+      var submit = document.getElementById("submitEditarCanal");
+      submit.setAttribute('disabled','disabled');
+      var origForm = form.serialize();
+
+      $('#editFormCanal :input').on('change input', function() {
+          if(form.serialize() !== origForm) {
+            //var submit = form.querySelector('button[type="submit"]');
+            console.log(submit);
+            submit.removeAttribute('disabled');
+          } else {
+            submit.setAttribute('disabled','disabled');
+          }
+      });
+    }
+  }
+
+  $('#editFormCanal').submit(function(e) {
+  console.log("ESTOY EN EDIT FORM CANAL");
+    e.preventDefault();
+
     var submit = document.getElementById("submitEditarCanal");
     submit.setAttribute('disabled','disabled');
-    var origForm = form.serialize();
 
-    $('#editFormCanal :input').on('change input', function() {
-        if(form.serialize() !== origForm) {
-          //var submit = form.querySelector('button[type="submit"]');
-          console.log(submit);
-          submit.removeAttribute('disabled');
-        } else {
-          submit.setAttribute('disabled','disabled');
-        }
-    });
-  }
+    var url = e.target.action;
+    
+    var formSerialize = $(this).serialize();
+
+    console.log($(this));
+    console.log($(this).data());
+    
+    console.log(JSON.stringify(formSerialize));
   
-}
-
-$('#editFormCanal').submit(function(e) {
-console.log("ESTOY EN EDIT FORM CANAL");
-  e.preventDefault();
-
-  var submit = document.getElementById("submitEditarCanal");
-  submit.setAttribute('disabled','disabled');
-
-  var url = e.target.action;
-  
-  var formSerialize = $(this).serialize();
-
-  console.log($(this));
-  console.log($(this).data());
-  
-  console.log(JSON.stringify(formSerialize));
- 
-  $.ajax({
-    url: url,
-    type: "POST",
-    dataType: "text",
-    data: formSerialize,
-    async: true,
-    success: function (data)
-    {
-        console.log("SUCCESS");
-        //console.log(data);
-        var dataObject = JSON.parse(data);
-        console.log(dataObject.contenido);
-        if(dataObject.code == 'success') {
-          console.log("borro el flash");
-         
+    $.ajax({
+      url: url,
+      type: "POST",
+      dataType: "text",
+      data: formSerialize,
+      async: true,
+      success: function (data)
+      {
+          console.log("SUCCESS");
+          //console.log(data);
+          var dataObject = JSON.parse(data);
+          console.log(dataObject.contenido);
+          if(dataObject.code == 'success') {
+            console.log("borro el flash");
           
-          var divExitoEdicion = document.getElementById("exitoEdicion");
-          divExitoEdicion.classList.remove("d-none");
-          divExitoEdicion.classList.add("d-block");
-          divExitoEdicion.textContent = dataObject.mensaje;
+            
+            var divExitoEdicion = document.getElementById("exitoEdicion");
+            divExitoEdicion.classList.remove("d-none");
+            divExitoEdicion.classList.add("d-block");
+            divExitoEdicion.textContent = dataObject.mensaje;
 
-          permitirEditarCanal();
+            permitirEditarCanal();
 
-          setTimeout(function() {
-            divExitoEdicion.classList.add("d-none");
-            divExitoEdicion.classList.remove("d-block");
-          },5000);
-          
+            setTimeout(function() {
+              divExitoEdicion.classList.add("d-none");
+              divExitoEdicion.classList.remove("d-block");
+            },5000);
+            
 
-          
-        } else if(dataObject.code == 'error') {
-          console.log(data);
-          var divExitoEdicion = document.getElementById("exitoEdicion");
-          divExitoEdicion.classList.remove("d-none");
-          divExitoEdicion.classList.add("d-block");
-          divExitoEdicion.textContent = dataObject.mensaje;
-          console.log(dataObject.mensaje['plainPassword']);
+            
+          } else if(dataObject.code == 'error') {
+            console.log(data);
+            var divExitoEdicion = document.getElementById("exitoEdicion");
+            divExitoEdicion.classList.remove("d-none");
+            divExitoEdicion.classList.add("d-block");
+            divExitoEdicion.textContent = dataObject.mensaje;
+            console.log(dataObject.mensaje['plainPassword']);
 
-          /*permitirEditarCanal();*/
+            /*permitirEditarCanal();*/
 
-          setTimeout(function() {
-            divExitoEdicion.classList.add("d-none");
-            divExitoEdicion.classList.remove("d-block");
-          },5000);
-        }
+            setTimeout(function() {
+              divExitoEdicion.classList.add("d-none");
+              divExitoEdicion.classList.remove("d-block");
+            },5000);
+          }
+      }
+  });
+  return false;
+  });
+
+
+  function detectarDivVideos(ruta, canalId) {
+    console.log(ruta);
+    console.log(canalId);
+    var divComVideos = $("#comunidadOVideos");
+    var divVideoIndex = $("#videosIndex");
+    if (divComVideos.length) {
+      $(window).scroll(function() {
+        console.log("DetectarDivComVideo");
+      });
+    } else if (divVideoIndex.length) {
+      $(window).scroll(function() {
+        console.log("DetectarDivVideoIndex");
+      });
     }
-});
-return false;
-});
-
-
-function detectarDivVideos(ruta, canalId) {
-  console.log(ruta);
-  console.log(canalId);
-  var divComVideos = $("#comunidadOVideos");
-  var divVideoIndex = $("#videosIndex");
-  if (divComVideos.length) {
-    $(window).scroll(function() {
-      console.log("DetectarDivComVideo");
-    });
-  } else if (divVideoIndex.length) {
-    $(window).scroll(function() {
-      console.log("DetectarDivVideoIndex");
-    });
   }
-}
-
+});
 
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

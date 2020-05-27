@@ -36,6 +36,21 @@ class CanalRepository extends ServiceEntityRepository implements PasswordUpgrade
         $this->_em->flush();
     }
 
+   // /**
+    //  * @return Canal[] Returns an array of Canal objects
+    //  */
+    public function findCanalesByNombreCanal($value)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('LOWER(c.nombreCanal) LIKE LOWER(:val)')
+            ->setParameter('val', '%' . $value . '%')
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Canal[] Returns an array of Canal objects
     //  */
@@ -51,6 +66,7 @@ class CanalRepository extends ServiceEntityRepository implements PasswordUpgrade
             ->getResult()
         ;
     }
+
     */
 
     /*

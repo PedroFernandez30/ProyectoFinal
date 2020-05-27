@@ -50,7 +50,7 @@ class PruebaController extends AbstractController
         // lógica para determinar el $locale
         $locale = $request->getLocale();
         //return $this->redirectToRoute($previo);
-        return $this->redirectToRoute('video_index');
+        return $this->redirectToRoute('app_login');
         //return $this->generateUrl($previo);
         
         
