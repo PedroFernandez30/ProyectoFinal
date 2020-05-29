@@ -39,20 +39,4 @@ class PruebaController extends AbstractController
         
     }
 
-    /**
-     * @Route("/{_locale}/{previo}", name="traducir")
-     */
-    public function traducir($_locale, $previo,Request $request)
-    {
-        //$previo = $_REQUEST['previo'];
-        //{_locale}
-        //, requirements={"_locale"="en|fr|es"}
-        // lógica para determinar el $locale
-        $locale = $request->getLocale();
-        //return $this->redirectToRoute($previo);
-        return $this->redirectToRoute('app_login');
-        //return $this->generateUrl($previo);
-        
-        
-    }
 }

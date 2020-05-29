@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class VideoController extends AbstractController
 {
     /**
-     * @Route({"/"}, name="video_index", methods={"GET"})
+     * @Route({"es": "/inicio","en": "/index"}, name="video_index", methods={"GET"})
      */
     public function index(VideoRepository $videoRepository): Response
     {

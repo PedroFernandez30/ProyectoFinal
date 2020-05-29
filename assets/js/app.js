@@ -27,9 +27,13 @@ require('bootstrap');
 
 $(document).ready(function(){
 
+ //Guarda el último input radio pulsado en el filtrado del buscador por tipo
+  var lastTipoPulsado = null;
+
   permitirEditarCanal();
   permitirUsoBuscador();
 
+  window.filtrarPorTipo = filtrarPorTipo;
   window.detectarDivVideos = detectarDivVideos;
   window.irAConfigPorPost = irAConfigPorPost;
   window.escribirOMostrarComentario = escribirOMostrarComentario;
@@ -68,6 +72,30 @@ $(document).ready(function(){
       })
     }
   }
+
+  //Ver los vídeos o canales del buscador 
+  
+    function filtrarPorTipo(radio) {
+      var inputRadio = radio;
+      if(inputRadio != lastTipoPulsado) {
+        lastTipoPulsado = inputRadio;
+        console.log(inputRadio.value);
+        switch(lastTipoPulsado.value) {
+          case 'canales':
+            $('#videosEncontrados').hide();
+            $('#canalesEncontrados').show();
+            break;
+          case 'videos':
+            $('#canalesEncontrados').hide();
+            $('#videosEncontrados').show();
+            break;
+          case 'todos':
+            $('#videosEncontrados').show();
+            $('#canalesEncontrados').show();
+            break;
+        }
+      }
+    }
   
     $('#formBusqueda').submit(function(e) {
       console.log("ESTOY EN FORM BÚSQUEDA");
@@ -400,6 +428,25 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
     }
   }
 
+  function rellenarErrorByField(valor) {
+    //valor = array con 'nombreCanal' => 'Error:Ya existe'
+    //valor[0] = 'nombreCanal' (nombre del campo)
+    //valor [1] = 'Error: Ya existe' => error perteneciente al campo
+    console.log("RELLENAR VALOR BY FIELD");
+    console.log(valor[0]);
+    if(valor[1] != '') {
+      var divError = document.getElementById(''+valor[0]);
+      divError.classList.remove("d-none");
+      divError.classList.add("d-block","alert", "alert-danger");
+      divError.innerHTML = valor[1];
+      console.log(divError)
+      setTimeout(function() {
+        divError.classList.add("d-none");
+        divError.classList.remove("d-block", "alert", "alert-danger");
+      },5000);
+    }
+  }
+
   $('#editFormCanal').submit(function(e) {
   console.log("ESTOY EN EDIT FORM CANAL");
     e.preventDefault();
@@ -411,10 +458,10 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
     
     var formSerialize = $(this).serialize();
 
-    console.log($(this));
-    console.log($(this).data());
+    //console.log($(this));
+    //console.log($(this).data());
     
-    console.log(JSON.stringify(formSerialize));
+    //console.log(JSON.stringify(formSerialize));
   
     $.ajax({
       url: url,
@@ -427,6 +474,7 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
           console.log("SUCCESS");
           //console.log(data);
           var dataObject = JSON.parse(data);
+          
           console.log(dataObject.contenido);
           if(dataObject.code == 'success') {
             console.log("borro el flash");
@@ -448,18 +496,34 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
             
           } else if(dataObject.code == 'error') {
             console.log(data);
-            var divExitoEdicion = document.getElementById("exitoEdicion");
-            divExitoEdicion.classList.remove("d-none");
-            divExitoEdicion.classList.add("d-block");
-            divExitoEdicion.textContent = dataObject.mensaje;
-            console.log(dataObject.mensaje['plainPassword']);
+            console.log(dataObject);
+            console.log(dataObject);
+            console.log(dataObject.errores);
+            var arrayErroresValue = Object.values(dataObject.errores);
+            var arrayErroresKeys = Object.keys(dataObject.errores);
+            var arrayErroresCombinado = [];
+            
+            for (let index = 0; index < arrayErroresKeys.length; index++) {
+              var element = arrayErroresKeys[index];
+              //console.log(element);
+              var arrayError = [
+                element, arrayErroresValue[index]
+              ];
+              arrayErroresCombinado.push(arrayError);
+              
+            }
 
-            /*permitirEditarCanal();*/
 
-            setTimeout(function() {
-              divExitoEdicion.classList.add("d-none");
-              divExitoEdicion.classList.remove("d-block");
-            },5000);
+            //Llamar a función que coge el div cuyo id le paso, y es igual al nombre del campo del formulario,
+            // y si ese campo tiene un error se lo muestro
+
+            for (let index = 0; index < arrayErroresCombinado.length; index++) {
+              rellenarErrorByField(arrayErroresCombinado[index]);
+              
+            }
+            permitirEditarCanal();
+
+           
           }
       }
   });

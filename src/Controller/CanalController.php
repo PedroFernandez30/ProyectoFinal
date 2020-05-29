@@ -110,16 +110,13 @@ class CanalController extends AbstractController
                 $errores = $form->getErrors(true,false);
                 $camposForm = $form->all();
                 //$mensaje = $form->getErrors(true, false)->__toString();
-                $mensaje = [];
+                $errores = [];
                 foreach($camposForm as $key => $value ) {
-                    if($value->getErrors(true, false)->__toString() != ''){
-                        $mensaje[$key] = $value->getErrors(true, false)->__toString();
-
-                    }
+                    $errores[$key] = $value->getErrors(true, false)->__toString();
                 }
                 return new JsonResponse([
                     'code' => 'error',
-                    'mensaje' => $mensaje
+                    'errores' => $errores
                 ]);
             }
             

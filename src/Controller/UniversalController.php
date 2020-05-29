@@ -12,6 +12,29 @@ use getID3;
 
 class UniversalController extends AbstractController
 {
+
+    
+    /**
+     * @Route("/{_locale}/{previo}", requirements={"_locale"="en|fr|es"}, name="traducir")
+     */
+    public function traducir(Request $request, $_locale, $previo)
+    {
+        //$previo = $_REQUEST['previo'];
+        //{_locale}
+        //, requirements={"_locale"="en|fr|es"}
+        // lógica para determinar el $locale
+        //$locale = $request->getLocale();
+        $request->getSession()->set('_locale', $_locale);
+        //return $this->redirectToRoute($previo);
+        return $this->redirectToRoute('video_index',[
+            //'_locale' => $_locale
+        ]);
+        //return $this->generateUrl($previo);
+        
+        
+    }
+
+
      /**
      * @Route("/buscar/", name="buscar")
      */
@@ -21,7 +44,7 @@ class UniversalController extends AbstractController
             $valor = $data['value'];
             $canalesAll = $canalRepository->findAll();
             $canales = $canalRepository->findCanalesByNombreCanal($valor);
-            $videos = $videoRepository->findSimilarVideos($valor);
+            $videos = $videoRepository->findSimilarVideos($valor, $this->getDoctrine()->getManager());
             $videosLikeArray = [];
             $canalesLikeArray = [];
 
@@ -37,7 +60,8 @@ class UniversalController extends AbstractController
                 $videosLikeArray[] = [
                     'id' => $video->getId(),
                     'titulo' => $video->getTitulo(),
-                    'fechaPublicacion' => $video->getFechaPublicacion()
+                    'fechaPublicacion' => $video->getFechaPublicacion(),
+                    'idCanal' => $video->getIdCanal()
                 ];
             }
 

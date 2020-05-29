@@ -3,13 +3,29 @@
         </div>
 </div>
 {{ form_start(form) }}
+    <div id="nombre" class=""></div>
     {{ form_row(form.nombre) }}
+    <div id="apellidos" class=""></div>
     {{ form_row(form.apellidos) }}
+
+    <div id="email" class=""></div>
     {{ form_row(form.email) }}
+
+    <div id="nombreCanal" class=""></div>
     {{ form_row(form.nombreCanal) }}
+
+    <div id="fnac" class=""></div>
     {{ form_row(form.fnac) }}
+
+    <div id="sexo" class=""></div>
     {{ form_row(form.sexo) }}
+
+    <div id="plainPassword" class=""></div>
     {{ form_row(form.plainPassword) }}
+
+    <div id="fotoPerfil" class=""></div>
     {{ form_row(form.fotoPerfil) }}
+
+
     <button id="submitEditarCanal" disabled class="btn btn-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

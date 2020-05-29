@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<script>
+  var assetsProfilesPics = "{{ asset('imgPerfil/') }}"
+</script>
 <html lang="es">
     {% set menu = true %}
     <head>
@@ -13,6 +16,7 @@
         {% endblock %}
     </head>
     <body>
+      {#<h1>{{ app.request.locale }}</h1>#}
       
         <nav id="barraNavegacion" class="navbar navbar-expand navbar-dark bg-secondary sticky-top">
           {% if app.user %}
@@ -51,17 +55,20 @@
                 <button class="btn btn-outline-success my-2 my-sm-0 d-sm-none d-none d-md-block" id="submitBusqueda" type="submit" disabled>Search</button>
               </form>
               {% if app.user %}
-              
                 <ul class="navbar-nav float-right bg-dark">
                   <li class="nav-item dropdown">
+                    {#"{{ path('blog_show', {'slug': 'my-blog-post'})|escape('js') }}"#}
+                    {#onerror="this.src='imgPerfil/profile.jpg'"#}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <img class="imgCabecera" src="{{ asset('imgPerfil/profile.jpg')}}" alt="logoPerfilDefecto" class="rounded">
+                      <img class="imgCabecera rounded" src="{{asset('imgPerfil/'~ app.user.id)}}"
+                       onerror="this.src = assetsProfilesPics+'profile.jpg';"
+                       alt="logoPerfil" id=''~ {{ app.user.id }}>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="{{ path('canal_show', {'id': app.user.id }) }}">Tu cuenta</a>
                       <a class="dropdown-item rojo" href="{{ path('app_logout') }}">Cerrar sesión</a>
                       <div class="dropdown-divider"></div>
-                      {#{% if app.request.locale == 'en' %}
+                      {% if app.request.locale == 'en' %}
                         <a class="dropdown-item text-center" href="{{ path('traducir', {'_locale': 'es', 'previo': ''~ app.request.get('_route') }) }}">
                           <img width="50" src="{{ asset('img/banderaEspanya.png')}}" alt="español">
                         </a>
@@ -69,13 +76,13 @@
                           <a class="dropdown-item text-center" href="{{ path('traducir', {'_locale': 'en', 'previo': ''~ app.request.get('_route') }) }}">
                             <img width="50" src="{{ asset('img/banderaInglaterra.png')}}" alt="inglés">
                           </a>
-                      {% endif %}#}
+                      {% endif %}
 
                     </div>
                   </li>
                 </ul>
                 {% else %}
-                  
+                  <a href="{{ path('app_login') }}" class="btn btn-info">Iniciar sesión</a>
               {% endif %}
 
               
@@ -90,7 +97,6 @@
                 {{ message }}
             </div>
           {% endfor %}
-          <a href="{{ path('buscar', {'valor': 'Pil' }) }}">Ir a buscar</a>
         <div id="contenidoBuscador">
          
           {% block body %}

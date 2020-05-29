@@ -9,22 +9,11 @@
         <a href="{{ path('prueba') }}">Volver a prueba</a>
         {% else %}
             <h1>Edit Canal</h1>
-            {#{{ url }}
-            {{ urlPath }}
-            <pre>
-                {{ dump(targetPath) }}
-            </pre>
-            <pre>
-                {{ dump(request) }}
-            </pre>
-            <pre>
-                {{ dump(session) }}
-            </pre>#}
             {{ include('canal/editCabecera.html.twig', {'canalId': canal.id}) }}
         
             
             
-            <div id="editForm" class="row">
+            <div id="editForm" class="w-50 m-auto">
                 {{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}
             </div>
         

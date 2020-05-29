@@ -25,6 +25,12 @@
                             <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
                                 <h3>{{ video.titulo }}</h3>
                             </a>
+                            <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="h4">
+                                <span>{{ video.idCanal.nombreCanal }}</span>
+                            </a>
+                            <p>
+                                <span>{{ video.fechaPublicacion }}</span>
+                            </p>
                         </div>
                         {% else %}
                             <div class="col-10 col-sm-10 col-md-5 col-xl-3 col-lg-4 p-4 m-lg-0 m-md-auto m-auto m-sm-auto">
