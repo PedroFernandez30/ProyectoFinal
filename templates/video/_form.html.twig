@@ -1,7 +1,35 @@
-{{ form_start(form, {'attr': {'id':'videoForm'} })   }}
-    {{ form_widget(form)  }}
-        <button class="btn btn-info" id="videoFormButton">{{ button_label|default('Guardar') }}</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        
+{{ form_start(form, {'attr': {'id':'formSubirVideo'} })   }}
+    <div id="titulo" class=""></div>
+    {{ form_row(form.titulo) }}
+    <div id="descripcion" class=""></div>
+    {{ form_row(form.descripcion) }}
+
+    <div id="mg" class=""></div>
+    {{ form_row(form.mg) }}
+
+    <div id="dislike" class=""></div>
+    {{ form_row(form.dislike) }}
+
+    <div id="duracion" class=""></div>
+    {{ form_row(form.duracion) }}
+
+    <div id="fechaPublicacion" class=""></div>
+    {{ form_row(form.fechaPublicacion) }}
+
+    <div id="idCanal" class=""></div>
+    {{ form_row(form.idCanal) }}
+
+    <div id="idCategoria" class=""></div>
+    {{ form_row(form.idCategoria) }}
+
+    <div id="miniatura" class=""></div>
+    {{ form_row(form.miniatura) }}
+
+    <div id="video" class=""></div>
+    {{ form_row(form.video) }}
+
+    <button class="btn btn-info" id="submitSubirVideo">{{ button_label|default('Guardar') }}</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+    
     
 {{ form_end(form) }}

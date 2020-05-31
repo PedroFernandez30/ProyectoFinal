@@ -76,7 +76,7 @@ class UniversalController extends AbstractController
         } 
         
     }
-    public function subidaVideo($canalId, $videoId, $form, $video = false, $fotoPerfil = false) :string
+    public function subidaArchivo($canalId, $videoId, $form, $video = false, $fotoPerfil = false) :string
     {
         if($fotoPerfil) {
             

@@ -9,7 +9,7 @@
         {% set canall = canal.id %}
 {% endif %}
 <div class="container-fluid m-1" id="videosIndex" onload = "detectarDivVideos('{{ listaVideosRuta }}', '{{ canall }}');alert('Hola');">
-    
+    <div id="mensajeSubidaVideo"></div>
     {% if videos is defined %}
     
     <pre>

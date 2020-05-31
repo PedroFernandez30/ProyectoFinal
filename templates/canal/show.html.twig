@@ -13,7 +13,7 @@
     
             <div class="col-12 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2">
                 {% if app.user and app.user.id == canal.id %}
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalSubidaVideo">
                         Subir vídeo
                      </button> 
                 {% endif %}
@@ -41,11 +41,11 @@
                
 
          <!-- Modal -->
-        <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalSubidaVideo" tabindex="-1" role="dialog" aria-labelledby="modalSubidaVideoLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">
-                    <h5 class="modal-title text-white" id="exampleModalLabel"> Subida de vídeo</h5>
+                    <h5 class="modal-title text-white" id="modalSubidaVideoLabel"> Subida de vídeo</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

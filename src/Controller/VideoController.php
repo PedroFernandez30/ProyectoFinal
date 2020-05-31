@@ -60,7 +60,7 @@ class VideoController extends AbstractController
     /**
      * @Route({"es": "/nuevo/","en": "/new/"}, name="video_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserInterface $canalActivo):Response
+    public function new(VideoRepository $videoRepository, Request $request, UserInterface $canalActivo):Response
     {
         $video = new Video();
         $form = $this->createForm(VideoType::class, $video, [
@@ -68,22 +68,37 @@ class VideoController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $video->setIdCanal($canalActivo);
-            
-            $entityManager->persist($video);
-            $entityManager->flush();
-            //Subida de vídeo y miniatura
-            $universalController = new UniversalController();
-            $videoLength = $universalController-> subidaVideo($canalActivo->getId(), $video->getId(), $form, true);
+        if($request->isXmlHttpRequest()) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $video->setIdCanal($canalActivo);
+                                
+                $entityManager->persist($video);
+                $entityManager->flush();
+                //Subida de vídeo y miniatura
+                $universalController = new UniversalController();
+                $videoLength = $universalController-> subidaArchivo($canalActivo->getId(), $video->getId(), $form, true);
+    
+                $video->setDuracion($videoLength);
+                $entityManager->persist($video);
+                $entityManager->flush();
 
-            $video->setDuracion($videoLength);
-            $entityManager->persist($video);
-            $entityManager->flush();
-            $this->addFlash('success', 'Vídeo subido correctamente');
-            return $this->redirectToRoute('video_index');
+                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalActivo], ['id' => 'DESC']);
+
+                $mensaje = 'Vídeo subido correctamente';
+                return new JsonResponse([
+                    'code' => 'success',
+                    'contenido' => $this->render('video/index.html.twig', [
+                        'videos' => $videosFromCanal,
+                        'extiende' => false
+                    ])->getContent(),
+                    'mensaje' => $mensaje
+
+                ]);
+                //return $this->redirectToRoute('video_index');
+            }
         }
+        
 
         return $this->render('video/new.html.twig', [
             'video' => $video,

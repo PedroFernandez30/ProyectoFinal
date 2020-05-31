@@ -84,7 +84,7 @@ class CanalController extends AbstractController
         $form->handleRequest($request);
 
         if($request->isXmlHttpRequest()) {
-            if($form->isValid()) {
+            if($form->isSubmitted() && $form->isValid()) {
                 $password = $form->get('plainPassword')->getData();
                 if($password != '------') {
                     $canal->setPassword($passwordEncoded = $passwordEncoder->encodePassword(
