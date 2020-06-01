@@ -76,6 +76,19 @@ class UniversalController extends AbstractController
         } 
         
     }
+
+    public function getArrayErrores($form) {
+        $camposForm = $form->all();        
+        $errores = [];
+        
+        foreach($camposForm as $key => $value ) {
+            $errores[$key] = $value->getErrors(true, false)->__toString();
+        }
+
+        return $errores;
+    }
+
+    //Sube las imágenes de perfil, los vídeos y las miniaturas
     public function subidaArchivo($canalId, $videoId, $form, $video = false, $fotoPerfil = false) :string
     {
         if($fotoPerfil) {

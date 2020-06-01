@@ -403,26 +403,58 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
   }
 }
 
+function showFormData(formData) {
+  var formDataArray = [];
+  for(var value of formData.values()) {
+    
+    if(value instanceof Object && value != '_token') {
+      formDataArray.push(value['name']); 
+    } else {
+      formDataArray.push(value); 
+    }
+  }
+    
+ return formDataArray;
+}
+
+function arraysMatch(arr1, arr2) {
+
+	// Check if the arrays are the same length
+	if (arr1.length !== arr2.length) return false;
+
+	// Check if all items exist and are in the same order
+	for (var i = 0; i < arr1.length; i++) {
+		if (arr1[i] !== arr2[i]) return false;
+	}
+
+	// Otherwise, return true
+	return true;
+
+};
+
   //impedir que se manden los datos de edición de un formulario si no se han modificado
   function permitirEditarForm() {
     var idDiv = 'editFormCanal';
     var form = $('#editFormCanal');
     if(!form.length) {
-      var form = $('formSubirVideo');
+      var form = $('#formSubirVideo');
       var idDiv = 'formSubirVideo';
     }
     console.log("Entro en permitir editar canal");
+    console.log(form);
     if(form.length) {
       //var submit = document.getElementById("submitEditarCanal");
       var submit = form.find(':submit');
+      console.log(submit);
       submit.prop('disabled','disabled');
-      var origForm = form.serialize();
+      var origForm = new FormData(form[0]);
+      var origFormArray = showFormData(origForm);
 
       $('#'+ idDiv+' :input').on('change input', function() {
         console.log("Input on change");
-          if(form.serialize() !== origForm) {
-            //var submit = form.querySelector('button[type="submit"]');
-            console.log(submit);
+          var newForm = new FormData(form[0]);
+          var newFormArray = showFormData(newForm);
+          if(arraysMatch(origFormArray, newFormArray) == false) {
             submit.removeAttr('disabled');
           } else {
             submit.prop('disabled','disabled');
@@ -431,6 +463,32 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
     }
   }
 
+  //Crea un array en el que la clave es el nombre del campo y el valor el error
+  //asociado a ese campo
+  function mergeArrayErrores(errores){
+    var arrayErroresValue = Object.values(errores);
+    var arrayErroresKeys = Object.keys(errores);
+    var arrayErroresCombinado = [];
+    
+    for (let index = 0; index < arrayErroresKeys.length; index++) {
+      var element = arrayErroresKeys[index];
+      //console.log(element);
+      var arrayError = [
+        element, arrayErroresValue[index]
+      ];
+      arrayErroresCombinado.push(arrayError);
+    }
+
+    //Llamar a función que coge el div cuyo id le paso, y es igual al nombre del campo del formulario,
+    // y si ese campo tiene un error se lo muestro
+
+    for (let index = 0; index < arrayErroresCombinado.length; index++) {
+      rellenarErrorByField(arrayErroresCombinado[index]);
+      
+    }
+  }
+
+  //Muestra los errores existentes a nivel de campo
   function rellenarErrorByField(valor) {
     //valor = array con 'nombreCanal' => 'Error:Ya existe'
     //valor[0] = 'nombreCanal' (nombre del campo)
@@ -442,11 +500,11 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
       divError.classList.remove("d-none");
       divError.classList.add("d-block","alert", "alert-danger");
       divError.innerHTML = valor[1];
-      console.log(divError)
-      setTimeout(function() {
+      console.log(divError);
+      /*setTimeout(function() {
         divError.classList.add("d-none");
         divError.classList.remove("d-block", "alert", "alert-danger");
-      },5000);
+      },5000);*/
     }
   }
 
@@ -455,19 +513,28 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
   $('#formSubirVideo').submit(function(e) {
     console.log("ESTOY EN SUBIR FORM VÍDEO");
       e.preventDefault();
-  
+      permitirEditarForm();
       var submit = document.getElementById("submitSubirVideo");
       //submit.setAttribute('disabled','disabled');
   
       var url = e.target.action;
       
-      var formSerialize = $(this).serialize();
       var formData = new FormData($('#formSubirVideo')[0]);
       
-      console.log(submit);
-      console.log(url);
-      console.log(formSerialize);
-    
+      var spinner = document.createElement("div");
+      spinner.classList.add("spinner-border", "text-light");
+      spinner.setAttribute('id', 'loadingVideo');
+      var spanSpinner = document.createElement("span");
+      spanSpinner.textContent = "Loading...";
+      spanSpinner.classList.add("sr-only");
+      spinner.appendChild(spanSpinner);
+      var cuerpoSpinner = document.getElementById("cuerpoModalSpinner");
+      cuerpoSpinner.appendChild(spinner);
+
+      $('#modalSubidaVideo').modal('hide');
+      
+      $('#modalSpinner').modal('show');
+      
       $.ajax({
         url: url,
         type: "POST",
@@ -481,17 +548,18 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
         {
             console.log("SUCCESS");
             console.log(data);
+            $('#modalSpinner').modal('hide');
+            document.getElementById("cuerpoModalSpinner").innerHTML = '';
             //var dataObject = JSON.parse(data);
             
             if(data.code == 'success') {
               //console.log(dataObject);
               //console.log(data.contenido);
-              $('#modalSubidaVideo').modal('hide');
-
               var divComunidadOVideos = document.getElementById("comunidadOVideos");
               divComunidadOVideos.innerHTML = '';
-              divComunidadOVideos.innerHTML = data.contenido
+              divComunidadOVideos.innerHTML = data.contenido;
 
+              
               var divMensajeSubidaVideo = document.getElementById("mensajeSubidaVideo");
               divMensajeSubidaVideo.classList.remove("d-none");
               divMensajeSubidaVideo.classList.add("d-block","alert", "alert-success");
@@ -501,31 +569,15 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
                 divMensajeSubidaVideo.classList.add("d-none");
                 divMensajeSubidaVideo.classList.remove("d-block", "alert", "alert-success");
               },5000);
-              //permitirEditarForm();
+              permitirEditarForm();
 
               
-            } else if(dataObject.code == 'error') {
-              var arrayErroresValue = Object.values(dataObject.errores);
-              var arrayErroresKeys = Object.keys(dataObject.errores);
-              var arrayErroresCombinado = [];
+            } else if(data.code == 'error') {
+
+              $('#modalSubidaVideo').modal('show');
+
+              mergeArrayErrores(data.errores);
               
-              for (let index = 0; index < arrayErroresKeys.length; index++) {
-                var element = arrayErroresKeys[index];
-                //console.log(element);
-                var arrayError = [
-                  element, arrayErroresValue[index]
-                ];
-                arrayErroresCombinado.push(arrayError);
-                
-              }
-  
-              //Llamar a función que coge el div cuyo id le paso, y es igual al nombre del campo del formulario,
-              // y si ese campo tiene un error se lo muestro
-  
-              for (let index = 0; index < arrayErroresCombinado.length; index++) {
-                rellenarErrorByField(arrayErroresCombinado[index]);
-                
-              }
               permitirEditarForm();
             }
         }
@@ -576,27 +628,9 @@ function cambiarTabActiva(tab, url, canalId, nivel) {
 
             
           } else if(dataObject.code == 'error') {
-            var arrayErroresValue = Object.values(dataObject.errores);
-            var arrayErroresKeys = Object.keys(dataObject.errores);
-            var arrayErroresCombinado = [];
+
+            mergeArrayErrores(dataObject.errores);
             
-            for (let index = 0; index < arrayErroresKeys.length; index++) {
-              var element = arrayErroresKeys[index];
-              //console.log(element);
-              var arrayError = [
-                element, arrayErroresValue[index]
-              ];
-              arrayErroresCombinado.push(arrayError);
-              
-            }
-
-            //Llamar a función que coge el div cuyo id le paso, y es igual al nombre del campo del formulario,
-            // y si ese campo tiene un error se lo muestro
-
-            for (let index = 0; index < arrayErroresCombinado.length; index++) {
-              rellenarErrorByField(arrayErroresCombinado[index]);
-              
-            }
             permitirEditarForm();
           }
       }

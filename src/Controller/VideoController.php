@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use App\Controller\UniversalController;
 
 
 
@@ -40,7 +40,7 @@ class VideoController extends AbstractController
             $canalId = json_decode($data['idCanal']);
             if($canalId != null) {
                 $canalEntity = $canalRepository->findOneBy(['id' => $canalId]);
-                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalEntity]);
+                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalEntity], ['id' => 'DESC']);
                 return new JsonResponse($this->render('video/index.html.twig', [
                     'videos' => $videosFromCanal,
                     'extiende' => false
@@ -96,6 +96,14 @@ class VideoController extends AbstractController
 
                 ]);
                 //return $this->redirectToRoute('video_index');
+            } else {
+                $universalController = new UniversalController();
+                $errores = $universalController->getArrayErrores($form);
+                
+                return new JsonResponse([
+                    'code' => 'error',
+                    'errores' => $errores
+                ]);
             }
         }
         

@@ -70,14 +70,7 @@ class VideoRepository extends ServiceEntityRepository
     }
 
     public function findBySimilarCategoria($valor, $em) {
-        //$em = $this->getDoctrine()->getManager();
-        /*$dql = "SELECT v, c AS video, categoria FROM App\Entity\Video v JOIN App\Entity\Categoria c" .
-       "WHERE v.c.nombre LIKE :val AND v.c.id = c.id";
-        $videos = $em->createQuery($dql)
-            ->setParameter('val', '%' . $valor . '%')
-            ->getResult();
-
-        return $videos;*/
+        
         return $this->createQueryBuilder('v')
             ->join('v.idCategoria', 'c')
             ->andWhere('LOWER(c.nombre) LIKE LOWER(:val)')
@@ -96,6 +89,7 @@ class VideoRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->andWhere('v.idCategoria = :categoria')
             ->andWhere('v.id != :idVideo')
+            ->orderBy('v.id', 'DESC')
             ->setParameter('categoria', $categoria)
             ->setParameter('idVideo', $idVideo)
             ->getQuery()

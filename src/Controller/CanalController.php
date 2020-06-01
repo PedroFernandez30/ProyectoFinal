@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Controller\UniversalController;
 
 
 /**
@@ -107,13 +108,9 @@ class CanalController extends AbstractController
                 ]);
 
             } else {
-                $errores = $form->getErrors(true,false);
-                $camposForm = $form->all();
-                //$mensaje = $form->getErrors(true, false)->__toString();
-                $errores = [];
-                foreach($camposForm as $key => $value ) {
-                    $errores[$key] = $value->getErrors(true, false)->__toString();
-                }
+                $universalController = new UniversalController();
+                $errores = $universalController->getArrayErrores($form);
+                
                 return new JsonResponse([
                     'code' => 'error',
                     'errores' => $errores

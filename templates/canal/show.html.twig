@@ -41,8 +41,8 @@
                
 
          <!-- Modal -->
-        <div class="modal fade" id="modalSubidaVideo" tabindex="-1" role="dialog" aria-labelledby="modalSubidaVideoLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade overflow-auto" id="modalSubidaVideo" tabindex="-1" role="dialog" aria-labelledby="modalSubidaVideoLabel" aria-hidden="true">
+            <div class="modal-dialog overflow-auto" role="document">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">
                     <h5 class="modal-title text-white" id="modalSubidaVideoLabel"> Subida de vídeo</h5>
@@ -60,12 +60,25 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modalSpinner" tabindex="-1" role="dialog" aria-labelledby="modalSpinnerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered w-25" role="document">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                    <h5 class="modal-title text-white" id="modalSpinnerLabel"> Cargando...</h5>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center" id="cuerpoModalSpinner">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
 
         
 
         <div id="comunidadOVideos">
-            {% include "video/index.html.twig" with {'videos': canal.videos, 'extiende': 'false'} %}
+            {% include "video/index.html.twig" with {'videos': canal.videos | reverse , 'extiende': 'false'} %}
         </div>
         
        
