@@ -77,6 +77,7 @@ class UniversalController extends AbstractController
         
     }
 
+
     public function getArrayErrores($form) {
         $camposForm = $form->all();        
         $errores = [];

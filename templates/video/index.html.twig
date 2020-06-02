@@ -29,7 +29,7 @@
                                 <span>{{ video.idCanal.nombreCanal }}</span>
                             </a>
                             <p>
-                                <span>{{ video.fechaPublicacion }}</span>
+                                <span>{{ video.fechaPublicacion | date('d/m/Y') }}</span>
                             </p>
                         </div>
                         {% else %}
@@ -45,7 +45,14 @@
                                         <span>{{ video.idCanal.nombreCanal }}</span>
                                     </a>
                                     {% else %}
-                                        <span>{{ video.fechaPublicacion }}</span>
+                                        <span>{{ video.fechaPublicacion|date("d/m/Y") }}</span>
+                                {% endif %}
+                                {% if borrar is defined %}
+                                    {% set url = path('video_delete', {'id': video.id }) %}
+                                    {% set token = csrf_token('delete' ~ video.id) %}
+                                    <div class="mt-2">
+                                        <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', '{{ video.idCanal.id }}', '{{ token }}');">Borrar vídeo</button>
+                                    </div>
                                 {% endif %}
                             </div>
                     {% endif %}

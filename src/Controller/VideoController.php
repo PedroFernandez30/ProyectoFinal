@@ -23,8 +23,12 @@ class VideoController extends AbstractController
      */
     public function index(VideoRepository $videoRepository): Response
     {
+        \dump(date_create('05/05/2020'));
+        \dump(new \DateTime('05/05/2020'));
+
         return $this->render('video/index.html.twig', [
-            'videos' => $videoRepository->findBy([],null, 8, 0),
+            //'videos' => $videoRepository->findBy([],null, 8, 0),
+            'videos' => $videoRepository->findAll(),
             'extiende' => 'true',
             'index' => true
         ]);
@@ -159,14 +163,57 @@ class VideoController extends AbstractController
     /**
      * @Route("/{id}", name="video_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Video $video): Response
+    public function delete(Request $request, VideoRepository $videoRepository, CanalRepository $canalRepository, Video $video): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$video->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($video);
-            $entityManager->flush();
-        }
+        if($request->isXmlHttpRequest()) {
+            $datos = $request->request->all();
+            $token = $datos['_token'];
+            $canalId = $datos['idCanal'];
+            $videoId = $datos['idVideo'];
 
-        return $this->redirectToRoute('video_index');
+            if ($this->isCsrfTokenValid('delete'.$video->getId(), $token)) {
+                $videoEntity = $videoRepository->findOneBy(['id' => $videoId]);
+                $entityManager = $this->getDoctrine()->getManager();
+                try {
+                    $rutaVideosYMiniaturas = $this->getParameter('videosYMiniaturas');
+                    //borro el vídeo
+                    \unlink($rutaVideosYMiniaturas.$canalId.'\videos\\'.$videoId);
+
+                    //borro la miniatura
+                    \unlink($rutaVideosYMiniaturas.$canalId.'\miniaturas\\'.$videoId);
+
+                    //Borro la entidad Vídeo
+                    $entityManager->remove($videoEntity);
+                    $entityManager->flush();
+
+                    
+
+                    $canalEntity = $canalRepository->findOneBy(['id' => $canalId]);
+                    $listaVideos = $videoRepository->findBy(['idCanal' => $canalEntity], ['id' => 'DESC']);
+
+                    $mensajeExito = 'Vídeo borrado correctamente';
+
+                    return $this->json([
+                        'code' => 'success',
+                        'mensaje' => $mensajeExito,
+                        'contenido' => $this->render('video/index.html.twig', [
+                            'videos' => $listaVideos, 
+                            'extiende' => 'false',
+                            'borrar' => true
+                        ])->getContent()
+                    ]);
+
+                }catch(\Exception $e) {
+                    $mensajeError = 'Hubo un error al tratar de borrar el archivo';
+                    return $this->json([
+                        'code' => 'error',
+                        'mensaje' => $mensajeError
+                    ]);
+                }
+                
+            }
+    
+        }
+        
     }
 }

@@ -27,13 +27,21 @@ require('bootstrap');
 
 $(document).ready(function(){
 
+  
+
  //Guarda el último input radio pulsado en el filtrado del buscador por tipo
   var lastTipoPulsado = null;
+
+  //Guarda el último input radio pulsado en el filtrado del buscador por fecha
+  var lastFechaPulsada = null;
+
 
   permitirEditarForm();
   permitirUsoBuscador();
 
   window.filtrarPorTipo = filtrarPorTipo;
+  window.filtrarPorFecha = filtrarPorFecha;
+  window.borrarVideo = borrarVideo;
   window.detectarDivVideos = detectarDivVideos;
   window.irAConfigPorPost = irAConfigPorPost;
   window.escribirOMostrarComentario = escribirOMostrarComentario;
@@ -74,6 +82,42 @@ $(document).ready(function(){
   }
 
   //Ver los vídeos o canales del buscador 
+  
+    function filtrarPorFecha(radio) {
+      var inputRadio = radio;
+      if(inputRadio != lastFechaPulsada) {
+        lastFechaPulsada = inputRadio;
+        console.log(inputRadio.value);
+        switch(lastFechaPulsada.value) {
+          case 'hoy':
+            var fechaABuscar = '1';
+            $('#filtroTipo').hide();
+            $('#canalesEncontrados').hide();
+            break;
+          case 'semana':
+            var fechaABuscar = '7';
+            $('#filtroTipo').hide();
+            $('#canalesEncontrados').hide();
+            break;
+          case 'mes':
+            var fechaABuscar = '30';
+            $('#filtroTipo').hide();
+            $('#canalesEncontrados').hide();
+            break;
+          case 'anyo':
+            $('#filtroTipo').hide();
+            $('#canalesEncontrados').hide();
+            var fechaABuscar = '365';
+            break;
+          case 'limpiar':
+            $('#filtroTipo').show();
+            $('#canalesEncontrados').show();
+            break;
+        }
+      }
+    }
+
+    //Ver los vídeos o canales del buscador 
   
     function filtrarPorTipo(radio) {
       var inputRadio = radio;
@@ -119,10 +163,12 @@ $(document).ready(function(){
           {
               console.log("SUCCESS");
               console.log(data);
+              localStorage.setItem("contenido",data);
               var divContenidoBuscador = document.getElementById("contenidoBuscador");
               var dataObject = JSON.parse(data);
               divContenidoBuscador.innerHTML = '';
-              divContenidoBuscador.innerHTML = dataObject.contenido
+              divContenidoBuscador.innerHTML = dataObject.contenido;
+              localStorage.setItem("contenido",dataObject.contenido);
               //console.log(data);
               
               //console.log(dataObject);
@@ -160,9 +206,6 @@ $(document).ready(function(){
       form.appendChild(input);
       document.body.appendChild(form);
 
-      /*<input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    ></input>*/
       console.log(form.action);
       console.log(form);
       form.submit();
@@ -501,10 +544,10 @@ function arraysMatch(arr1, arr2) {
       divError.classList.add("d-block","alert", "alert-danger");
       divError.innerHTML = valor[1];
       console.log(divError);
-      /*setTimeout(function() {
+      setTimeout(function() {
         divError.classList.add("d-none");
         divError.classList.remove("d-block", "alert", "alert-danger");
-      },5000);*/
+      },5000);
     }
   }
 
@@ -656,6 +699,56 @@ function arraysMatch(arr1, arr2) {
   }
 });
 
+
+function borrarVideo(url, idVideo, idCanal, token) {
+  $.ajax({
+    url: url,
+    type: "DELETE",
+    dataType: "json",
+    data: {
+      "idVideo" : idVideo,
+      "idCanal": idCanal,
+      "_token": token
+    },
+    async: true,
+    success: function (data)
+    {
+        console.log("SUCCESS");
+        console.log(data);
+        //var dataObject = JSON.parse(data);
+        
+        console.log(data.contenido);
+        if(data.code == 'success') {
+          var divComunidadOVideos = document.getElementById("comunidadOVideos");
+          divComunidadOVideos.innerHTML = '';
+          divComunidadOVideos.innerHTML = data.contenido;
+
+          var divMensajeExitoBorrado = document.getElementById("mensajeSubidaVideo");
+          divMensajeExitoBorrado.classList.remove("d-none");
+          divMensajeExitoBorrado.classList.add("d-block","alert", "alert-success");
+          divMensajeExitoBorrado.innerHTML = data.mensaje;
+              
+              setTimeout(function() {
+                divMensajeExitoBorrado.classList.add("d-none");
+                divMensajeExitoBorrado.classList.remove("d-block", "alert", "alert-success");
+              },5000);
+
+        } else if(data.code == 'error') {
+          var divMensajeErrorBorrado = document.getElementById("mensajeSubidaVideo");
+          divMensajeErrorBorrado.classList.remove("d-none");
+          divMensajeErrorBorrado.classList.add("d-block","alert", "alert-danger");
+          divMensajeErrorBorrado.innerHTML = data.mensaje;
+              
+              setTimeout(function() {
+                divMensajeErrorBorrado.classList.add("d-none");
+                divMensajeErrorBorrado.classList.remove("d-block", "alert", "alert-danger");
+              },5000);
+
+        }
+    }
+  });
+  return false;
+}
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
 
