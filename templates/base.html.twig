@@ -15,7 +15,8 @@
             <link rel="stylesheet" href="/build/app.css"> -->
         {% endblock %}
     </head>
-    <body>
+    {% set url = app.request.uri %}
+    <body onload="cargarRutaActual('{{url}}')">
       {#<h1>{{ app.request.locale }}</h1>#}
       
         <nav id="barraNavegacion" class="navbar navbar-expand navbar-dark bg-secondary sticky-top">

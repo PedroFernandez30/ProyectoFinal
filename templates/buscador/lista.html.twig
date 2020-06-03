@@ -14,15 +14,17 @@
                     <label for="todos">Todos</label>
                 </div>
 
+                {% set url = path('filtrar') %}
+
                 <div id="filtroFecha" class="col-12 col-md-6">
-                    <p>Tipo:</p>
-                    <input type="radio" id="hoy" name="fecha" value="hoy" onclick="filtrarPorFecha(this);">
+                    <p>Filtro:</p>
+                    <input type="radio" id="hoy" name="fecha" value="hoy" onclick="filtrarPorFecha(this, '{{ url }}');">
                     <label for="videos">Hoy</label>
-                    <input type="radio" id="semana" name="fecha" value="semana" onclick="filtrarPorFecha(this);">
+                    <input type="radio" id="semana" name="fecha" value="semana" onclick="filtrarPorFecha(this, '{{ url }}' );">
                     <label for="canales">Esta Semana</label>
-                    <input type="radio" id="mes" name="fecha" value="mes" onclick="filtrarPorFecha(this);">
+                    <input type="radio" id="mes" name="fecha" value="mes" onclick="filtrarPorFecha(this, '{{ url }}' );">
                     <label for="todos">Este mes</label>
-                    <input type="radio" id="anyo" name="fecha" value="anyo" onclick="filtrarPorFecha(this);">
+                    <input type="radio" id="anyo" name="fecha" value="anyo" onclick="filtrarPorFecha(this, '{{ url }}' );">
                     <label for="todos">Este año</label>
                     <input type="radio" id="limpiar" name="fecha" value="limpiar" onclick="filtrarPorFecha(this);">
                     <label for="todos">Limpiar</label>

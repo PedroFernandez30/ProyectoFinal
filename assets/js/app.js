@@ -40,6 +40,7 @@ $(document).ready(function(){
   permitirUsoBuscador();
 
   window.filtrarPorTipo = filtrarPorTipo;
+  window.cargarRutaActual = cargarRutaActual;
   window.filtrarPorFecha = filtrarPorFecha;
   window.borrarVideo = borrarVideo;
   window.detectarDivVideos = detectarDivVideos;
@@ -53,6 +54,19 @@ $(document).ready(function(){
   window.borrarMensajeFlash = borrarMensajeFlash;
 
     $('.dropdown-toggle').dropdown();
+
+    function cargarRutaActual(url) {
+      localStorage.setItem("url2", url);
+      var ruta1 = localStorage.getItem("url1");
+      var ruta2 = localStorage.getItem("url2");
+      if(ruta1 == ruta2) {
+        var divContenidoBuscador = document.getElementById("contenidoBuscador");
+        var contenidoBuscador = localStorage.getItem("contenidoBuscador");
+        divContenidoBuscador.innerHTML = '';
+        divContenidoBuscador.innerHTML = contenidoBuscador;
+      }
+      console.log(url);
+    }
 
     //impedir que se manden los datos de edición de un canal si no se han modificado
   function permitirUsoBuscador() {
@@ -83,31 +97,36 @@ $(document).ready(function(){
 
   //Ver los vídeos o canales del buscador 
   
-    function filtrarPorFecha(radio) {
+    function filtrarPorFecha(radio, url) {
       var inputRadio = radio;
+      console.log(url);
       if(inputRadio != lastFechaPulsada) {
         lastFechaPulsada = inputRadio;
         console.log(inputRadio.value);
         switch(lastFechaPulsada.value) {
           case 'hoy':
-            var fechaABuscar = '1';
+            var fechaABuscar = 1;
             $('#filtroTipo').hide();
             $('#canalesEncontrados').hide();
+            buscarPorFecha(fechaABuscar, url);
             break;
           case 'semana':
-            var fechaABuscar = '7';
+            var fechaABuscar = 7;
             $('#filtroTipo').hide();
             $('#canalesEncontrados').hide();
+            buscarPorFecha(fechaABuscar, url);
             break;
           case 'mes':
-            var fechaABuscar = '30';
+            var fechaABuscar = 30;
             $('#filtroTipo').hide();
             $('#canalesEncontrados').hide();
+            buscarPorFecha(fechaABuscar, url);
             break;
           case 'anyo':
             $('#filtroTipo').hide();
             $('#canalesEncontrados').hide();
-            var fechaABuscar = '365';
+            var fechaABuscar = 365;
+            buscarPorFecha(fechaABuscar, url);
             break;
           case 'limpiar':
             $('#filtroTipo').show();
@@ -115,6 +134,31 @@ $(document).ready(function(){
             break;
         }
       }
+    }
+
+    //Llama al controlador pasándole los días atrás que se tiene remontar
+    function buscarPorFecha(dias, url) {
+      $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "text",
+        data: {
+          "diasARestar": dias
+        },
+        async: true,
+        success: function (data)
+        {
+            console.log("SUCCESS");
+            //console.log(data.videosFiltrados);
+            var dataObject = JSON.parse(data);
+            var divVideosEncontrados = document.getElementById("videosEncontrados");
+            console.log(dataObject);
+            console.log(dataObject.contenido);
+            divVideosEncontrados.innerHTML = '';
+            divVideosEncontrados.innerHTML = dataObject.contenido.content;
+        }
+    });
+    return false;
     }
 
     //Ver los vídeos o canales del buscador 

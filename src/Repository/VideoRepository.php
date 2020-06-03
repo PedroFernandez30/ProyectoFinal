@@ -59,10 +59,12 @@ class VideoRepository extends ServiceEntityRepository
 
      }
 
+     
+
     public function findBySimilarName($valor) {
         return $this->createQueryBuilder('v')
             ->andWhere('LOWER(v.titulo) LIKE LOWER(:val)')
-            ->orderBy('v.id','DESC')
+            ->orderBy('v.fechaPublicacion','DESC')
             ->setParameter('val', '%' . $valor . '%')
             ->getQuery()
             ->getResult()
@@ -74,13 +76,24 @@ class VideoRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->join('v.idCategoria', 'c')
             ->andWhere('LOWER(c.nombre) LIKE LOWER(:val)')
-            ->orderBy('v.id','DESC')
+            ->orderBy('v.fechaPublicacion','DESC')
             ->setParameter('val', '%' . $valor . '%')
             ->getQuery()
             ->getResult()
         ;
     }
 
+
+    //Encuentra los vídeos anteriores a la fecha introducida (día, semana, mes o año)
+    public function findByFechaPublicacion($fechaRestada) {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.fechaPublicacion > :fecha')
+            ->orderBy('v.fechaPublicacion','DESC')
+            ->setParameter('fecha', $fechaRestada)
+            ->getQuery()
+            ->getResult()
+        ;
+     }
 
 
     //Encuentra los vídeos relacionados cuya categoría sea la misma que la del vídeo que se está visualizando
@@ -89,7 +102,7 @@ class VideoRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->andWhere('v.idCategoria = :categoria')
             ->andWhere('v.id != :idVideo')
-            ->orderBy('v.id', 'DESC')
+            ->orderBy('v.fechaPublicacion', 'DESC')
             ->setParameter('categoria', $categoria)
             ->setParameter('idVideo', $idVideo)
             ->getQuery()

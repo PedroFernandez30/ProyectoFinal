@@ -34,6 +34,33 @@ class UniversalController extends AbstractController
         
     }
 
+     /**
+     * @Route("/filtrar/", name="filtrar")
+     */
+    public function filtrar (VideoRepository $videoRepository, Request $request) {
+        if($request->isXmlHttpRequest()) {
+            $datos = $request->request->all();
+            $diasARestar = json_decode($datos['diasARestar']);
+        }
+        $segundos = strToTime("now") - (86400 * $diasARestar);
+        
+        $fechaRestada = new \DateTime(date('Y/m/d', $segundos));
+
+        $videosFiltradosPorFecha = $videoRepository->findByFechaPublicacion($fechaRestada);
+        \dump($videosFiltradosPorFecha);
+        return $this->json([
+            'code' => 'success',
+            //'videosFiltrados' => $videosFiltradosPorFecha,
+            'contenido' => $this->render('buscador/listaVideos.html.twig', [
+                'videos' => $videosFiltradosPorFecha,
+                'extiende' => false,
+                'borrar' => false
+            ])
+        ]);
+        
+        //where v.fechaPublicacion < 
+    }
+
 
      /**
      * @Route("/buscar/", name="buscar")

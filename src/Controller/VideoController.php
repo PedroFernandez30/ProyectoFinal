@@ -23,9 +23,6 @@ class VideoController extends AbstractController
      */
     public function index(VideoRepository $videoRepository): Response
     {
-        \dump(date_create('05/05/2020'));
-        \dump(new \DateTime('05/05/2020'));
-
         return $this->render('video/index.html.twig', [
             //'videos' => $videoRepository->findBy([],null, 8, 0),
             'videos' => $videoRepository->findAll(),
@@ -44,14 +41,14 @@ class VideoController extends AbstractController
             $canalId = json_decode($data['idCanal']);
             if($canalId != null) {
                 $canalEntity = $canalRepository->findOneBy(['id' => $canalId]);
-                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalEntity], ['id' => 'DESC']);
+                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalEntity], ['fechaPublicacion' => 'DESC']);
                 return new JsonResponse($this->render('video/index.html.twig', [
                     'videos' => $videosFromCanal,
                     'extiende' => false
                 ])->getContent());
             } else {
                 $start = \json_decode($data['start']) *4;
-                $videosList = $videoRepository->findBy([], null, 4, $start);
+                $videosList = $videoRepository->findBy([], ['fechaPublicacion' => 'DESC'], 4, $start);
                 return new JsonResponse($this->render('video/index.html.twig', [
                     'videos' => $videosList,
                 ])->getContent());
@@ -76,7 +73,7 @@ class VideoController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $video->setIdCanal($canalActivo);
-                                
+                $video->setFechaPublicacion(new \Datetime());
                 $entityManager->persist($video);
                 $entityManager->flush();
                 //Subida de vídeo y miniatura
@@ -87,7 +84,7 @@ class VideoController extends AbstractController
                 $entityManager->persist($video);
                 $entityManager->flush();
 
-                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalActivo], ['id' => 'DESC']);
+                $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalActivo], ['fechaPublicacion' => 'DESC']);
 
                 $mensaje = 'Vídeo subido correctamente';
                 return new JsonResponse([

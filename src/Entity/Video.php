@@ -61,7 +61,7 @@ class Video
     private $duracion;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="date")
      */
     private $fechaPublicacion;
 
@@ -190,20 +190,20 @@ class Video
         return $this;
     }
 
-    public function getFechaPublicacion(): ?string
+    public function __toString():string
+    {
+        return $this->titulo;
+    }
+
+    public function getFechaPublicacion(): ?\DateTimeInterface
     {
         return $this->fechaPublicacion;
     }
 
-    public function setFechaPublicacion(string $fechaPublicacion): self
+    public function setFechaPublicacion(\DateTimeInterface $fechaPublicacion): self
     {
         $this->fechaPublicacion = $fechaPublicacion;
 
         return $this;
-    }
-
-    public function __toString():string
-    {
-        return $this->titulo;
     }
 }
