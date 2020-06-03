@@ -130,7 +130,10 @@ $(document).ready(function(){
             break;
           case 'limpiar':
             $('#filtroTipo').show();
+            $('#videosEncontrados').show();
             $('#canalesEncontrados').show();
+            $('#videosEncontradosFiltrados').hide();
+            
             break;
         }
       }
@@ -138,6 +141,10 @@ $(document).ready(function(){
 
     //Llama al controlador pasándole los días atrás que se tiene remontar
     function buscarPorFecha(dias, url) {
+      $("#filtroFecha :input").attr("disabled", true);
+      var spinner = document.getElementById("modalSpinner");
+      console.log(spinner);
+      $('#modalSpinner').show();
       $.ajax({
         url: url,
         type: "POST",
@@ -148,10 +155,13 @@ $(document).ready(function(){
         async: true,
         success: function (data)
         {
+          $('#modalSpinner').hide();
+          $("#filtroFecha :input").attr("disabled", false);
             console.log("SUCCESS");
             //console.log(data.videosFiltrados);
             var dataObject = JSON.parse(data);
-            var divVideosEncontrados = document.getElementById("videosEncontrados");
+            $('#videosEncontrados').hide();
+            var divVideosEncontrados = document.getElementById("videosEncontradosFiltrados");
             console.log(dataObject);
             console.log(dataObject.contenido);
             divVideosEncontrados.innerHTML = '';

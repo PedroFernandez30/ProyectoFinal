@@ -1,0 +1,27 @@
+<div id="canalesEncontrados">
+    {% if canales | length > 0 %}
+        <h1>Canales</h1>
+        {% for canal in canales %}
+            <div class="row m-4">
+                <div class="col-3">
+                    {#onerror="this.src='imgPerfil/profile.jpg'"#}
+                    <a href="{{ path('canal_show', { 'id': canal.id }) }}">
+                        <img src="{{asset('imgPerfil/'~ canal.id)}}" width="150" onerror="this.src = assetsProfilesPics+'profile.jpg';" id=''~ {{ canal.id }}>
+                    </a>
+                </div>
+                
+                <div class="col-8">
+                    <a href="{{ path('canal_show', { 'id': canal.id }) }}" class="text-white">
+                        <h3>{{ canal.nombreCanal }}</h3>
+                    </a>
+
+                    <span>{{ canal.suscriptores }} suscriptor(es)</span>
+                    
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+        <p>No existen canales que coincidan con los parámetros de búsqueda</p>
+    {% endif %}
+    
+</div>

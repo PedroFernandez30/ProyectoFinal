@@ -1,89 +1,17 @@
 <div class="container">
-    <input id="inputPagBuscador" type="hidden" value="Estoy en el buscador"/>
+
     {% if videos | length == 0 and canales | length == 0 %}
         No existen resultados que coincidan con los parámetros de búsqueda
         {% else %}
-            <div class="row">
-                <div id="filtroTipo" class="col-12 col-md-6">
-                    <p>Tipo:</p>
-                    <input type="radio" id="videos" name="tipo" value="videos" onclick="filtrarPorTipo(this);">
-                    <label for="videos">Vídeos</label>
-                    <input type="radio" id="canales" name="tipo" value="canales" onclick="filtrarPorTipo(this);">
-                    <label for="canales">Canales</label>
-                    <input type="radio" id="todos" name="tipo" value="todos" onclick="filtrarPorTipo(this);">
-                    <label for="todos">Todos</label>
-                </div>
-
-                {% set url = path('filtrar') %}
-
-                <div id="filtroFecha" class="col-12 col-md-6">
-                    <p>Filtro:</p>
-                    <input type="radio" id="hoy" name="fecha" value="hoy" onclick="filtrarPorFecha(this, '{{ url }}');">
-                    <label for="videos">Hoy</label>
-                    <input type="radio" id="semana" name="fecha" value="semana" onclick="filtrarPorFecha(this, '{{ url }}' );">
-                    <label for="canales">Esta Semana</label>
-                    <input type="radio" id="mes" name="fecha" value="mes" onclick="filtrarPorFecha(this, '{{ url }}' );">
-                    <label for="todos">Este mes</label>
-                    <input type="radio" id="anyo" name="fecha" value="anyo" onclick="filtrarPorFecha(this, '{{ url }}' );">
-                    <label for="todos">Este año</label>
-                    <input type="radio" id="limpiar" name="fecha" value="limpiar" onclick="filtrarPorFecha(this);">
-                    <label for="todos">Limpiar</label>
-                </div>
-            </div>
             
-            
-            <div id="canalesEncontrados">
-                {% if canales | length > 0 %}
-                    <h1>Canales</h1>
-                    {% for canal in canales %}
-                        <div class="row m-4">
-                            <div class="col-3">
-                                {#onerror="this.src='imgPerfil/profile.jpg'"#}
-                                <a href="{{ path('canal_show', { 'id': canal.id }) }}">
-                                    <img src="{{asset('imgPerfil/'~ canal.id)}}" width="150" onerror="this.src = assetsProfilesPics+'profile.jpg';" id=''~ {{ canal.id }}>
-                                </a>
-                            </div>
-                            
-                            <div class="col-8">
-                                <a href="{{ path('canal_show', { 'id': canal.id }) }}" class="text-white">
-                                    <h3>{{ canal.nombreCanal }}</h3>
-                                </a>
-        
-                                <span>{{ canal.suscriptores }} suscriptor(es)</span>
-                                
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-            
-            
+            {% include "buscador/listaFiltros.html.twig" %}
+            {% include "buscador/listaCanales.html.twig" with {'canales': canales} %}
             <div id="videosEncontrados">
-                {% if videos | length > 0 %}
-                <h1>Vídeos</h1>
-                    {% for video in videos %}
-                        <div class="row m-4">
-                            <div class="col-4">
-                                <a href="{{ path('video_show', { 'id': video.id }) }}">
-                                    <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
-                                </a>
-                            </div>
-                            
-                            <div class="col-8">
-                                <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
-                                    <h3>{{ video.titulo }}</h3>
-                                </a>
-                                
-                                <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="h4">
-                                    <span>{{ video.idCanal.nombreCanal }}</span>
-                                </a>
-                                <p>
-                                    <span>{{ video.fechaPublicacion | date('d/m/Y') }}</span>
-                                </p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
+                {% include "buscador/listaVideos.html.twig" with {'videos': videos} %}
             </div>
+            <div id="videosEncontradosFiltrados">
+                {% include "buscador/listaVideosFiltrados.html.twig" %}
+            </div>
+            
     {% endif %}
 </div>

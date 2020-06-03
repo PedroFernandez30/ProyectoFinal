@@ -47,14 +47,17 @@ class UniversalController extends AbstractController
         $fechaRestada = new \DateTime(date('Y/m/d', $segundos));
 
         $videosFiltradosPorFecha = $videoRepository->findByFechaPublicacion($fechaRestada);
-        \dump($videosFiltradosPorFecha);
+        //dump(count($videosFiltradosPorFecha));
+        //\dump($videosFiltradosPorFecha);
+        foreach($videosFiltradosPorFecha as $videoFiltrado) {
+            //\dump($videoFiltrado->getFechaPublicacion());
+        }
+        
         return $this->json([
             'code' => 'success',
             //'videosFiltrados' => $videosFiltradosPorFecha,
-            'contenido' => $this->render('buscador/listaVideos.html.twig', [
-                'videos' => $videosFiltradosPorFecha,
-                'extiende' => false,
-                'borrar' => false
+            'contenido' => $this->render('buscador/listaVideosFiltrados.html.twig', [
+                'videosFiltrados' => $videosFiltradosPorFecha,
             ])
         ]);
         

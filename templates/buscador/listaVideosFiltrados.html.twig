@@ -1,6 +1,6 @@
-{% if videos | length > 0 %}
+{% if videosFiltrados is defined and videosFiltrados | length > 0 %}
     <h1>Vídeos</h1>
-        {% for video in videos %}
+        {% for video in videosFiltrados %}
             <div class="row m-4">
                 <div class="col-4">
                     <a href="{{ path('video_show', { 'id': video.id }) }}">
@@ -22,6 +22,4 @@
                 </div>
             </div>
         {% endfor %}
-        {% else %}
-            <p>No existen vídeos que coincidan con los parámetros de búsqueda</p>
 {% endif %}

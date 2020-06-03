@@ -1,0 +1,28 @@
+<input id="inputPagBuscador" type="hidden" value="Estoy en el buscador"/>
+            <div class="row">
+                <div id="filtroTipo" class="col-12 col-md-6">
+                    <p>Tipo:</p>
+                    <input type="radio" id="videos" name="tipo" value="videos" onclick="filtrarPorTipo(this);">
+                    <label for="videos">Vídeos</label>
+                    <input type="radio" id="canales" name="tipo" value="canales" onclick="filtrarPorTipo(this);">
+                    <label for="canales">Canales</label>
+                    <input type="radio" id="todos" name="tipo" value="todos" onclick="filtrarPorTipo(this);">
+                    <label for="todos">Todos</label>
+                </div>
+
+                {% set url = path('filtrar') %}
+
+                <div id="filtroFecha" class="col-12 col-md-6">
+                    <p>Filtro:</p>
+                    <input type="radio" id="hoy" name="fecha" value="hoy" onclick="filtrarPorFecha(this, '{{ url }}');">
+                    <label for="videos">Hoy</label>
+                    <input type="radio" id="semana" name="fecha" value="semana" onclick="filtrarPorFecha(this, '{{ url }}' );">
+                    <label for="canales">Esta Semana</label>
+                    <input type="radio" id="mes" name="fecha" value="mes" onclick="filtrarPorFecha(this, '{{ url }}' );">
+                    <label for="todos">Este mes</label>
+                    <input type="radio" id="anyo" name="fecha" value="anyo" onclick="filtrarPorFecha(this, '{{ url }}' );">
+                    <label for="todos">Este año</label>
+                    <input type="radio" id="limpiar" name="fecha" value="limpiar" onclick="filtrarPorFecha(this);">
+                    <label for="todos">Limpiar</label>
+                </div>
+            </div>

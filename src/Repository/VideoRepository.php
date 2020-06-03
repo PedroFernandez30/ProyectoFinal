@@ -51,10 +51,29 @@ class VideoRepository extends ServiceEntityRepository
 
      public function findSimilarVideos($valor, $em) {
         $videosBySimilarName = $this->findBySimilarName($valor);
+        foreach($videosBySimilarName as $videoName) {
+            \dump($videoName->getFechaPublicacion()->format('d/m/Y'));
+        }
+        dump("Salto");
         $videosBySimilarCategoria = $this->findBySimilarCategoria($valor, $em);
+        foreach($videosBySimilarCategoria as $videoCategoria) {
+            \dump($videoCategoria->getFechaPublicacion()->format('d/m/Y'));
+        }
         //Sacar los repetidos , juntarlos en un array, y devolver ese array
 
+        dump("saco vídeos resultantes");
         $videosResultantes = array_unique(array_merge($videosBySimilarName, $videosBySimilarCategoria));
+        foreach($videosResultantes as $videoResultante) {
+            \dump($videoResultante->getFechaPublicacion()->format('d/m/Y'));
+        }
+
+        /*function sortFunction( $a, $b ) {
+            return strtotime($a->getFechaPublicacion()->format('d/m/Y')) - strtotime($b->getFechaPublicacion()->format('d/m/Y'));
+        }
+        usort($videosResultantes, function($a, $b) {
+            return strtotime($a->getFechaPublicacion()->format('d/m/Y')) - strtotime($b->getFechaPublicacion()->format('d/m/Y'));
+        });*/
+        //\dump($videosResultantes);
         return $videosResultantes;
 
      }

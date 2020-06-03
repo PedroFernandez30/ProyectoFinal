@@ -17,6 +17,18 @@
     </head>
     {% set url = app.request.uri %}
     <body onload="cargarRutaActual('{{url}}')">
+      <div class="modal fade" id="modalSpinner" tabindex="-1" role="dialog" aria-labelledby="modalSpinnerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered w-25" role="document">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                <h5 class="modal-title text-white" id="modalSpinnerLabel"> Cargando...</h5>
+                </div>
+                <div class="modal-body d-flex justify-content-center" id="cuerpoModalSpinner">
+                   
+                </div>
+            </div>
+        </div>
+      </div>
       {#<h1>{{ app.request.locale }}</h1>#}
       
         <nav id="barraNavegacion" class="navbar navbar-expand navbar-dark bg-secondary sticky-top">
