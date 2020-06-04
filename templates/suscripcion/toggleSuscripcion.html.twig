@@ -6,7 +6,7 @@
     {% endfor %}
 </div>
 <div class="row">
-    <div class="col-12 offset-0 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2">
+    <div class="col-12">
         {% if app.user %}
             {% if video is defined %}
                 {% if app.user == video.idCanal %}
@@ -43,11 +43,10 @@
             {% else %}
                 {#{% set token = csrf_token(video.id) %}#}
                  {# app.request.pathinfo #}
-                {#<a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'})   })}}" class="btn btn-info" 
-                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión para suscribirte</a>#}
-                <a href="{{ path('prueba') }}" class="btn btn-info" 
-                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión</a>
-                {{ app.request.uri|replace({'/': '-'}) }}
+                {#<a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'}) })}}" class="btn btn-info" 
+                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión</a>#}
+                {#<a href="{{ path('prueba') }}" class="btn btn-info" 
+                onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )">Inicia sesión</a>#}
         {% endif %}
         
     </div>

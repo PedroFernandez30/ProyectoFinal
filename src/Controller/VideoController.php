@@ -87,6 +87,12 @@ class VideoController extends AbstractController
                 $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalActivo], ['fechaPublicacion' => 'DESC']);
 
                 $mensaje = 'Vídeo subido correctamente';
+                /*unset($entity);
+                unset($video);
+                $video = new Video();
+                $form = $this->createForm(VideoType::class, $video, [
+                    'action' => $this->generateUrl('video_new'),
+                ]);*/
                 return new JsonResponse([
                     'code' => 'success',
                     'contenido' => $this->render('video/index.html.twig', [
@@ -162,6 +168,7 @@ class VideoController extends AbstractController
      */
     public function delete(Request $request, VideoRepository $videoRepository, CanalRepository $canalRepository, Video $video): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
         if($request->isXmlHttpRequest()) {
             $datos = $request->request->all();
             $token = $datos['_token'];
@@ -170,7 +177,7 @@ class VideoController extends AbstractController
 
             if ($this->isCsrfTokenValid('delete'.$video->getId(), $token)) {
                 $videoEntity = $videoRepository->findOneBy(['id' => $videoId]);
-                $entityManager = $this->getDoctrine()->getManager();
+                
                 try {
                     $rutaVideosYMiniaturas = $this->getParameter('videosYMiniaturas');
                     //borro el vídeo
@@ -210,6 +217,11 @@ class VideoController extends AbstractController
                 
             }
     
+        } else {
+            $entityManager->remove($video);
+            $entityManager->flush();
+            $this->addFlash('success', 'Vídeo borrado correctamente');
+            return $this->redirectToRoute('video_index');
         }
         
     }

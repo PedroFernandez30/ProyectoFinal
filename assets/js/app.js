@@ -39,7 +39,9 @@ $(document).ready(function(){
   permitirEditarForm();
   permitirUsoBuscador();
 
+  window.borrarUserIdentfied = borrarUserIdentfied;
   window.filtrarPorTipo = filtrarPorTipo;
+  window.limpiarForm = limpiarForm;
   window.cargarRutaActual = cargarRutaActual;
   window.filtrarPorFecha = filtrarPorFecha;
   window.borrarVideo = borrarVideo;
@@ -54,6 +56,21 @@ $(document).ready(function(){
   window.borrarMensajeFlash = borrarMensajeFlash;
 
     $('.dropdown-toggle').dropdown();
+
+    function borrarUserIdentfied(event, path) {
+      event.preventDefault();
+      console.log("PATH "+path);
+    }
+
+    function limpiarForm(id) {
+      var form = document.getElementById(id);
+      var labels = form.querySelectorAll("label[class=custom-file-label]");
+      for(var i = 0; i< labels.length; i++) {
+         labels[i].innerHTML = '';
+      }
+      form.reset();
+      //$('#'+id).trigger('reset');
+    }
 
     function cargarRutaActual(url) {
       localStorage.setItem("url2", url);
@@ -547,7 +564,36 @@ function arraysMatch(arr1, arr2) {
       var origForm = new FormData(form[0]);
       var origFormArray = showFormData(origForm);
 
-      $('#'+ idDiv+' :input').on('change input', function() {
+      var formSelector = document.getElementById(idDiv);
+      var inputFilesOfForm = formSelector.querySelectorAll("input[type=file]");
+
+      var esInputFile = false;
+
+      $('#'+ idDiv+' :input').on('change input', function(event) {
+
+        for(var i = 0; i< inputFilesOfForm.length && !esInputFile; i++) {
+          if(event.target == inputFilesOfForm[i]) {
+            esInputFile = true;
+          }
+        }
+        //console.log(event.target);
+        var fileName = event.target.value;
+        //console.log(fileName);
+        var fileNameOnly = fileName.replace("C:\\fakepath\\", "");
+        //console.log(fileNameOnly);
+        var inputFileId = event.target.id;
+        //console.log(event.target.value);
+        
+        //console.log(form.find(':input[type=file]'));
+
+        if(esInputFile == true) {
+          var label = $("label[for='" +inputFileId+ "']");
+          //label.siblings(".custom-file").html(event.target.value);
+          label.last().html(fileNameOnly);
+          esInputFile = false;
+        }
+        
+        
         console.log("Input on change");
           var newForm = new FormData(form[0]);
           var newFormArray = showFormData(newForm);
@@ -666,7 +712,8 @@ function arraysMatch(arr1, arr2) {
                 divMensajeSubidaVideo.classList.add("d-none");
                 divMensajeSubidaVideo.classList.remove("d-block", "alert", "alert-success");
               },5000);
-              permitirEditarForm();
+              $('#formSubirVideo').trigger("reset");
+              //permitirEditarForm();
 
               
             } else if(data.code == 'error') {
@@ -753,55 +800,62 @@ function arraysMatch(arr1, arr2) {
   }
 });
 
-
-function borrarVideo(url, idVideo, idCanal, token) {
-  $.ajax({
-    url: url,
-    type: "DELETE",
-    dataType: "json",
-    data: {
-      "idVideo" : idVideo,
-      "idCanal": idCanal,
-      "_token": token
-    },
-    async: true,
-    success: function (data)
-    {
-        console.log("SUCCESS");
-        console.log(data);
-        //var dataObject = JSON.parse(data);
-        
-        console.log(data.contenido);
-        if(data.code == 'success') {
-          var divComunidadOVideos = document.getElementById("comunidadOVideos");
-          divComunidadOVideos.innerHTML = '';
-          divComunidadOVideos.innerHTML = data.contenido;
-
-          var divMensajeExitoBorrado = document.getElementById("mensajeSubidaVideo");
-          divMensajeExitoBorrado.classList.remove("d-none");
-          divMensajeExitoBorrado.classList.add("d-block","alert", "alert-success");
-          divMensajeExitoBorrado.innerHTML = data.mensaje;
-              
-              setTimeout(function() {
-                divMensajeExitoBorrado.classList.add("d-none");
-                divMensajeExitoBorrado.classList.remove("d-block", "alert", "alert-success");
-              },5000);
-
-        } else if(data.code == 'error') {
-          var divMensajeErrorBorrado = document.getElementById("mensajeSubidaVideo");
-          divMensajeErrorBorrado.classList.remove("d-none");
-          divMensajeErrorBorrado.classList.add("d-block","alert", "alert-danger");
-          divMensajeErrorBorrado.innerHTML = data.mensaje;
-              
-              setTimeout(function() {
-                divMensajeErrorBorrado.classList.add("d-none");
-                divMensajeErrorBorrado.classList.remove("d-block", "alert", "alert-danger");
-              },5000);
-
-        }
-    }
-  });
-  return false;
+//Borrar el vídeo dado
+function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion) {
+  var borrar = confirm(mensajeConfirmacion);
+  if(borrar) {
+    $.ajax({
+      url: url,
+      type: "DELETE",
+      dataType: "json",
+      data: {
+        "idVideo" : idVideo,
+        "idCanal": idCanal,
+        "_token": token
+      },
+      async: true,
+      success: function (data)
+      {
+          console.log("SUCCESS");
+          console.log(data);
+          //var dataObject = JSON.parse(data);
+          
+          console.log(data.contenido);
+          if(data.code == 'success') {
+            var div = document.getElementById("comunidadOVideos");
+            if(div == null) {
+              var div = document.getElementById("videoIndex");
+            }
+            div.innerHTML = '';
+            div.innerHTML = data.contenido;
+  
+            var divMensajeExitoBorrado = document.getElementById("mensajeSubidaVideo");
+            divMensajeExitoBorrado.classList.remove("d-none");
+            divMensajeExitoBorrado.classList.add("d-block","alert", "alert-success");
+            divMensajeExitoBorrado.innerHTML = data.mensaje;
+                
+                setTimeout(function() {
+                  divMensajeExitoBorrado.classList.add("d-none");
+                  divMensajeExitoBorrado.classList.remove("d-block", "alert", "alert-success");
+                },5000);
+  
+          } else if(data.code == 'error') {
+            var divMensajeErrorBorrado = document.getElementById("mensajeSubidaVideo");
+            divMensajeErrorBorrado.classList.remove("d-none");
+            divMensajeErrorBorrado.classList.add("d-block","alert", "alert-danger");
+            divMensajeErrorBorrado.innerHTML = data.mensaje;
+                
+                setTimeout(function() {
+                  divMensajeErrorBorrado.classList.add("d-none");
+                  divMensajeErrorBorrado.classList.remove("d-block", "alert", "alert-danger");
+                },5000);
+  
+          }
+      }
+    });
+    return false;
+  }
+  
 }
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

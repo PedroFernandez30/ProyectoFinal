@@ -8,6 +8,10 @@ body {
     width: 100%;
 }
 
+.imgResBusqueda {
+    width: 60px;
+}
+
 .table {
     color: #ffffff !important;
 }
@@ -37,7 +41,7 @@ textarea {
 }
 
 .imgCabecera {
-    width: 60px;
+    width: 40px;
 }
 
 .dropdown-item {
@@ -64,12 +68,18 @@ span, .gris {
     .imgCabecera {
         width: 70px;
     }
+    .imgResBusqueda {
+        width: 60px;
+    }
  }
 
     
 /* Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) { 
     .imgCabecera {
+        width: 90px;
+    }
+    .imgResBusqueda {
         width: 90px;
     }
  }
@@ -79,11 +89,17 @@ span, .gris {
     .imgCabecera {
         width: 90px;
     }
+    .imgResBusqueda {
+        width: 90px;
+    }
  }
 
 /* Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) { 
     .imgCabecera {
+        width: 90px;
+    }
+    .imgResBusqueda {
         width: 90px;
     }
  }

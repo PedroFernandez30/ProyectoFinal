@@ -14,13 +14,13 @@
     
     <pre>
     </pre>
-        <div class="row">
+        <div class="row" id="videoIndex">
             <!-- -->
                 {% for video in videos %}
                     {% if recomendados is defined %}
                         <div class="col-12 m-auto m-sm-auto mb-4 ">
                             <a>
-                                <img  class="imgCanal" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
+                                <img width="200" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
                             </a>
                             <a href="{{ path('video_show', { 'id': video.id }) }}" class="text-white">
                                 <h3>{{ video.titulo }}</h3>
@@ -47,11 +47,13 @@
                                     {% else %}
                                         <span>{{ video.fechaPublicacion|date("d/m/Y") }}</span>
                                 {% endif %}
-                                {% if borrar is defined %}
+                                {% if app.user is defined and video.idCanal == app.user %}
                                     {% set url = path('video_delete', {'id': video.id }) %}
                                     {% set token = csrf_token('delete' ~ video.id) %}
+                                    {% set mensajeConfirmacion = '¿Estás seguro de querer borrar este vídeo?' %}
                                     <div class="mt-2">
-                                        <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', '{{ video.idCanal.id }}', '{{ token }}');">Borrar vídeo</button>
+                                        <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', 
+                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}');">Borrar vídeo</button>
                                     </div>
                                 {% endif %}
                             </div>

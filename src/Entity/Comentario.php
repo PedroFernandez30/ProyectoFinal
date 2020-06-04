@@ -38,7 +38,7 @@ class Comentario
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Canal")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $canalQueComenta;
 

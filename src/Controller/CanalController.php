@@ -8,6 +8,7 @@ use App\Form\CanalType;
 use App\Form\VideoType;
 use App\Form\CabeceraType;
 use App\Repository\CanalRepository;
+use App\Repository\ComentarioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -167,17 +168,41 @@ class CanalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="canal_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="canal_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Canal $canal): Response
+    public function delete(Request $request, Canal $canal, ComentarioRepository $comentarioRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$canal->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($canal);
-            $entityManager->flush();
-        }
+            try {
+                $this->get('security.token_storage')->setToken(null);
+                $request->getSession()->invalidate();
 
-        return $this->redirectToRoute('canal_index');
+                //QUito el dueño de los comentarios a los comentarios realizados por el canal a borrar
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $comentariosCanalABorrar = $comentarioRepository->findBy(['canalQueComenta' => $canal]);
+                foreach($comentariosCanalABorrar as $comentario) {
+                    $comentario->setCanalQueComenta(null);
+                    $entityManager->persist($comentario);
+                }
+    
+                
+                $entityManager->remove($canal);
+                $entityManager->flush();
+
+                //QUito el dueño de los comentarios a los comentarios realizados por el canal a borrar
+               
+
+                $this->addFlash('success', 'Cuenta borrada con éxito');
+                return $this->redirectToRoute('video_index');
+            }catch(\Exception $e) {
+                $this->addFlash('error', 'Hubo un error al tratar de borrar la cuenta');
+                return $this->redirectToRoute('video_index');
+            }
+        }
+                
+
+        
     }
 
     

@@ -14,7 +14,7 @@ class SecurityController extends AbstractController
     /**
      * @Route({"es": "/inicia_sesion/{previo?}","en": "/login/{previo?}"} , name="app_login") 
      */
-    public function login(Request $request, $previo = '' , AuthenticationUtils $authenticationUtils, $locale = '', $returnLastPage = false): Response
+    public function login(Request $request, $previo = '' , AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
@@ -30,7 +30,7 @@ class SecurityController extends AbstractController
             $error = $authenticationUtils->getLastAuthenticationError();
             // last username entered by the user
             $lastUsername = $authenticationUtils->getLastUsername();
-            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error,/*  'noError' => true,'previo' => $previous*/]);
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'previo' => $previo/*  'noError' => true,'previo' => $previous*/]);
         } else {
             // get the login error if there is one
             $error = $authenticationUtils->getLastAuthenticationError();
@@ -38,17 +38,18 @@ class SecurityController extends AbstractController
             $lastUsername = $authenticationUtils->getLastUsername();
 
             
-            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error , 'previo' => $previo]);
+            return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
         }
 
         
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/logout/{id?}", name="app_logout")
      */
-    public function logout()
+    public function logout(Canal $canal = null)
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        
+        //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
