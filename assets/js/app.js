@@ -36,9 +36,10 @@ $(document).ready(function(){
   var lastFechaPulsada = null;
 
 
-  permitirEditarForm();
+  //permitirEditarForm();
   permitirUsoBuscador();
 
+  window.permitirEditarForm = permitirEditarForm;
   window.borrarUserIdentfied = borrarUserIdentfied;
   window.filtrarPorTipo = filtrarPorTipo;
   window.limpiarForm = limpiarForm;
@@ -560,14 +561,11 @@ function arraysMatch(arr1, arr2) {
 };
 
   //impedir que se manden los datos de edición de un formulario si no se han modificado
-  function permitirEditarForm() {
-    var idDiv = 'editFormCanal';
-    var form = $('#editFormCanal');
-    if(!form.length) {
-      var form = $('#formSubirVideo');
-      var idDiv = 'formSubirVideo';
-    }
-    console.log("Entro en permitir editar canal");
+  function permitirEditarForm(idDiv) {
+    console.log(idDiv);
+    
+    var form = $('#'+idDiv);
+    console.log("Entro en permitir editar form");
     console.log(form);
     if(form.length) {
       //var submit = document.getElementById("submitEditarCanal");
@@ -680,7 +678,7 @@ function arraysMatch(arr1, arr2) {
   $('#formSubirVideo').submit(function(e) {
     console.log("ESTOY EN SUBIR FORM VÍDEO");
       e.preventDefault();
-      permitirEditarForm();
+      permitirEditarForm('formSubirVideo');
       var submit = document.getElementById("submitSubirVideo");
       //submit.setAttribute('disabled','disabled');
   
@@ -737,7 +735,7 @@ function arraysMatch(arr1, arr2) {
 
               mergeArrayErrores(data.errores);
               
-              permitirEditarForm();
+              permitirEditarForm('formSubirVideo');
             }
         }
     });
@@ -797,7 +795,7 @@ function arraysMatch(arr1, arr2) {
             }
 
             $('#editFormCanal').trigger("reset");
-            permitirEditarForm();
+            permitirEditarForm('editFormCanal');
 
             setTimeout(function() {
               divExitoEdicion.classList.add("d-none");
@@ -811,7 +809,7 @@ function arraysMatch(arr1, arr2) {
             $('#modalEditCanal').modal('show');
             mergeArrayErrores(data.errores);
             
-            permitirEditarForm();
+            permitirEditarForm('editFormCanal');
           }
       }
   });

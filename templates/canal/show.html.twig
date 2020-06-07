@@ -14,12 +14,12 @@
         <div class="row">
             {% if app.user is defined and app.user.id == canal.id %}
                 <div class="mt-2 col-12 col-sm-3 mb-4">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalSubidaVideo">
+                    <button onclick="permitirEditarForm('formSubirVideo');" type="button" class="btn btn-info" data-toggle="modal" data-target="#modalSubidaVideo">
                         Subir vídeo
                     </button> 
                 </div>
                 <div class="col-12 mt-2 col-sm-4 mb-4">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalEditCanal">
+                    <button type="button" onclick="permitirEditarForm('editFormCanal');"  class="btn btn-info" data-toggle="modal" data-target="#modalEditCanal">
                         Personalizar canal
                     </button>
                     {#<a href="{{ path('canal_edit', {'id': app.user.id}) }}" class="btn btn-info">Personalizar canal</a>#}
