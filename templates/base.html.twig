@@ -19,7 +19,7 @@
     {% set url = app.request.uri %}
     <body onload="cargarRutaActual('{{url}}')">
       <div class="modal fade" id="modalSpinner" tabindex="-1" role="dialog" aria-labelledby="modalSpinnerLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered w-25" role="document">
+        <div class="modal-dialog modal-dialog-centered w-25 m-auto" role="document">
             <div class="modal-content bg-dark">
                 <div class="modal-header">
                 <h5 class="modal-title text-white" id="modalSpinnerLabel"> Cargando...</h5>
@@ -37,7 +37,7 @@
             <ul class="navbar-nav">
               <li class="nav-item dropdown mr-1">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{ asset('img/toggleMenuLateral.png')}}" alt="logoPerfilDefecto" class="rounded">
+                  <img src="{{ asset('img/toggleMenuLateral.png')}}" alt="menuLateral" class="rounded">
                 </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{{ path('video_index') }}">Página principal</a>
@@ -77,7 +77,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <img class="imgCabecera rounded" src="{{asset('imgPerfil/'~ app.user.id)}}"
                        onerror="this.src = assetsProfilesPics+'profile.jpg';"
-                       alt="logoPerfil" id=''~ {{ app.user.id }}>
+                       alt="logoPerfil" id="iconoPerfil">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="{{ path('canal_show', {'id': app.user.id }) }}">Tu cuenta</a>
@@ -103,8 +103,9 @@
                   </li>
                 </ul>
                 {% else %}
-                <a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'}) })}}" class="btn btn-info" 
-                {#onclick="event.preventDefault();irAConfigPorPost(event, '{{ app.request.uri|replace({'/': '-'}) }}' )"#}>Inicia sesión</a>
+                <a href="{{ path('app_login', { 'previo':  app.request.uri|replace({'/': '-'}) })}}">
+                  <img class="imgCabecera" src="{{ asset('img/iniciar-sesion.png')}}" alt="iconoInicioSesion">
+                </a>
               {% endif %}
 
               
@@ -134,5 +135,8 @@
         </div>
         
         {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
+        <footer>
+          <div>Iconos diseñados por <a class="text-white" href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a> from <a class="text-white" href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div>
+        </footer>
     </body>
 </html>

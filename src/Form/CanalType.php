@@ -97,7 +97,7 @@ class CanalType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Canal::class,
-            'attr' => ['id' => 'editFormCanal']
+            'attr' => ['id' => 'editFormCanal'],
         ]);
     }
 }

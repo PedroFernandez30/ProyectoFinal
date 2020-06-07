@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use getID3;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 class UniversalController extends AbstractController
 {
@@ -120,24 +122,40 @@ class UniversalController extends AbstractController
     }
 
     //Sube las imágenes de perfil, los vídeos y las miniaturas
-    public function subidaArchivo($canalId, $videoId, $form, $video = false, $fotoPerfil = false) :string
+    public function subidaArchivo($canalId, $videoId, $form, $video = false, $fotoPerfil = false) :?string
     {
         if($fotoPerfil) {
+            dump($canalId);
             
             //Guardar foto perfil si la ha subido
 
              /** @var UploadedFile $fotoPerfil */
              $fotoPerfil = $form->get('fotoPerfil')->getData();
+             
+             //\dump($fotoPerfil);
 
              // this condition is needed because the 'brochure' field is not required
              // so the PDF file must be processed only when a file is uploaded
              if ($fotoPerfil != 'imgPerfil/profile.jpg') {
+                
                  // Move the file to the directory where brochures are stored
                 try {
+
+                    //EL GET PARAMETER NO FUNCIONA!!!!!!
                     $fotoPerfil->move(
-                        $this->getParameter('imagenesPerfil'),
+                        //$this->getParameter('imagenesPerfil'),
+                        './imgPerfil/',
                         $canalId
                     );
+                    // Absolute path
+                    //$ruta =  $package->getUrl('/image.png');
+                    // result: /image.png
+
+                    $package = new Package(new EmptyVersionStrategy());
+                    // Relative path
+                    $rutaImgPerfil =  $package->getUrl('/imgPerfil/'.$canalId);
+                    // result: image.png
+                    return $rutaImgPerfil;
 
                      
                 } catch (FileException $e) {

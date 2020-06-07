@@ -2,7 +2,7 @@
     <h1>Vídeos</h1>
         {% for video in videos %}
             <div class="row my-4 ml-4">
-                <div class="col-4">
+                <div class="col-3 col-sm-2">
                     <a href="{{ path('video_show', { 'id': video.id }) }}">
                         <img class="imgResBusqueda" src="{{asset('uploads/'~ video.idCanal.id ~ '/miniaturas/' ~ video.id)}}" id=''~ {{ video.id }}>
                     </a>

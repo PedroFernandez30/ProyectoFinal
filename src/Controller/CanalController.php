@@ -57,7 +57,7 @@ class CanalController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="canal_show", methods={"GET", "POST"})
+     * @Route({"es": "/ver/{id}","en": "/view/{id}"}, name="canal_show", methods={"GET","POST"})
      */
     public function show(Canal $canal): Response
     {
@@ -70,7 +70,7 @@ class CanalController extends AbstractController
             'canal' => $canal,
             'comentario' => 'canal',
             'idSuscritosAlCanal' => $idSuscritosAlCanal,
-            'extiende' => false
+            'extiende' => 'true'
             //'video' => $video,
             //'form' => $form->createView()
         ]);
@@ -82,11 +82,15 @@ class CanalController extends AbstractController
     public function edit(Request $request, Canal $canal, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         //$canal = new
-        $form = $this->createForm(CanalType::class, $canal);
+        $form = $this->createForm(CanalType::class, $canal, [
+            'action' => $this->generateUrl('canal_edit', ['id' => $canal->getId()])
+        ]);
         $form->handleRequest($request);
 
         if($request->isXmlHttpRequest()) {
+            
             if($form->isSubmitted() && $form->isValid()) {
+                
                 $password = $form->get('plainPassword')->getData();
                 if($password != '------') {
                     $canal->setPassword($passwordEncoded = $passwordEncoder->encodePassword(
@@ -95,17 +99,30 @@ class CanalController extends AbstractController
                     ));
         
                 }
+                
+                //\dump($form->get('fotoPerfil')->getData());
+                $rutaImgPerfil = '';
+                if($form->get('fotoPerfil')->getData() != 'imgPerfil/profile.jpg') {
+                    $universalController = new UniversalController();
+                    $rutaImgPerfil = $universalController->subidaArchivo($canal->getId(),'', $form, false, true);
+                }
+                
 
                 $this->getDoctrine()->getManager()->persist($canal);
 
                 $this->getDoctrine()->getManager()->flush();
 
                 $mensaje = 'Datos actualizados con éxito';
-
+                
+                $nombreCanal = $canal->getNombreCanal();
+                
+                
                 //$form->handleRequest($request);
                 return new JsonResponse([
                     'code' => 'success',
-                    'mensaje' => $mensaje
+                    'nombreCanal' => $nombreCanal,
+                    'mensaje' => $mensaje,
+                    'rutaImgPerfil' => $rutaImgPerfil
                 ]);
 
             } else {
@@ -132,7 +149,7 @@ class CanalController extends AbstractController
 
         
 
-        $formCabecera = $this->createForm(CabeceraType::class);
+        /*$formCabecera = $this->createForm(CabeceraType::class);
         $formCabecera->handleRequest($request);
 
         if ($formCabecera->isSubmitted() && $formCabecera->isValid()) {
@@ -142,17 +159,12 @@ class CanalController extends AbstractController
             return $this->redirectToRoute('canal_index', [
                 'dataCabecera' => $dataCabecera
             ]);
-        }
+        }*/
 
         return $this->render('canal/edit.html.twig', [
             'canal' => $canal,
             'form' => $form->createView(),
-            'formCabecera' => $formCabecera->createView(),
-            'url' => $request->getUri(),
-            'urlPath' => $request->getPathInfo(),
-            'session' => $request->getSession(),
-            'targetPath' => $request->getBasePath(),
-            'request' => $request
+            'extiende' => 'true'
         ]);
     }
 

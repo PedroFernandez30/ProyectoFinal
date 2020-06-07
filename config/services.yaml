@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
 parameters:
-    imagenesPerfil: '%kernel.project_dir%/public/imgPerfil/'
     videosYMiniaturas: '%kernel.project_dir%/public/uploads/'
+    imagenesPerfil: '%kernel.project_dir%/public/imgPerfil/'
 services:
     # default configuration for services in *this* file
     _defaults:

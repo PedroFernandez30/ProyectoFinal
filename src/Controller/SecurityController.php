@@ -21,6 +21,7 @@ class SecurityController extends AbstractController
         // }
 
         //requirements="_locale={en|fr|de}"
+        $request->request->set('previo', '');
         //$previo = $request->request->get('previo');
         //$previo = $_REQUEST['previo'];
         if($previo != '') {

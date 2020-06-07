@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'blank.html.twig' %}
 
-{% block title %}Edit Canal{% endblock %}
+{#{% block title %}Edit Canal{% endblock %}#}
 
 
 {% block body %}
@@ -8,11 +8,7 @@
     <h1>No puedes acceder a esta página</h1>
         <a href="{{ path('prueba') }}">Volver a prueba</a>
         {% else %}
-            <h1>Edit Canal</h1>
-            {{ include('canal/editCabecera.html.twig', {'canalId': canal.id}) }}
-        
-            
-            
+            {#<h1>Edit Canal</h1>#}                    
             <div id="editForm" class="w-50 m-auto">
                 {{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}
             </div>

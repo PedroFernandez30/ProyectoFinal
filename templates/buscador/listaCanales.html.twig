@@ -3,7 +3,7 @@
         <h1>Canales</h1>
         {% for canal in canales %}
             <div class="row my-4 ml-4">
-                <div class="col-3 col-sm-5 float-left">
+                <div class="col-3 col-sm-2 float-left">
                     {#onerror="this.src='imgPerfil/profile.jpg'"#}
                     <a href="{{ path('canal_show', { 'id': canal.id }) }}">
                         <img class="imgResBusqueda" src="{{asset('imgPerfil/'~ canal.id)}}" onerror="this.src = assetsProfilesPics+'profile.jpg';" id=''~ {{ canal.id }}>

@@ -149,7 +149,14 @@ $(document).ready(function(){
             $('#filtroTipo').show();
             $('#videosEncontrados').show();
             $('#canalesEncontrados').show();
-            $('#videosEncontradosFiltrados').hide();
+            //$('#videosEncontradosFiltrados').hide();
+            var divVideosEncontrados = document.getElementById("videosEncontradosFiltrados");
+            if(divVideosEncontrados != null) {
+              divVideosEncontrados.classList.remove("d-block");
+              divVideosEncontrados.classList.remove("d-none");
+              divVideosEncontrados.classList.add("d-none");
+            }
+            
             
             break;
         }
@@ -181,6 +188,8 @@ $(document).ready(function(){
             var divVideosEncontrados = document.getElementById("videosEncontradosFiltrados");
             console.log(dataObject);
             console.log(dataObject.contenido);
+            divVideosEncontrados.classList.remove("d-none");
+            divVideosEncontrados.classList.add("d-block");
             divVideosEncontrados.innerHTML = '';
             divVideosEncontrados.innerHTML = dataObject.contenido.content;
         }
@@ -221,6 +230,8 @@ $(document).ready(function(){
         submitBuscar.setAttribute('disabled','disabled');
     
         var url = e.target.action;
+        rellenarSpinner();
+        $('#modalSpinner').modal('show');
 
         $.ajax({
           url: url,
@@ -232,6 +243,8 @@ $(document).ready(function(){
           async: true,
           success: function (data)
           {
+              $('#modalSpinner').modal('hide');
+              document.getElementById("cuerpoModalSpinner").innerHTML = '';
               console.log("SUCCESS");
               console.log(data);
               localStorage.setItem("contenido",data);
@@ -651,6 +664,17 @@ function arraysMatch(arr1, arr2) {
     }
   }
 
+  function rellenarSpinner() {
+    var spinner = document.createElement("div");
+    spinner.classList.add("spinner-border", "text-light");
+    spinner.setAttribute('id', 'loadingVideo');
+    var spanSpinner = document.createElement("span");
+    spanSpinner.textContent = "Loading...";
+    spanSpinner.classList.add("sr-only");
+    spinner.appendChild(spanSpinner);
+    var cuerpoSpinner = document.getElementById("cuerpoModalSpinner");
+    cuerpoSpinner.appendChild(spinner);
+  }
   
   //Función que manda los datos cuando se sube un nuevo vídeo
   $('#formSubirVideo').submit(function(e) {
@@ -663,16 +687,7 @@ function arraysMatch(arr1, arr2) {
       var url = e.target.action;
       
       var formData = new FormData($('#formSubirVideo')[0]);
-      
-      var spinner = document.createElement("div");
-      spinner.classList.add("spinner-border", "text-light");
-      spinner.setAttribute('id', 'loadingVideo');
-      var spanSpinner = document.createElement("span");
-      spanSpinner.textContent = "Loading...";
-      spanSpinner.classList.add("sr-only");
-      spinner.appendChild(spanSpinner);
-      var cuerpoSpinner = document.getElementById("cuerpoModalSpinner");
-      cuerpoSpinner.appendChild(spinner);
+      rellenarSpinner();
 
       $('#modalSubidaVideo').modal('hide');
       
@@ -734,34 +749,54 @@ function arraysMatch(arr1, arr2) {
   $('#editFormCanal').submit(function(e) {
   console.log("ESTOY EN EDIT FORM CANAL");
     e.preventDefault();
+    rellenarSpinner();
+    var formData = new FormData($('#editFormCanal')[0]);
+    for (var value of formData.values()) {
+      console.log(value); 
+    }
+    $('#modalSpinner').modal('show');
+    $('#modalEditCanal').modal('hide');
 
     var submit = document.getElementById("submitEditarCanal");
     submit.setAttribute('disabled','disabled');
 
     var url = e.target.action;
     
-    var formSerialize = $(this).serialize();
-  
+    
+    console.log(url);
+    
     $.ajax({
       url: url,
       type: "POST",
-      dataType: "text",
-      data: formSerialize,
+      dataType: "json",
+      data: formData,
+      processData: false,
+      contentType: false,
       async: true,
       success: function (data)
       {
           console.log("SUCCESS");
-          //console.log(data);
-          var dataObject = JSON.parse(data);
+          $('#modalSpinner').modal('hide');
+          document.getElementById("cuerpoModalSpinner").innerHTML = '';
+          console.log(data);
+          //var dataObject = JSON.parse(data);
           
-          console.log(dataObject.contenido);
-          if(dataObject.code == 'success') {
+          //console.log(dataObject.contenido);
+          if(data.code == 'success') {
 
             var divExitoEdicion = document.getElementById("exitoEdicion");
             divExitoEdicion.classList.remove("d-none");
             divExitoEdicion.classList.add("d-block");
-            divExitoEdicion.textContent = dataObject.mensaje;
+            divExitoEdicion.textContent = data.mensaje;
+            document.getElementById("nombreCanalH1").innerHTML = data.nombreCanal;
 
+            if(data.rutaImgPerfil != '') {
+              console.log(data.rutaImgPerfil);
+              document.getElementById("iconoPerfil").src = data.rutaImgPerfil+"?" + new Date().getTime();
+              console.log(document.getElementById("iconoPerfil").src);
+            }
+
+            $('#editFormCanal').trigger("reset");
             permitirEditarForm();
 
             setTimeout(function() {
@@ -771,9 +806,10 @@ function arraysMatch(arr1, arr2) {
             
 
             
-          } else if(dataObject.code == 'error') {
+          } else if(data.code == 'error') {
 
-            mergeArrayErrores(dataObject.errores);
+            $('#modalEditCanal').modal('show');
+            mergeArrayErrores(data.errores);
             
             permitirEditarForm();
           }
