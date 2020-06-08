@@ -7,7 +7,7 @@
 /public/bundles/
 /var/cache
 /var/log
-/vendor/
+###/vendor/
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
