@@ -1,5 +1,5 @@
 {% if videosFiltrados is defined and videosFiltrados | length > 0 %}
-    <h1>Vídeos</h1>
+    <h1>{% trans %}Vídeos{% endtrans %}</h1>
         {% for video in videosFiltrados %}
             <div class="row m-4">
                 <div class="col-3 col-sm-2">
@@ -23,5 +23,5 @@
             </div>
         {% endfor %}
         {% else %}
-            <p>Este filtro no ha devuelto resultados</p>
+            <p>{% trans %}Este filtro no ha devuelto resultados{% endtrans %}</p>
 {% endif %}

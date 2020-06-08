@@ -30,13 +30,16 @@ class CanalType extends AbstractType
                 
             ])
             ->add('apellidos', TextType::class, [
-                'label' => 'Apellidos'
+                'label' => 'Apellidos',
+                'translation_domain' => 'form'
             ])
             ->add('email', EmailType::class,[
                 'label' => 'Correo electrónico',
+                'translation_domain' => 'form'
             ])
             ->add('nombreCanal', TextType::class, [
-                'label' => 'Nombre del canal'
+                'label' => 'Nombre del canal',
+                'translation_domain' => 'form'
             ])
             /*->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -50,6 +53,7 @@ class CanalType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'label' => 'Contraseña',
+                'translation_domain' => 'form',
                 'required' => false,
                 'empty_data' => '------',
                 'mapped' => false,
@@ -68,11 +72,13 @@ class CanalType extends AbstractType
                     'Otro' => 'O',
                 ],
                 'label' => 'Sexo',
+                'translation_domain' => 'form',
                 'expanded' => true
 
             ])
             ->add('fnac', DateType::class, [
                 'label' => 'Fecha de nacimiento',
+                'translation_domain' => 'form',
                 'format' => 'dd-MM-yyyy',
                 'years' => range(date('Y'),date('Y')-120),
 
@@ -80,6 +86,7 @@ class CanalType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'label' => 'Foto de perfil (la puedes elegir ahora o en cualquier momento)',
+                'translation_domain' => 'form',
                 'empty_data' => 'imgPerfil/profile.jpg',
                 'constraints' => [
                     new File([

@@ -1,2 +1,71 @@
-Inicia sesión: Please sign in
-¿Estás seguro de querer borrar este vídeo?: Are you sure you want to delete this item?
+#Las palabras o frases repetidas solo se ponen en la primera plantilla en la que se encuentre
+#Las palabras o frases de los formularios utilizados o de los mensajes de validación se traducen en archivos aparte (form.yaml y validators.yaml)
+Login: patata
+¿Estás seguro de querer borrar este vídeo?: ¿Estás seguro de querer borrar este vídeo?
+#lista.html.twig
+No existen resultados que coincidan con los parámetros de búsqueda: There are no results with the params given
+#listaCanales
+suscriptor(es): subscriber(s)
+No existen canales que coincidan con los parámetros de búsqueda: There are no channels with the given params
+#listaFiltros
+Tipo: Type
+Vídeos: Videos
+Canales: Channels
+Todos: All
+Filtro: Filter
+Hoy: Today
+Esta semana: This week
+Este mes: This month
+Este año: This year
+Limpiar: Clear
+#listaVideosFiltrados
+Este filtro no ha devuelto resultados: This filter did not return any results
+#canal/edit
+No puedes acceder a esta página: You cannot access to this page
+Volver al inicio: Back to home
+Actualizar: Update
+#canal/show
+Subir vídeo: New video
+Personalizar canal: Edit account
+VÍDEOS: VIDEOS
+COMUNIDAD: COMMUNITY
+Nuevo vídeo: New video
+Editar canal: Edit account
+#comentario/viewComments
+comentario(s): comment(s)
+Sé el primero en comentar: Be the first to comment
+Comentar: Comment
+Desconocido: Unknown
+Borrar comentario: Delete comment
+#registration/register.html.twig
+Registro: Register
+#security/login
+¡Inicia sesión!: ¡Log in!
+Has iniciado sesión como: You are logged in as
+Inicia sesión: Log in
+Correo: Email
+Contraseña: Password
+¿No tienes cuenta? Regístrate: ¿Do not have an account? Register
+aquí: here
+#suscripcion/toggleSuscripcion
+SUSCRITO: SUSCRIBED
+SUSCRIBIRSE: SUSCRIBE
+#video/_form
+Guardar: Save
+Cancelar: Cancel
+#video/show
+Fecha de publicación: Publication date
+¿Estás seguro de borrar este vídeo?: Are you sure do you want to delete this item?
+Borrar vídeo: Delete video
+#base.html.twig
+Cargando...: Loading...
+Bienvenido: Welcome
+Página principal: Homepage
+Tus vídeos: Your videos
+Suscripciones: Subscriptions
+Buscar: Search
+Tu cuenta: Your account
+Cerrar sesión: Logout
+Borrar cuenta: Remove account
+¿Estás seguro de borrar esta cuenta?: ¿Are you sure do you want to remove your account?
+Iconos diseñados por: Icons designed by

@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
     {% if videos | length == 0 and canales | length == 0 %}
-        No existen resultados que coincidan con los parámetros de búsqueda
+        {% trans %} No existen resultados que coincidan con los parámetros de búsqueda {% endtrans %}
         {% else %}
             
             {% include "buscador/listaFiltros.html.twig" %}

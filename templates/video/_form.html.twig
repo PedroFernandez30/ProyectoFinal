@@ -28,8 +28,8 @@
     <div id="video" class=""></div>
     {{ form_row(form.video) }}
 
-    <button disabled class="btn btn-info" id="submitSubirVideo">{{ button_label|default('Guardar') }}</button>
-    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiarForm('formSubirVideo');">Cancelar</button>
+    <button disabled class="btn btn-info" id="submitSubirVideo">{{ button_label|default('Guardar')|trans }}</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="limpiarForm('formSubirVideo');">{% trans %}Cancelar{% endtrans %}</button>
     
     
 {{ form_end(form) }}

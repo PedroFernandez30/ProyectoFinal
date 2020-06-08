@@ -3,26 +3,26 @@
                 <div id="filtroTipo" class="col-12 col-md-6">
                     <p>Tipo:</p>
                     <input type="radio" id="videos" name="tipo" value="videos" onclick="filtrarPorTipo(this);">
-                    <label for="videos">Vídeos</label>
+                    <label for="videos">{% trans %}Vídeos{% endtrans %}</label>
                     <input type="radio" id="canales" name="tipo" value="canales" onclick="filtrarPorTipo(this);">
-                    <label for="canales">Canales</label>
+                    <label for="canales">{% trans %}Canales{% endtrans %}</label>
                     <input type="radio" id="todos" name="tipo" value="todos" onclick="filtrarPorTipo(this);">
-                    <label for="todos">Todos</label>
+                    <label for="todos">{% trans %}Todos{% endtrans %}</label>
                 </div>
 
                 {% set url = path('filtrar') %}
 
                 <div id="filtroFecha" class="col-12 col-md-6">
-                    <p>Filtro:</p>
+                    <p>{% trans %}Filtro{% endtrans %}</p>
                     <input type="radio" id="hoy" name="fecha" value="hoy" onclick="filtrarPorFecha(this, '{{ url }}');">
-                    <label for="videos">Hoy</label>
+                    <label for="videos">{% trans %}Hoy{% endtrans %}</label>
                     <input type="radio" id="semana" name="fecha" value="semana" onclick="filtrarPorFecha(this, '{{ url }}' );">
-                    <label for="canales">Esta Semana</label>
+                    <label for="canales">{% trans %}Esta semana{% endtrans %}</label>
                     <input type="radio" id="mes" name="fecha" value="mes" onclick="filtrarPorFecha(this, '{{ url }}' );">
-                    <label for="todos">Este mes</label>
+                    <label for="todos">{% trans %}Este mes{% endtrans %}</label>
                     <input type="radio" id="anyo" name="fecha" value="anyo" onclick="filtrarPorFecha(this, '{{ url }}' );">
-                    <label for="todos">Este año</label>
+                    <label for="todos">{% trans %}Este año{% endtrans %}</label>
                     <input type="radio" id="limpiar" name="fecha" value="limpiar" onclick="filtrarPorFecha(this);">
-                    <label for="todos">Limpiar</label>
+                    <label for="todos">{% trans %}Limpiar{% endtrans %}</label>
                 </div>
             </div>

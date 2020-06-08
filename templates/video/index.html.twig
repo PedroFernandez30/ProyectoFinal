@@ -8,12 +8,9 @@
     {% else %}
         {% set canall = canal.id %}
 {% endif %}
-<div class="container-fluid m-1" id="videosIndex" onload = "detectarDivVideos('{{ listaVideosRuta }}', '{{ canall }}');alert('Hola');">
+<div class="container-fluid m-1" id="videosIndex" {#onload = "detectarDivVideos('{{ listaVideosRuta }}', '{{ canall }}');alert('Hola');"#}>
     <div id="mensajeSubidaVideo"></div>
     {% if videos is defined %}
-    
-    <pre>
-    </pre>
         <div class="row" id="videoIndex">
             <!-- -->
                 {% for video in videos %}
@@ -53,7 +50,7 @@
                                     {% set mensajeConfirmacion = '¿Estás seguro de querer borrar este vídeo?' %}
                                     <div class="mt-2">
                                         <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', 
-                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}');">Borrar vídeo</button>
+                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}');">{% trans %}Borrar vídeo{% endtrans %}</button>
                                     </div>
                                 {% endif %}
                             </div>

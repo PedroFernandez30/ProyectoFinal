@@ -7,7 +7,7 @@
     
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% trans %}Bienvenido{% endtrans %}{% endblock %}</title>
         {% block stylesheets %}
             {# 'app' must match the first argument to addEntry() in webpack.config.js #}
             {{ encore_entry_link_tags('app') }}
@@ -22,7 +22,7 @@
         <div class="modal-dialog modal-dialog-centered w-25 m-auto" role="document">
             <div class="modal-content bg-dark">
                 <div class="modal-header">
-                <h5 class="modal-title text-white" id="modalSpinnerLabel"> Cargando...</h5>
+                <h5 class="modal-title text-white" id="modalSpinnerLabel"> {% trans %}Cargando...{% endtrans %}</h5>
                 </div>
                 <div class="modal-body d-flex justify-content-center" id="cuerpoModalSpinner">
                    
@@ -40,11 +40,11 @@
                   <img src="{{ asset('img/toggleMenuLateral.png')}}" alt="menuLateral" class="rounded">
                 </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="{{ path('video_index') }}">Página principal</a>
-                  <a class="dropdown-item" href="{{ path('canal_show', {'id': app.user.id }) }}">Tus vídeos</a>
+                  <a class="dropdown-item" href="{{ path('video_index') }}">{% trans %}Página principal{% endtrans %}</a>
+                  <a class="dropdown-item" href="{{ path('canal_show', {'id': app.user.id }) }}">{% trans %}Tus vídeos{% endtrans %}</a>
                   <div class="dropdown-divider"></div>
                   {% if app.user.misSuscripciones | length > 0 %}
-                    <span class="p-4">{{ app.user.misSuscripciones | length }} Suscripciones</span>
+                    <span class="p-4">{{ app.user.misSuscripciones | length }} {% trans %}Suscripciones{% endtrans %}</span>
                     {% for suscripcion in app.user.misSuscripciones %}
                       <a class="dropdown-item" href="{{ path('canal_show', {'id': suscripcion.canalAlQueSuscribe.id }) }}">{{ suscripcion.canalAlQueSuscribe.nombreCanal }}</a>
                     {% endfor %}
@@ -66,7 +66,7 @@
               
               <form action="{{ path('buscar') }}"class="form-inline my-2 my-lg-0 m-auto" id="formBusqueda">
                 <input class="form-control mr-sm-2" type="search" id="textoBusqueda" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0 d-sm-none d-none d-md-block" id="submitBusqueda" type="submit" disabled>Search</button>
+                <button class="btn btn-outline-success my-2 my-sm-0 d-sm-none d-none d-md-block" id="submitBusqueda" type="submit" disabled>{% trans %}Buscar{% endtrans %}</button>
               </form>
               {% if app.user %}
               
@@ -80,13 +80,13 @@
                        alt="logoPerfil" id="iconoPerfil">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{{ path('canal_show', {'id': app.user.id }) }}">Tu cuenta</a>
-                      <a class="dropdown-item rojo" href="{{ path('app_logout') }}">Cerrar sesión</a>
-
-                      <form method="post" action="{{ path('canal_delete', {'id': app.user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                      <a class="dropdown-item" href="{{ path('canal_show', {'id': app.user.id }) }}">{% trans %}Tu cuenta{% endtrans %}</a>
+                      <a class="dropdown-item rojo" href="{{ path('app_logout') }}">{% trans %}Cerrar sesión{% endtrans %}</a>
+                      {% set confirmationBorrar = '¿Estás seguro de borrar esta cuenta?' %}
+                      <form method="post" action="{{ path('canal_delete', {'id': app.user.id}) }}" onsubmit="return confirm('{{ confirmationBorrar|trans }}');">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
-                        <button class="dropdown-item rojo">Borrar cuenta</button>
+                        <button class="dropdown-item rojo">{% trans %}Borrar cuenta{% endtrans %}</button>
                     </form>
                       <div class="dropdown-divider"></div>
                       {% if app.request.locale == 'en' %}
@@ -136,7 +136,7 @@
         
         {% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
         <footer>
-          <div>Iconos diseñados por <a class="text-white" href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a> from <a class="text-white" href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div>
+          <div>{% trans %}Iconos diseñados por{% endtrans %} <a class="text-white" href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a>: <a class="text-white" href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div>
         </footer>
     </body>
 </html>

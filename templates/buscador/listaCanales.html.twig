@@ -1,6 +1,6 @@
 <div id="canalesEncontrados">
     {% if canales | length > 0 %}
-        <h1>Canales</h1>
+        <h1>{% trans %} Canales {% endtrans %}</h1>
         {% for canal in canales %}
             <div class="row my-4 ml-4">
                 <div class="col-3 col-sm-2 float-left">
@@ -15,13 +15,13 @@
                         <h3>{{ canal.nombreCanal }}</h3>
                     </a>
 
-                    <span>{{ canal.suscriptores }} suscriptor(es)</span>
+                    <span>{{ canal.suscriptores }} {% trans %} suscriptor(es) {% endtrans %}</span>
                     
                 </div>
             </div>
         {% endfor %}
         {% else %}
-        <p>No existen canales que coincidan con los parámetros de búsqueda</p>
+        <p>{% trans %} No existen canales que coincidan con los parámetros de búsqueda {% endtrans %}</p>
     {% endif %}
     
 </div>

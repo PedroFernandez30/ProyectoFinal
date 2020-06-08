@@ -1,5 +1,5 @@
 {% if videos | length > 0 %}
-    <h1>Vídeos</h1>
+    <h1>{% trans %}Vídeos{% endtrans %}</h1>
         {% for video in videos %}
             <div class="row my-4 ml-4">
                 <div class="col-3 col-sm-2">
@@ -23,5 +23,5 @@
             </div>
         {% endfor %}
         {% else %}
-            <p>No existen vídeos que coincidan con los parámetros de búsqueda</p>
+            <p>{% trans %}No existen vídeos que coincidan con los parámetros de búsqueda{% endtrans %}</p>
 {% endif %}

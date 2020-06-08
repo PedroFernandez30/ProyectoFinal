@@ -1,3 +1,72 @@
-Login: patata
-Inicia sesión: Inicia sesión
+#Las palabras o frases repetidas solo se ponen en la primera plantilla en la que se encuentre
+#Las palabras o frases de los formularios utilizados o de los mensajes de validación se traducen en archivos aparte (form.yaml y validators.yaml)
 ¿Estás seguro de querer borrar este vídeo?: ¿Estás seguro de querer borrar este vídeo?
+#lista.html.twig
+No existen resultados que coincidan con los parámetros de búsqueda: No existen resultados que coincidan con los parámetros de búsqueda
+#listaCanales
+suscriptor(es): suscriptor(es)
+No existen canales que coincidan con los parámetros de búsqueda: No existen canales que coincidan con los parámetros de búsqueda
+#listaFiltros
+Tipo: Tipo
+Vídeos: Vídeos
+Canales: Canales
+Todos: Todos
+Filtro: Filtro
+Hoy: Hoy
+Esta semana: Esta semana
+Este mes: Este mes
+Este año: Este año
+Limpiar: Limpiar
+#listaVideos
+No existen vídeos que coincidan con los parámetros de búsqueda: No existen vídeos que coincidan con los parámetros de búsqueda
+#listaVideosFiltrados
+Este filtro no ha devuelto resultados: Este filtro no ha devuelto resultados
+#canal/edit
+No puedes acceder a esta página: No puedes acceder a esta página
+Volver al inicio: Volver al inicio
+Actualizar: Actualizar
+#canal/show
+Subir vídeo: Subir vídeo
+Personalizar canal: Personalizar canal
+VÍDEOS: VÍDEOS
+COMUNIDAD: COMUNIDAD
+Nuevo vídeo: Nuevo vídeo
+Editar canal: Editar canal
+#comentario/viewComments
+comentario(s): comentario(s)
+Sé el primero en comentar: Sé el primero en comentar
+Comentar: Comentar
+Desconocido: Desconocido
+Borrar comentario: Borrar comentario
+#registration/register.html.twig
+Registro: Registro
+#security/login
+¡Inicia sesión!: ¡Inicia sesión!
+Has iniciado sesión como: Has iniciado sesión como
+Inicia sesión: Inicia sesión
+Correo: Correo
+Contraseña: Contraseña
+¿No tienes cuenta? Regístrate: ¿No tienes cuenta? Regístrate
+aquí: aquí
+#suscripcion/toggleSuscripcion
+SUSCRITO: SUSCRITO
+SUSCRIBIRSE: SUSCRIBIRSE
+#video/_form
+Guardar: Guardar
+Cancelar: Cancelar
+#video/show
+Fecha de publicación: Fecha de publicación
+¿Estás seguro de borrar este vídeo?: ¿Estás seguro de borrar este vídeo?
+Borrar vídeo: Borrar vídeo
+#base.html.twig
+Cargando...: Cargando...
+Bienvenido: Bienvenido
+Página principal: Página principal
+Tus vídeos: Tus vídeos
+Suscripciones: Suscripciones
+Buscar: Buscar
+Tu cuenta: Tu cuenta
+Cerrar sesión: Cerrar sesión
+Borrar cuenta: Borrar cuenta
+¿Estás seguro de borrar esta cuenta?: ¿Estás seguro de borrar esta cuenta?
+Iconos diseñados por: Iconos diseñados por

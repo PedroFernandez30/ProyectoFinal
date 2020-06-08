@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}
+    {% set titulo = 'Registro' %}
+    {{ titulo|trans }}
+{% endblock %}
 
 {% block body %}
     <div class="container container-fluid m-2">
-        <h1>Registro</h1>
+        <h1>{% trans %}Registro{% endtrans %}</h1>
     
         {{ form_start(registrationForm) }}
             {{ form_widget(registrationForm) }}
-            <button class="btn btn-primary">Registro</button>
+            <button class="btn btn-primary">{% trans %}Registro{% endtrans %}</button>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

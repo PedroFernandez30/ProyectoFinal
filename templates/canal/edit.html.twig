@@ -5,17 +5,18 @@
 
 {% block body %}
     {% if app.user != canal %}
-    <h1>No puedes acceder a esta página</h1>
-        <a href="{{ path('prueba') }}">Volver a prueba</a>
+    <h1>{% trans %}No puedes acceder a esta página{% endtrans %}</h1>
+        <a href="{{ path('video_index') }}">{% trans %}Volver al inicio{% endtrans %}</a>
         {% else %}
-            {#<h1>Edit Canal</h1>#}                    
+            {#<h1>Edit Canal</h1>#}      
+            {% set buttonLabel = 'Actualizar' %}              
             <div id="editForm" class="w-50 m-auto">
-                {{ include('canal/_form.html.twig', {'button_label': 'Update'}) }}
+                {{ include('canal/_form.html.twig', {'button_label': buttonLabel|trans}) }}
             </div>
         
-            <a href="{{ path('canal_index') }}">back to list</a>
+            {#<a href="{{ path('canal_index') }}">{% trans %}No puedes acceder a esta página{% endtrans %back to list</a>#}
         
-            {{ include('canal/_delete_form.html.twig') }}
+            {#{{ include('canal/_delete_form.html.twig') }}#}
     {% endif %}
 
     
