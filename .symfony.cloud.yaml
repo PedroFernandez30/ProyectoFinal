@@ -16,7 +16,7 @@ build:
 
 web:
     locations:
-        "/inicio":
+        "/":
             root: "public"
             expires: 1h
             passthru: "/index.php"
