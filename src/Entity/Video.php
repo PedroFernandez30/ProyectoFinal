@@ -29,16 +29,6 @@ class Video
     private $descripcion;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $mg;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $dislike;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Canal", inversedBy="videos")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -64,6 +54,16 @@ class Video
      * @ORM\Column(type="date")
      */
     private $fechaPublicacion;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $mg = [];
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $dislike = [];
 
     public function __construct()
     {
@@ -95,30 +95,6 @@ class Video
     public function setDescripcion(?string $descripcion): self
     {
         $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    public function getMg(): ?int
-    {
-        return $this->mg;
-    }
-
-    public function setMg(int $mg): self
-    {
-        $this->mg = $mg;
-
-        return $this;
-    }
-
-    public function getDislike(): ?int
-    {
-        return $this->dislike;
-    }
-
-    public function setDislike(int $dislike): self
-    {
-        $this->dislike = $dislike;
 
         return $this;
     }
@@ -203,6 +179,30 @@ class Video
     public function setFechaPublicacion(\DateTimeInterface $fechaPublicacion): self
     {
         $this->fechaPublicacion = $fechaPublicacion;
+
+        return $this;
+    }
+
+    public function getMg(): ?array
+    {
+        return $this->mg;
+    }
+
+    public function setMg(array $mg): self
+    {
+        $this->mg = $mg;
+
+        return $this;
+    }
+
+    public function getDislike(): ?array
+    {
+        return $this->dislike;
+    }
+
+    public function setDislike(array $dislike): self
+    {
+        $this->dislike = $dislike;
 
         return $this;
     }

@@ -23,12 +23,12 @@ class VideoType extends AbstractType
             ->add('descripcion', TextType::class, [
                 'label' => 'Descripción'
             ])
-            ->add('mg', HiddenType::class, [
-                'data' => 0,
+            /*->add('mg', HiddenType::class, [
+                'data' => [],
             ])
             ->add('dislike', HiddenType::class, [
-                'data' => 0,
-            ])
+                'data' => [],
+            ])*/
             ->add('duracion', HiddenType::class, [
                 'empty_data' => 'Duración'
             ])

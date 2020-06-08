@@ -19,7 +19,7 @@ use App\Controller\UniversalController;
 class VideoController extends AbstractController
 {
     /**
-     * @Route({"es": "/inicio","en": "/index"}, name="video_index", methods={"GET"})
+     * @Route({"es": "/inicio","en": "/index"}, name="video_index", methods={"GET","POST"})
      */
     public function index(VideoRepository $videoRepository): Response
     {
@@ -59,7 +59,7 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route({"es": "/nuevo/","en": "/new/"}, name="video_new", methods={"GET","POST"})
+     * @Route({"es": "video/nuevo/","en": "video/new/"}, name="video_new", methods={"GET","POST"})
      */
     public function new(VideoRepository $videoRepository, Request $request, UserInterface $canalActivo):Response
     {
@@ -74,6 +74,8 @@ class VideoController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $video->setIdCanal($canalActivo);
                 $video->setFechaPublicacion(new \Datetime());
+                $video->setMg([]);
+                $video->setDislike([]);
                 $entityManager->persist($video);
                 $entityManager->flush();
                 //Subida de vídeo y miniatura
@@ -122,7 +124,92 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="video_show", methods={"GET"})
+     * @Route({"es": "video/mgOrDislike","en": "video/likeOrDislike"}, name="video_mgOrDislike", methods={"GET","POST"})
+     */
+    public function mgOrDislike(Request $request, VideoRepository $videoRepository, UserInterface $canalActivo) {
+
+        /*
+            "1,0" => addMg
+            "0,1" => addDislike
+            "-1,0" => removeMg
+            "0,-1" => removeDislike
+            "1,-1" => addMg, removeDislike
+            "-1,1" => removeMg, addDislike
+        */
+        if($request->isXmlHttpRequest()) {
+            $datos = $request->request->all();
+            \dump($datos);
+            $videoId = $datos['idVideo'];
+            $videoEntity = $videoRepository->findOneBy(['id' => $videoId]);
+            $situacion = $datos['situacion'];
+            \dump($situacion);
+
+            switch($situacion) {
+                case '1,0':
+                    \dump("1,0");
+                    //Add MG
+                    $arrayMg = $videoEntity->getMg();
+                    $arrayMg[] = $canalActivo->getId();
+                    $videoEntity->setMg($arrayMg);
+                    break;
+                case '0,1':
+                    //Add Dislike
+                    $arrayDislike = $videoEntity->getDislike();
+                    $arrayDislike[] = $canalActivo->getId();
+                    $videoEntity->setDislike($arrayDislike);
+                    break;
+                case '-1,0':
+                    //Remove MG
+                    $arrayMg = $videoEntity->getMg();
+                    $arrayMgNuevo = array_diff($arrayMg, [$canalActivo->getId()]);
+                    $videoEntity->setMg($arrayMgNuevo);
+                    break;
+                case '0,-1':
+                    //Remove Dislike
+                    $arrayDislike = $videoEntity->getDislike();
+                    $arrayDislikeNuevo = array_diff($arrayDislike, [$canalActivo->getId()]);
+                    $videoEntity->setDislike($arrayDislikeNuevo);
+                    break;
+                case '1,-1':
+                    //Add MG, remove Dislike
+                    $arrayMg = $videoEntity->getMg();
+                    $arrayMg[] = $canalActivo->getId();
+                    $videoEntity->setMg($arrayMg);
+
+                    $arrayDislike = $videoEntity->getDislike();
+                    $arrayDislikeNuevo = array_diff($arrayDislike, [$canalActivo->getId()]);
+                    $videoEntity->setDislike($arrayDislikeNuevo);
+
+                    break;
+                case '-1,1':
+                    //Remove MG, add Dislike
+                    $arrayMg = $videoEntity->getMg();
+                    $arrayMgNuevo = array_diff($arrayMg, [$canalActivo->getId()]);
+                    $videoEntity->setMg($arrayMgNuevo);
+
+                    $arrayDislike = $videoEntity->getDislike();
+                    $arrayDislike[] = $canalActivo->getId();
+                    $videoEntity->setDislike($arrayDislike);
+                    break;
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($videoEntity);
+            $entityManager->flush();
+
+            //$videoNuevo = $videoRepository->findOneBy(['id' => $videoId]);
+
+            return $this->json([
+                'code' => 'success',
+                'contenido' => $this->render('video/mgAndDislike.html.twig', [
+                    'video' => $videoEntity
+                ])->getContent()
+            ]);
+        }
+    }
+
+    /**
+     * @Route({"es": "video/ver/{id}","en": "video/view/{id}"}, name="video_show", methods={"GET"})
      */
     public function show(VideoRepository $videoRepository, Video $video): Response
     {

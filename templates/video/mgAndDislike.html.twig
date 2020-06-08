@@ -1,0 +1,61 @@
+{% if app.user == null %}
+    <button class="btn btn-dark" disabled>
+        <span>{{ video.mg|length }} </span>
+        <img src="{{ asset('img/me-gusta-white.png') }}" alt="meGustaWhite"/>
+    </button>
+    <button class="btn btn-dark" disabled>
+        <span>{{ video.dislike|length }} </span>
+        <img src="{{ asset('img/disgusto-white.png') }}" alt="disgustoWhite"/>
+    </button>
+    {% else %}
+        {% if app.user != null and app.user.id == video.id %}
+            <button class="btn btn-dark" disabled>
+                <span>{{ video.mg|length }} </span>
+                <img src="{{ asset('img/me-gusta-white.png') }}" alt="meGustaWhite"/>
+            </button>
+            <button class="btn btn-dark" disabled>
+                <span>{{ video.dislike|length }} </span>
+                <img src="{{ asset('img/disgusto-white.png') }}" alt="disgustoWhite"/>
+            </button>
+        {% else %}
+            {#
+                "1,0" => addMg
+                "0,1" => addDislike
+                "-1,0" => removeMg
+                "0,-1" => removeDislike
+                "1,-1" => addMg, removeDislike
+                "-1,1" => removeMg, addDislike
+            #}
+            {% set url = path('video_mgOrDislike') %}
+            {% if app.user.id in video.mg %}
+                <button class="btn btn-dark" onclick="mgOrDislike('{{ url }}', '-1,0', '{{ video.id }}');">
+                    <span class="highlightBlue">{{ video.mg|length }} </span>
+                    <img src="{{ asset('img/me-gusta-blue.png') }}" alt="meGustaBlue"/>
+                </button>
+                <button class="btn btn-dark" onclick="mgOrDislike('{{ url }}', '-1,1', '{{ video.id }}');">
+                    <span>{{ video.dislike|length }} </span>
+                    <img src="{{ asset('img/disgusto-white.png') }}" alt="disgustoWhite"/>
+                </button>
+                {% elseif app.user.id in video.dislike %}
+                    <button class="btn btn-dark" onclick="mgOrDislike('{{ url }}', '1,-1', '{{ video.id }}');">
+                        <span>{{ video.mg|length }} </span>
+                        <img src="{{ asset('img/me-gusta-white.png') }}" alt="meGustaWhite"/>
+                    </button>
+                    <button class="btn btn-dark" onclick="mgOrDislike('{{ url }}', '0,-1', '{{ video.id }}');">
+                        <span class="highlightBlue">{{ video.dislike|length }} </span>
+                        <img src="{{ asset('img/disgusto-blue.png') }}" alt="disgustoBlue"/>
+                    </button>
+                    {% else %}
+                        <button class="btn btn-dark" onclick="mgOrDislike('{{ url }}', '1,0', '{{ video.id }}');">
+                            <span>{{ video.mg|length }} </span>
+                            <img src="{{ asset('img/me-gusta-white.png') }}" alt="meGustaWhite"/>
+                        </button>
+                        <button class="btn btn-dark" onclick="mgOrDislike('{{ url }}', '0,1', '{{ video.id }}');">
+                            <span>{{ video.dislike|length }}</span>
+                            <img src="{{ asset('img/disgusto-white.png') }}" alt="disgustoWhite"/>
+                        </button>
+            {% endif %}
+            
+    {% endif %}
+
+{% endif %}

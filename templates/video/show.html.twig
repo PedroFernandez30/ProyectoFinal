@@ -16,7 +16,15 @@
                 <div class="col-12 mx-4 m-sm-0">
                     <h1>{{ video.titulo }}</h1>
                     <h2>{{ video.duracion }}</h2>
-                    <span> Fecha de publicación: {{ video.fechaPublicacion | date('d/m/Y')  }}</span>
+                    <div class="row">
+                        <div class="col-12 col-sm-7">
+                            <span> Fecha de publicación: {{ video.fechaPublicacion | date('d/m/Y')  }}</span>
+                        </div>
+                        <div class="col-12 my-2 m-sm-0 col-sm-5" id="divMgDislike">
+                            {% include "video/mgAndDislike.html.twig" with{'video': video} %}
+                        </div>
+                    </div>
+                    
                     <div class="row">
                         <div class="col-3">
                             <a href="{{ path('canal_show', { 'id': video.idCanal.id }) }}" class="text-white">

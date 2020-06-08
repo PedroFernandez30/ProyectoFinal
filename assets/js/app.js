@@ -40,6 +40,7 @@ $(document).ready(function(){
   permitirUsoBuscador();
 
   window.permitirEditarForm = permitirEditarForm;
+  window.mgOrDislike = mgOrDislike;
   window.borrarUserIdentfied = borrarUserIdentfied;
   window.filtrarPorTipo = filtrarPorTipo;
   window.limpiarForm = limpiarForm;
@@ -84,6 +85,46 @@ $(document).ready(function(){
         divContenidoBuscador.innerHTML = contenidoBuscador;
       }
       console.log(url);
+    }
+
+    /*
+            "1,0" => addMg
+            "0,1" => addDislike
+            "-1,0" => removeMg
+            "0,-1" => removeDislike
+            "1,-1" => addMg, removeDislike
+            "-1,1" => removeMg, addDislike
+        */
+    function mgOrDislike(url, situacion, idVideo) {
+      console.log(url);
+      console.log(situacion);
+      var divMgDislike = document.getElementById("divMgDislike");
+      var buttonsMgDislike = divMgDislike.querySelectorAll("button");
+      for (let index = 0; index < buttonsMgDislike.length; index++) {
+        buttonsMgDislike[index].disabled = true;
+        
+      }
+      
+      $.ajax({
+        url: url,
+        type: "POST",
+        dataType: "json",
+        data: {
+          "situacion": situacion,
+          "idVideo": idVideo, 
+        },
+        async: true,
+        success: function (data)
+        {
+          console.log(data);
+          var divMgDislike = document.getElementById("divMgDislike");
+          divMgDislike.innerHTML = '';
+          divMgDislike.innerHTML = data.contenido;
+        }
+         
+    });
+    return false;
+      
     }
 
     //impedir que se manden los datos de edición de un canal si no se han modificado
