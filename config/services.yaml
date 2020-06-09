@@ -16,7 +16,6 @@ parameters:
 services:
     # default configuration for services in *this* file
     mysqldb:
-        type: mysql:10.2
         disk: 2048
         configuration:
             schemas:
