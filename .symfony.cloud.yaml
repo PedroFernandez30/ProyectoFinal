@@ -24,7 +24,7 @@ web:
             expires: 1h
             passthru: "/index.php"
         "/imgPerfil":
-            root: "public/upload"
+            root: "public/imgPerfil"
             scripts: false
             allow: true
 
