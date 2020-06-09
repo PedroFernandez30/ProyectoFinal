@@ -1,2 +1,17 @@
+#CanalForm
+Apellidos: Apellidos
+Correo electrónico: Correo electrónico
+Nombre del canal: Nombre del canal
+Contraseña: Contraseña
+Sexo: Sexo
+Fecha de nacimiento: Fecha de nacimiento
+Foto de perfil (la puedes elegir ahora o en cualquier momento): Foto de perfil (la puedes elegir ahora o en cualquier momento)
+Hombre: Male
 #RegisterForm
 Nombre: Nombre
+#VideoForm
+Título: Título
+Descripción: Descripción
+Categoría: Categoría
+Miniatura: Miniatura
+Vídeo: Vídeo
