@@ -1,18 +1,2 @@
-mydatabase:
-    # supported versions: 10.0, 10.1, 10.2, 10.3, 10.4
-    # 5.5 is also available but not maintained upstream
-    type: mysql
-    disk: 4096
-    configuration:
-            schemas:
-                - clontube
-            endpoints:
-                main:
-                    default_schema: clontube
-                    privileges:
-                        clontube: admin
-            #properties:
-              # size in Mb (defaults to 16)
-              #max_allowed_packet: 100
-              #wait_timeout: 28000
+
             
