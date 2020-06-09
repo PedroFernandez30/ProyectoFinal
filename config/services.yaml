@@ -3,16 +3,17 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
-mydatabase:
+#mydatabase:
     # supported versions: 10.0, 10.1, 10.2, 10.3, 10.4
     # 5.5 is also available but not maintained upstream
-    type: mysql:10.2
-    disk: 1024
+        #type: mysql:10.2
+        #disk: 1024
 parameters:
     videosYMiniaturas: '%kernel.project_dir%/public/uploads/'
     imagenesPerfil: '%kernel.project_dir%/public/imgPerfil/'
 services:
     # default configuration for services in *this* file
+    
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
