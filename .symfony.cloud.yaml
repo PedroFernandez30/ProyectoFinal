@@ -28,7 +28,8 @@ web:
             scripts: false
             allow: true
 
-disk: 1024
+disk: 5000
+size: XL
 
 mounts:
     "/var": { source: local, source_path: var }
