@@ -28,7 +28,7 @@ web:
             scripts: false
             allow: true
 
-disk: 5000
+disk: 2000
 size: XL
 
 mounts:
