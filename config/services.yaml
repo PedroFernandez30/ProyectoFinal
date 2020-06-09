@@ -9,7 +9,13 @@
         #type: mysql:10.2
         #disk: 1024
 
-configuration:
+
+parameters:
+    videosYMiniaturas: '%kernel.project_dir%/public/uploads/'
+    imagenesPerfil: '%kernel.project_dir%/public/imgPerfil/'
+services:
+    # default configuration for services in *this* file
+    configuration:
     schemas:
         - clontube
     endpoints:
@@ -17,12 +23,6 @@ configuration:
             default_schema: clontube
             privileges:
                 main: admin
-parameters:
-    videosYMiniaturas: '%kernel.project_dir%/public/uploads/'
-    imagenesPerfil: '%kernel.project_dir%/public/imgPerfil/'
-services:
-    # default configuration for services in *this* file
-    
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
