@@ -9,5 +9,5 @@ mydatabase:
             properties:
               # size in Mb (defaults to 16)
               max_allowed_packet: 100
-              timeout: 28000
+              wait_timeout: 28000
             
