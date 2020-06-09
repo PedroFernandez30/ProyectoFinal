@@ -8,6 +8,15 @@
     # 5.5 is also available but not maintained upstream
         #type: mysql:10.2
         #disk: 1024
+
+configuration:
+    schemas:
+        - clontube
+    endpoints:
+        mysql:
+            default_schema: clontube
+            privileges:
+                main: admin
 parameters:
     videosYMiniaturas: '%kernel.project_dir%/public/uploads/'
     imagenesPerfil: '%kernel.project_dir%/public/imgPerfil/'
