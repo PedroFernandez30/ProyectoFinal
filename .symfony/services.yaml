@@ -6,4 +6,7 @@ mydatabase:
     configuration:
             schemas:
                 - clontube
+            properties:
+              # size in Mb (defaults to 16)
+              max_allowed_packet: 64
             
