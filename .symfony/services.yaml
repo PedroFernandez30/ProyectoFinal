@@ -3,3 +3,7 @@ mydatabase:
     # 5.5 is also available but not maintained upstream
     type: mysql:10.4
     disk: 1024
+    configuration:
+            schemas:
+                - clontube
+            
