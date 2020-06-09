@@ -31,7 +31,7 @@ web:
             passthru: "/index.php"
 
         '/upload':
-            root: 'public/upload'
+            root: 'public/uploads'
             scripts: true
             allow: true
         
