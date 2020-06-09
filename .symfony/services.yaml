@@ -7,10 +7,10 @@ mydatabase:
             schemas:
                 - clontube
             endpoints:
-            root:
-                default_schema: clontube
-                privileges:
-                    clontube: admin
+                root:
+                    default_schema: clontube
+                    privileges:
+                        clontube: admin
             #properties:
               # size in Mb (defaults to 16)
               #max_allowed_packet: 100
