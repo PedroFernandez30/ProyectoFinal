@@ -72,8 +72,11 @@ class RegistrationFormType extends AbstractType
                     'Mujer' => 'M',
                     'Otro' => 'O',
                 ],
-                'label' => 'Sexo',
+                //'choice_label' => 'sexo',
+                
                 'translation_domain' => 'form',
+                'choice_translation_domain' => true,
+                
                 'expanded' => true
 
             ])

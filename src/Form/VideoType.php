@@ -18,10 +18,12 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('titulo', TextType::class, [
-                'label' => 'Título'
+                'label' => 'Título',
+                'translation_domain' => 'form'
             ])
             ->add('descripcion', TextType::class, [
-                'label' => 'Descripción'
+                'label' => 'Descripción',
+                'translation_domain' => 'form'
             ])
             /*->add('mg', HiddenType::class, [
                 'data' => [],
@@ -38,12 +40,14 @@ class VideoType extends AbstractType
             ->add('idCanal', HiddenType::class)
             ->add('idCategoria', null, [
                 'label' => 'Categoría',
+                'translation_domain' => 'form',
                 'required' => true
             ])
             ->add('miniatura', FileType::class,[
                 'required' => true,
                 'mapped' => false,
                 'label' => 'Miniatura',
+                'translation_domain' => 'form',
                 'constraints' => [
                     new File([
                          'mimeTypes' => [
@@ -60,6 +64,7 @@ class VideoType extends AbstractType
                 'required' => true,
                 'mapped' => false,
                 'label' => 'Vídeo',
+                'translation_domain' => 'form',
                 'constraints' => [
                     new File([
                          'mimeTypes' => [

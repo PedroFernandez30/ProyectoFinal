@@ -6,7 +6,9 @@ Contraseña: Contraseña
 Sexo: Sexo
 Fecha de nacimiento: Fecha de nacimiento
 Foto de perfil (la puedes elegir ahora o en cualquier momento): Foto de perfil (la puedes elegir ahora o en cualquier momento)
-Hombre: Male
+Hombre: Hombre
+Mujer: Mujer
+Otro: Otro
 #RegisterForm
 Nombre: Nombre
 #VideoForm
@@ -15,3 +17,4 @@ Descripción: Descripción
 Categoría: Categoría
 Miniatura: Miniatura
 Vídeo: Vídeo
+

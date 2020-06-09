@@ -8,9 +8,14 @@ Fecha de nacimiento: Birth date
 Foto de perfil (la puedes elegir ahora o en cualquier momento): Profile pic (You can choose it now or at any time)
 #RegisterForm
 Nombre: Name
+Hombre: Male
+Mujer: Female
+Otro: Other
 #VideoForm
 Título: Caption
 Descripción: Description
 Categoría: Category
 Miniatura: Thumbnail
 Vídeo: Video
+Entretenimiento: Entertaining
+
