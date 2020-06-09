@@ -23,10 +23,7 @@ web:
             root: "public"
             expires: 1h
             passthru: "/index.php"
-        "/imgPerfil":
-            root: "public/imgPerfil"
-            scripts: false
-            allow: true
+        
 
 disk: 1024
 size: XL
