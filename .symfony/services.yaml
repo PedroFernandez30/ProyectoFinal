@@ -1,12 +1,12 @@
 mydatabase:
     # supported versions: 10.0, 10.1, 10.2, 10.3, 10.4
     # 5.5 is also available but not maintained upstream
-    type: mysql:10.4
+    type: mysql:10.2
     disk: 4096
     configuration:
             schemas:
                 - clontube
             properties:
               # size in Mb (defaults to 16)
-              max_allowed_packet: 64
+              max_allowed_packet: 1024
             
