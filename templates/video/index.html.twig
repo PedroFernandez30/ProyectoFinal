@@ -50,7 +50,8 @@
                                     {% set mensajeConfirmacion = '¿Estás seguro de borrar este vídeo?' %}
                                     <div class="mt-2">
                                         <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', 
-                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}');">{% trans %}Borrar vídeo{% endtrans %}</button>
+                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}',
+                                         '{{ app.request.locale }}');">{% trans %}Borrar vídeo{% endtrans %}</button>
                                     </div>
                                 {% endif %}
                             </div>

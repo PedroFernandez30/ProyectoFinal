@@ -25,7 +25,7 @@ class VideoController extends AbstractController
     {
         return $this->render('video/index.html.twig', [
             //'videos' => $videoRepository->findBy([],null, 8, 0),
-            'videos' => $videoRepository->findAll(),
+            'videos' => $videoRepository->findBy([],['id' => 'DESC']),
             'extiende' => 'true',
             'index' => true
         ]);
@@ -251,13 +251,14 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="video_delete", methods={"DELETE"})
+     * @Route({"es": "video/borrar/{id}","en": "video/delete/{id}"}, name="video_delete", methods={"DELETE"})
      */
     public function delete(Request $request, VideoRepository $videoRepository, CanalRepository $canalRepository, Video $video): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         if($request->isXmlHttpRequest()) {
             $datos = $request->request->all();
+            //$request->getSession()->set('_locale', $datos['_locale']);
             $token = $datos['_token'];
             $canalId = $datos['idCanal'];
             $videoId = $datos['idVideo'];
@@ -288,6 +289,7 @@ class VideoController extends AbstractController
                         'code' => 'success',
                         'mensaje' => $mensajeExito,
                         'contenido' => $this->render('video/index.html.twig', [
+                            //'_locale' => $datos['_locale'],
                             'videos' => $listaVideos, 
                             'extiende' => 'false',
                             'borrar' => true

@@ -51,7 +51,7 @@ class Video
     private $duracion;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $fechaPublicacion;
 

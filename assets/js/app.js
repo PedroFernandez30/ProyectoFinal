@@ -767,6 +767,7 @@ function arraysMatch(arr1, arr2) {
                 divMensajeSubidaVideo.classList.remove("d-block", "alert", "alert-success");
               },5000);
               $('#formSubirVideo').trigger("reset");
+              limpiarForm("formSubirVideo");
               //permitirEditarForm();
 
               
@@ -876,8 +877,9 @@ function arraysMatch(arr1, arr2) {
 });
 
 //Borrar el vídeo dado
-function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion) {
+function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion, locale) {
   var borrar = confirm(mensajeConfirmacion);
+  console.log(locale);
   if(borrar) {
     $.ajax({
       url: url,
@@ -886,7 +888,8 @@ function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion) {
       data: {
         "idVideo" : idVideo,
         "idCanal": idCanal,
-        "_token": token
+        "_token": token,
+        "_locale": locale
       },
       async: true,
       success: function (data)

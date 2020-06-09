@@ -46,7 +46,7 @@ class UniversalController extends AbstractController
         }
         $segundos = strToTime("now") - (86400 * $diasARestar);
         
-        $fechaRestada = new \DateTime(date('Y/m/d', $segundos));
+        $fechaRestada = new \DateTime(date('Y/m/d h:i:s', $segundos));
 
         $videosFiltradosPorFecha = $videoRepository->findByFechaPublicacion($fechaRestada);
         //dump(count($videosFiltradosPorFecha));
