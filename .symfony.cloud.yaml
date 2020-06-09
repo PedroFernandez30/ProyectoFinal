@@ -17,6 +17,12 @@ runtime:
 build:
     flavor: none
 
+mounts:
+    "/var": { source: local, source_path: var }
+    "/public/upload": { source: local, source_path: uploads }
+    "/public/imgPerfil": { source: local, source_path: imgPerfil }
+
+
 web:
     locations:
         "/":
@@ -26,22 +32,17 @@ web:
 
         '/upload':
             root: 'public/upload'
-            scripts: false
+            scripts: true
             allow: true
         
         '/imgPerfil':
             root: 'public/imgPerfil'
-            scripts: false
+            scripts: true
             allow: true
         
 
 disk: 1024
 size: XL
-
-mounts:
-    "/var": { source: local, source_path: var }
-    "/public/upload": { source: local, source_path: uploads }
-    "/public/imgPerfil": { source: local, source_path: imgPerfil }
 
 hooks:
     build: |
