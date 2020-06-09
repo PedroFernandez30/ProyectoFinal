@@ -6,8 +6,8 @@ mydatabase:
     configuration:
             schemas:
                 - clontube
-            properties:
+            #properties:
               # size in Mb (defaults to 16)
-              max_allowed_packet: 100
+              #max_allowed_packet: 100
               #wait_timeout: 28000
             
