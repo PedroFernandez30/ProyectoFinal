@@ -23,7 +23,7 @@ web:
             root: "public"
             expires: 1h
             passthru: "/index.php"
-        "/upload":
+        "/imgPerfil":
             root: "public/upload"
             scripts: false
             allow: true
@@ -34,6 +34,7 @@ size: XL
 mounts:
     "/var": { source: local, source_path: var }
     "/public/upload": { source: local, source_path: uploads }
+    "/public/imgPerfil": { source: local, source_path: imgPerfil }
 
 hooks:
     build: |
