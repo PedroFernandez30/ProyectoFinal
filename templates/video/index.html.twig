@@ -47,7 +47,7 @@
                                 {% if app.user is defined and video.idCanal == app.user %}
                                     {% set url = path('video_delete', {'id': video.id }) %}
                                     {% set token = csrf_token('delete' ~ video.id) %}
-                                    {% set mensajeConfirmacion = '¿Estás seguro de querer borrar este vídeo?' %}
+                                    {% set mensajeConfirmacion = '¿Estás seguro de borrar este vídeo?' %}
                                     <div class="mt-2">
                                         <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', 
                                         '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}');">{% trans %}Borrar vídeo{% endtrans %}</button>

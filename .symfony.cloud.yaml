@@ -30,7 +30,7 @@ web:
             expires: 1h
             passthru: "/index.php"
 
-        '/upload':
+        '/uploads':
             root: 'public/uploads'
             scripts: true
             allow: true
