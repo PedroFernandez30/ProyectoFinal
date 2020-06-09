@@ -6,9 +6,4 @@ mydatabase:
     configuration:
         schemas:
             - clontube
-        endpoints:
-            root:
-                default_schema: clontube
-                privileges:
-                    clontube: admin
             
