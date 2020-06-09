@@ -23,6 +23,16 @@ web:
             root: "public"
             expires: 1h
             passthru: "/index.php"
+
+        '/upload':
+            root: 'public/upload'
+            scripts: false
+            allow: true
+        
+        '/imgPerfil':
+            root: 'public/imgPerfil'
+            scripts: false
+            allow: true
         
 
 disk: 1024
