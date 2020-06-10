@@ -18,7 +18,13 @@
                     <h2>{{ video.duracion }}</h2>
                     <div class="row">
                         <div class="col-12 col-sm-7">
-                            <span>{% trans %}Fecha de publicación:{% endtrans %}{{ video.fechaPublicacion | date('d/m/Y')  }}</span>
+                            <span>{% trans %}Fecha de publicación{% endtrans %}:
+                                {% if app.request.locale == 'es' %}
+                                    {{ video.fechaPublicacion | date('d/m/Y')  }}
+                                    {% else %}
+                                        {{ video.fechaPublicacion | date('m/d/Y')  }}</span>
+                                {% endif %} 
+                                
                         </div>
                         <div class="col-12 my-2 m-sm-0 col-sm-5" id="divMgDislike">
                             {% include "video/mgAndDislike.html.twig" with{'video': video} %}

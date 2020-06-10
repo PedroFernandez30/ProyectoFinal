@@ -86,20 +86,6 @@ class RegistrationFormType extends AbstractType
                 'format' => 'dd-MM-yyyy',
                 'years' => range(date('Y'),date('Y')-120),
 
-            ])->add('fotoPerfil', FileType::class,[
-                'required' => false,
-                'mapped' => false,
-                'label' => 'Foto de perfil (la puedes elegir ahora o en cualquier momento)',
-                'translation_domain' => 'form',
-                'empty_data' => 'imgPerfil/profile.jpg',
-                'constraints' => [
-                    new File([
-                         'maxSize' => '1024k',
-                         'mimeTypes' => [
-                             'image/*'
-                         ],
-                     ])
-                 ]
             ])
         ;
     }

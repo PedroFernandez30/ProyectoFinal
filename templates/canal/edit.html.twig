@@ -10,7 +10,7 @@
         {% else %}
             {#<h1>Edit Canal</h1>#}      
             {% set buttonLabel = 'Actualizar' %}              
-            <div id="editForm" class="w-50 m-auto">
+            <div id="editForm" class="container-fluid">
                 {{ include('canal/_form.html.twig', {'button_label': buttonLabel|trans}) }}
             </div>
         

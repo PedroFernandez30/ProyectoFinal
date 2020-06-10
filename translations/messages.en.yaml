@@ -13,7 +13,7 @@ Vídeos: Videos
 Canales: Channels
 Todos: All
 Filtro: Filter
-Hoy: Today
+Últimas 24 horas: Last 24 hours
 Esta semana: This week
 Este mes: This month
 Este año: This year
@@ -58,6 +58,7 @@ Fecha de publicación: Publication date
 ¿Estás seguro de borrar este vídeo?: Are you sure do you want to delete this item?
 Borrar vídeo: Delete video
 #base.html.twig
+Iniciar sesión: Login
 Cargando...: Loading...
 Bienvenido: Welcome
 Página principal: Homepage
@@ -69,3 +70,20 @@ Cerrar sesión: Logout
 Borrar cuenta: Remove account
 ¿Estás seguro de borrar esta cuenta?: ¿Are you sure do you want to remove your account?
 Iconos diseñados por: Icons designed by
+#CanalController
+Datos actualizados con éxito: Data updated successfully
+Cuenta borrada con éxito: Account deleted succesfully
+#VideoController
+Vídeo subido correctamente: Video uploaded successfully
+Vídeo borrado correctamente: Video deleted successfully
+Hubo un error al tratar de borrar el archivo: There was an error deleting the video
+Entretenimiento: Entertaining
+#ComentarioController
+Tu comentario se ha creado correctamente: Your comment has been created successfully
+Tu comentario se ha borrado correctamente: Your comment has been removed successfully
+#SuscripcionController
+Te has suscrito a este canal: You are suscribed to this channel
+Ya no estás suscrito a este canal: You are no longer subscribed to this channel
+#RegistrationController
+Registrado correctamente: Successfully registered
+

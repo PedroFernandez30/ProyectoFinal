@@ -1,10 +1,11 @@
 <div class="container-fluid">
-
+    <input type="hidden" id="valorBusqueda">
     {% if videos | length == 0 and canales | length == 0 %}
         {% trans %} No existen resultados que coincidan con los parámetros de búsqueda {% endtrans %}
         {% else %}
-            
-            {% include "buscador/listaFiltros.html.twig" %}
+            {% if videos | length > 0 %}
+                {% include "buscador/listaFiltros.html.twig" %}
+            {% endif %}
             {% include "buscador/listaCanales.html.twig" with {'canales': canales} %}
             <div id="videosEncontrados">
                 {% include "buscador/listaVideos.html.twig" with {'videos': videos} %}

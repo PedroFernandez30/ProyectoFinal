@@ -49,31 +49,11 @@ class VideoRepository extends ServiceEntityRepository
     }
      */
 
-     public function findSimilarVideos($valor, $em) {
+     public function findSimilarVideos($valor) {
         $videosBySimilarName = $this->findBySimilarName($valor);
-        foreach($videosBySimilarName as $videoName) {
-            \dump($videoName->getFechaPublicacion()->format('d/m/Y'));
-        }
-        dump("Salto");
-        $videosBySimilarCategoria = $this->findBySimilarCategoria($valor, $em);
-        foreach($videosBySimilarCategoria as $videoCategoria) {
-            \dump($videoCategoria->getFechaPublicacion()->format('d/m/Y'));
-        }
-        //Sacar los repetidos , juntarlos en un array, y devolver ese array
-
-        dump("saco vídeos resultantes");
+        $videosBySimilarCategoria = $this->findBySimilarCategoria($valor);
         $videosResultantes = array_unique(array_merge($videosBySimilarName, $videosBySimilarCategoria));
-        foreach($videosResultantes as $videoResultante) {
-            \dump($videoResultante->getFechaPublicacion()->format('d/m/Y'));
-        }
-
-        /*function sortFunction( $a, $b ) {
-            return strtotime($a->getFechaPublicacion()->format('d/m/Y')) - strtotime($b->getFechaPublicacion()->format('d/m/Y'));
-        }
-        usort($videosResultantes, function($a, $b) {
-            return strtotime($a->getFechaPublicacion()->format('d/m/Y')) - strtotime($b->getFechaPublicacion()->format('d/m/Y'));
-        });*/
-        //\dump($videosResultantes);
+        
         return $videosResultantes;
 
      }
@@ -90,7 +70,7 @@ class VideoRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findBySimilarCategoria($valor, $em) {
+    public function findBySimilarCategoria($valor) {
         
         return $this->createQueryBuilder('v')
             ->join('v.idCategoria', 'c')
@@ -104,14 +84,24 @@ class VideoRepository extends ServiceEntityRepository
 
 
     //Encuentra los vídeos anteriores a la fecha introducida (día, semana, mes o año)
-    public function findByFechaPublicacion($fechaRestada) {
-        return $this->createQueryBuilder('v')
+    public function findByFechaPublicacion($fechaRestada, $valor) {
+        $videosRaw = $this->findSimilarVideos($valor);
+        $videosFiltrados = [];
+        dump($fechaRestada);
+        foreach($videosRaw as $videoRaw) {
+            \dump($videoRaw->getFechaPublicacion());
+            if($videoRaw->getFechaPublicacion() > $fechaRestada) {
+                $videosFiltrados[] = $videoRaw;
+            }
+        }
+        return $videosFiltrados;
+        /*return $this->createQueryBuilder('v')
             ->andWhere('v.fechaPublicacion > :fecha')
             ->orderBy('v.fechaPublicacion','DESC')
             ->setParameter('fecha', $fechaRestada)
             ->getQuery()
             ->getResult()
-        ;
+        ;*/
      }
 
 

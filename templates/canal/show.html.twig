@@ -25,7 +25,8 @@
                     {#<a href="{{ path('canal_edit', {'id': app.user.id}) }}" class="btn btn-info">Personalizar canal</a>#}
                 </div>
                 {% else %}
-                    <div class="col-12 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2" id="toggleSuscripcion">
+                    {#"col-12 my-2 my-md-0 offset-3 offset-md-3 col-lg-2 offset-lg-3 offset-sm-0 col-sm-12 col-md-2"#}
+                    <div class="col-12 my-2" id="toggleSuscripcion">
                         {% include "suscripcion/toggleSuscripcion.html.twig" %}
                     </div>
             {% endif %}
@@ -100,9 +101,9 @@
         
         <div id="comunidadOVideos">
             {% if app.user and app.user.id == canal.id %}
-                {% include "video/index.html.twig" with {'videos': canal.videos|reverse , 'extiende': 'false', 'borrar': true} %}
+                {% include "video/index.html.twig" with {'videos': videos , 'extiende': 'false', 'borrar': true} %}
                 {% else %}
-                    {% include "video/index.html.twig" with {'videos': canal.videos|reverse, 'extiende': 'false'} %}
+                    {% include "video/index.html.twig" with {'videos': videos, 'extiende': 'false'} %}
             {% endif %}
             
         </div>

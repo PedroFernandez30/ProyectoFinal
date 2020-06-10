@@ -6,7 +6,9 @@ use App\Entity\Video;
 use App\Form\VideoType;
 use App\Repository\VideoRepository;
 use App\Repository\CanalRepository;
+use App\Repository\CategoriaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,7 +63,8 @@ class VideoController extends AbstractController
     /**
      * @Route({"es": "video/nuevo/","en": "video/new/"}, name="video_new", methods={"GET","POST"})
      */
-    public function new(VideoRepository $videoRepository, Request $request, UserInterface $canalActivo):Response
+    public function new(VideoRepository $videoRepository, Request $request, UserInterface $canalActivo,
+     TranslatorInterface $translator, CategoriaRepository $categoriaRepository):Response
     {
         $video = new Video();
         $form = $this->createForm(VideoType::class, $video, [
@@ -70,10 +73,18 @@ class VideoController extends AbstractController
         $form->handleRequest($request);
 
         if($request->isXmlHttpRequest()) {
+            \dump($request->request->all());
             if ($form->isSubmitted() && $form->isValid()) {
+                dump($form->getData());
                 $entityManager = $this->getDoctrine()->getManager();
+                $categoriaId = $form->get('idCategoria')->getData();
+                dump($categoriaId);
+                $categoriaEntity = $categoriaRepository->findOneBy(['id'=>$categoriaId]);
+                \dump($categoriaEntity);
                 $video->setIdCanal($canalActivo);
-                $video->setFechaPublicacion(new \Datetime());
+                //$video->setFechaPublicacion(new \Datetime());
+                $video->setFechaPublicacion(new \Datetime('05/07/2020 14:30:00'));
+                $video->setIdCategoria($categoriaEntity);
                 $video->setMg([]);
                 $video->setDislike([]);
                 $entityManager->persist($video);
@@ -88,7 +99,7 @@ class VideoController extends AbstractController
 
                 $videosFromCanal = $videoRepository->findBy(['idCanal' => $canalActivo], ['fechaPublicacion' => 'DESC']);
 
-                $mensaje = 'Vídeo subido correctamente';
+                $mensaje = $translator->trans('Vídeo subido correctamente');
                 /*unset($entity);
                 unset($video);
                 $video = new Video();
@@ -105,7 +116,7 @@ class VideoController extends AbstractController
 
                 ]);
                 //return $this->redirectToRoute('video_index');
-            } else {
+            }else {
                 $universalController = new UniversalController();
                 $errores = $universalController->getArrayErrores($form);
                 
@@ -253,7 +264,7 @@ class VideoController extends AbstractController
     /**
      * @Route({"es": "video/borrar/{id}","en": "video/delete/{id}"}, name="video_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, VideoRepository $videoRepository, CanalRepository $canalRepository, Video $video): Response
+    public function delete(Request $request, VideoRepository $videoRepository, CanalRepository $canalRepository, Video $video, TranslatorInterface $translator): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         if($request->isXmlHttpRequest()) {
@@ -283,7 +294,7 @@ class VideoController extends AbstractController
                     $canalEntity = $canalRepository->findOneBy(['id' => $canalId]);
                     $listaVideos = $videoRepository->findBy(['idCanal' => $canalEntity], ['id' => 'DESC']);
 
-                    $mensajeExito = 'Vídeo borrado correctamente';
+                    $mensajeExito = $translator->trans('Vídeo borrado correctamente');
 
                     return $this->json([
                         'code' => 'success',
@@ -297,7 +308,7 @@ class VideoController extends AbstractController
                     ]);
 
                 }catch(\Exception $e) {
-                    $mensajeError = 'Hubo un error al tratar de borrar el archivo';
+                    $mensajeError = $translator->trans('Hubo un error al tratar de borrar el archivo');
                     return $this->json([
                         'code' => 'error',
                         'mensaje' => $mensajeError

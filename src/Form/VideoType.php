@@ -38,7 +38,14 @@ class VideoType extends AbstractType
                 'data' => new \Datetime()
             ])*/
             ->add('idCanal', HiddenType::class)
-            ->add('idCategoria', null, [
+            ->add('idCategoria', ChoiceType::class, [
+                'choices'  => [
+                    'Entretenimiento' => '1',
+                    'Cultura' => '2',
+                    'Deporte' => '3',
+                    'Videojuegos' => '4'
+                ],
+                'mapped' => false,
                 'label' => 'Categoría',
                 'translation_domain' => 'form',
                 'required' => true

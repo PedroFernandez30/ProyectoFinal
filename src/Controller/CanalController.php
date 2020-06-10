@@ -9,7 +9,9 @@ use App\Form\VideoType;
 use App\Form\CabeceraType;
 use App\Repository\CanalRepository;
 use App\Repository\ComentarioRepository;
+use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,19 +61,20 @@ class CanalController extends AbstractController
     /**
      * @Route({"es": "/ver/{id}","en": "/view/{id}"}, name="canal_show", methods={"GET","POST"})
      */
-    public function show(Canal $canal): Response
+    public function show(Canal $canal, VideoRepository $videoRepository): Response
     {
         //$video = new Video();
         //$form = $this->createForm(VideoType::class, $video);
         $suscripcionController = new SuscripcionController();
         $idSuscritosAlCanal = $suscripcionController->getSuscritosACanal($canal);
+        $videos = $videoRepository->findBy(['idCanal' => $canal], ['fechaPublicacion' => 'DESC']);
 
         return $this->render('canal/show.html.twig', [
             'canal' => $canal,
             'comentario' => 'canal',
             'idSuscritosAlCanal' => $idSuscritosAlCanal,
-            'extiende' => 'true'
-            //'video' => $video,
+            'extiende' => 'true',
+            'videos' => $videos,
             //'form' => $form->createView()
         ]);
     }
@@ -79,7 +82,7 @@ class CanalController extends AbstractController
     /**
      * @Route({"es": "/{id}/editar","en": "/{id}/edit"}, name="canal_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Canal $canal, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(Request $request, Canal $canal, UserPasswordEncoderInterface $passwordEncoder, TranslatorInterface $translator): Response
     {
         //$canal = new
         $form = $this->createForm(CanalType::class, $canal, [
@@ -112,7 +115,7 @@ class CanalController extends AbstractController
 
                 $this->getDoctrine()->getManager()->flush();
 
-                $mensaje = 'Datos actualizados con éxito';
+                $mensaje = $translator->trans('Datos actualizados con éxito');
                 
                 $nombreCanal = $canal->getNombreCanal();
                 

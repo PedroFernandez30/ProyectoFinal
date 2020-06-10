@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,9 +29,11 @@ class Categoria
      */
     private $videos;
 
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
+        $this->translator = $translator;
     }
 
     public function getId(): ?int
@@ -82,6 +85,7 @@ class Categoria
     }
 
     public function __toString(): string {
+        
         return $this->nombre;
     }
 }

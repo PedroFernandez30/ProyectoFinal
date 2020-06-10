@@ -54,7 +54,7 @@
                         <div class="col-12 mb-2 mb-sm-4 col-sm-2">
                             {% if comentario.canalQueComenta != null %}
                                 <a href="{{ path('canal_show', { 'id': canal.id }) }}">
-                                    <img class="imgResBusqueda" src="{{asset('imgPerfil/'~ canal.id)}}" width="90" 
+                                    <img class="imgResBusqueda" src="{{asset('imgPerfil/'~ comentario.canalQueComenta.id)}}" width="90" 
                                     onerror="this.src = assetsProfilesPics+'profile.jpg';" id=''~ {{ canal.id }}>
                                 </a>
                                 {#<a class="blanco h4" href="{{ path('canal_show', {'id': comentario.canalQueComenta.id }) }}"><span class="text-white"> {{ comentario.canalQueComenta.nombreCanal }}</span></a>#}

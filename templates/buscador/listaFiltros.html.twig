@@ -15,7 +15,7 @@
                 <div id="filtroFecha" class="col-12 col-md-6">
                     <p>{% trans %}Filtro{% endtrans %}</p>
                     <input type="radio" id="hoy" name="fecha" value="hoy" onclick="filtrarPorFecha(this, '{{ url }}');">
-                    <label for="videos">{% trans %}Hoy{% endtrans %}</label>
+                    <label for="videos">{% trans %}Últimas 24 horas{% endtrans %}</label>
                     <input type="radio" id="semana" name="fecha" value="semana" onclick="filtrarPorFecha(this, '{{ url }}' );">
                     <label for="canales">{% trans %}Esta semana{% endtrans %}</label>
                     <input type="radio" id="mes" name="fecha" value="mes" onclick="filtrarPorFecha(this, '{{ url }}' );">

@@ -8,7 +8,7 @@
         <img src="{{ asset('img/disgusto-white.png') }}" alt="disgustoWhite"/>
     </button>
     {% else %}
-        {% if app.user != null and app.user.id == video.id %}
+        {% if app.user != null and app.user.id == video.idCanal.id %}
             <button class="btn btn-dark" disabled>
                 <span>{{ video.mg|length }} </span>
                 <img src="{{ asset('img/me-gusta-white.png') }}" alt="meGustaWhite"/>

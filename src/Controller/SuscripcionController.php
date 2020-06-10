@@ -9,6 +9,7 @@ use App\Repository\SuscripcionRepository;
 use App\Repository\VideoRepository;
 use App\Repository\CanalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,9 +33,10 @@ class SuscripcionController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="suscripcion_new", methods={"GET","POST"})
+     * @Route({"es": "/suscripcion/nueva","en": "/subscription/new"}, name="suscripcion_new", methods={"GET","POST"})
      */
-    public function new (VideoRepository $videoRepository, CanalRepository $canalRepository, Request $request, UserInterface $canalActivo): Response
+    public function new (VideoRepository $videoRepository, CanalRepository $canalRepository, 
+    Request $request, UserInterface $canalActivo, TranslatorInterface $translator): Response
     {
         $suscripcion = new Suscripcion();
         if($request->isXmlHttpRequest()) {
@@ -112,9 +114,10 @@ class SuscripcionController extends AbstractController
     }
 
     /**
-     * @Route("/deleteSuscripcion", name="suscripcion_delete", methods={"DELETE"})
+     * @Route({"es": "/suscripcion/borrar","en": "/subscription/delete"}, name="suscripcion_delete", methods={"DELETE"})
      */
-    public function delete(VideoRepository $videoRepository, CanalRepository $canalRepository, SuscripcionRepository $suscripcionRepository, Request $request): Response
+    public function delete(VideoRepository $videoRepository, CanalRepository $canalRepository,
+     SuscripcionRepository $suscripcionRepository, Request $request, TranslatorInterface $translator): Response
     {
         if($request->isXmlHttpRequest()) {
             $data = $request->request->all();

@@ -1,7 +1,7 @@
 <div class="container-fluid mt-1" id="suscripcionFlash">
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
-            {{ message }}
+            {{ message|trans }}
         </div>
     {% endfor %}
 </div>

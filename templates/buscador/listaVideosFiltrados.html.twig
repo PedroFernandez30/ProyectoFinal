@@ -17,7 +17,11 @@
                         <span>{{ video.idCanal.nombreCanal }}</span>
                     </a>
                     <p>
-                        <span>{{ video.fechaPublicacion | date('d/m/Y') }}</span>
+                        {% if app.request.locale == 'es' %}
+                            {{ video.fechaPublicacion | date('d/m/Y')  }}
+                            {% else %}
+                                {{ video.fechaPublicacion | date('m/d/Y')  }}</span>
+                        {% endif %} 
                     </p>
                 </div>
             </div>

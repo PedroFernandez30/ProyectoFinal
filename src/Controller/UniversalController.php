@@ -9,8 +9,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use getID3;
+use App\Entity\Video;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class UniversalController extends AbstractController
 {
@@ -37,27 +45,37 @@ class UniversalController extends AbstractController
     }
 
      /**
-     * @Route("/filtrar/", name="filtrar")
+     * @Route({"es": "/filtrar","en": "/filter"}, name="filtrar")
      */
     public function filtrar (VideoRepository $videoRepository, Request $request) {
+
         if($request->isXmlHttpRequest()) {
             $datos = $request->request->all();
             $diasARestar = json_decode($datos['diasARestar']);
+            $valor = json_decode($datos['valor']);
         }
         $segundos = strToTime("now") - (86400 * $diasARestar);
         
-        $fechaRestada = new \DateTime(date('Y/m/d h:i:s', $segundos));
+        $fechaRestada = new \DateTime(date('d-m-Y h:i:s', $segundos));
+        \dump($fechaRestada);
+        \dump(new \DateTime());
 
-        $videosFiltradosPorFecha = $videoRepository->findByFechaPublicacion($fechaRestada);
+        //$videosRaw = \json_decode($datos['videos']);
+        //$videosRaw = \json_decode($datos['videos']);
+
+        //dump("VideosRaw");
+        //\dump($videosRaw);
+
+        $videosFiltradosPorFecha = $videoRepository->findByFechaPublicacion($fechaRestada, $valor);
         //dump(count($videosFiltradosPorFecha));
         //\dump($videosFiltradosPorFecha);
-        foreach($videosFiltradosPorFecha as $videoFiltrado) {
+        //foreach($videosFiltradosPorFecha as $videoFiltrado) {
             //\dump($videoFiltrado->getFechaPublicacion());
-        }
+        //}
         
         return $this->json([
             'code' => 'success',
-            //'videosFiltrados' => $videosFiltradosPorFecha,
+            //'videosFiltradosAVer' => $videosFiltradosPorFecha,
             'contenido' => $this->render('buscador/listaVideosFiltrados.html.twig', [
                 'videosFiltrados' => $videosFiltradosPorFecha,
             ])
@@ -68,15 +86,16 @@ class UniversalController extends AbstractController
 
 
      /**
-     * @Route("/buscar/", name="buscar")
+     * @Route({"es": "/buscar","en": "/search"}, name="buscar")
      */
     public function buscar(Request $request, CanalRepository $canalRepository, VideoRepository $videoRepository) {
         if($request->isXmlHttpRequest()) {
+            
             $data = $request->request->all();
             $valor = $data['value'];
             $canalesAll = $canalRepository->findAll();
             $canales = $canalRepository->findCanalesByNombreCanal($valor);
-            $videos = $videoRepository->findSimilarVideos($valor, $this->getDoctrine()->getManager());
+            $videos = $videoRepository->findSimilarVideos($valor);
             $videosLikeArray = [];
             $canalesLikeArray = [];
 

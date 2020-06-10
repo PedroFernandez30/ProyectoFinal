@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
         $request->request->set('previo', '');
         //$previo = $request->request->get('previo');
         //$previo = $_REQUEST['previo'];
-        if($previo != '') {
+        if($previo != '' && $previo != 'http:--localhost:8000-registro-') {
             //throw Exception;
             $previous = str_replace('-','/', $previo);
             // get the login error if there is one

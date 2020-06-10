@@ -37,27 +37,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            //Guardar foto perfil si la ha subido
-
-             /** @var UploadedFile $fotoPerfil */
-             $fotoPerfil = $form->get('fotoPerfil')->getData();
-
-             // this condition is needed because the 'brochure' field is not required
-             // so the PDF file must be processed only when a file is uploaded
-             if ($fotoPerfil != 'imgPerfil/profile.jpg') {
-                 
-                 $newFilename = $user->getId();
-                 // Move the file to the directory where brochures are stored
-                 try {
-                     $fotoPerfil->move(
-                         $this->getParameter('imagenesPerfil'),
-                         $newFilename
-                     );
-                 } catch (FileException $e) {
-                     // ... handle exception if something happens during file upload
-                 }
-            }
-
+            $this->addFlash('success', 'Registrado correctamente');
+            
             // do anything else you need here, like send an email
 
             return $guardHandler->authenticateUserAndHandleSuccess(

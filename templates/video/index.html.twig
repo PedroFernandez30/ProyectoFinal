@@ -26,7 +26,11 @@
                                 <span>{{ video.idCanal.nombreCanal }}</span>
                             </a>
                             <p>
-                                <span>{{ video.fechaPublicacion | date('d/m/Y') }}</span>
+                                {% if app.request.locale == 'es' %}
+                                    {{ video.fechaPublicacion | date('d/m/Y')  }}
+                                    {% else %}
+                                        {{ video.fechaPublicacion | date('m/d/Y')  }}</span>
+                                {% endif %} 
                             </p>
                         </div>
                         {% else %}
@@ -42,7 +46,11 @@
                                         <span>{{ video.idCanal.nombreCanal }}</span>
                                     </a>
                                     {% else %}
-                                        <span>{{ video.fechaPublicacion|date("d/m/Y") }}</span>
+                                        {% if app.request.locale == 'es' %}
+                                            {{ video.fechaPublicacion | date('d/m/Y')  }}
+                                        {% else %}
+                                            {{ video.fechaPublicacion | date('m/d/Y')  }}</span>
+                                        {% endif %} 
                                 {% endif %}
                                 {% if app.user is defined and video.idCanal == app.user %}
                                     {% set url = path('video_delete', {'id': video.id }) %}
@@ -50,8 +58,7 @@
                                     {% set mensajeConfirmacion = '¿Estás seguro de borrar este vídeo?' %}
                                     <div class="mt-2">
                                         <button class="btn btn-danger" onclick="borrarVideo('{{ url }}', '{{ video.id }}', 
-                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}',
-                                         '{{ app.request.locale }}');">{% trans %}Borrar vídeo{% endtrans %}</button>
+                                        '{{ video.idCanal.id }}', '{{ token }}', '{{ mensajeConfirmacion|trans }}');">{% trans %}Borrar vídeo{% endtrans %}</button>
                                     </div>
                                 {% endif %}
                             </div>

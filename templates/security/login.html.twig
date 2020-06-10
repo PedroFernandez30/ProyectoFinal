@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<form method="post">
+<form method="post" class="w-50 m-auto">
     {% if noError is not defined %}
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

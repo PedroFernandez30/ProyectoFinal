@@ -8,6 +8,7 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css';
 require('../css/app.scss');
+import DOMPurify from 'dompurify';
 /// app.js
 
 //const $ = require('jquery');
@@ -40,6 +41,7 @@ $(document).ready(function(){
   permitirUsoBuscador();
 
   window.permitirEditarForm = permitirEditarForm;
+  window.DOMPurify = require('dompurify');
   window.mgOrDislike = mgOrDislike;
   window.borrarUserIdentfied = borrarUserIdentfied;
   window.filtrarPorTipo = filtrarPorTipo;
@@ -158,6 +160,7 @@ $(document).ready(function(){
   
     function filtrarPorFecha(radio, url) {
       var inputRadio = radio;
+      console.log(videos);
       console.log(url);
       if(inputRadio != lastFechaPulsada) {
         lastFechaPulsada = inputRadio;
@@ -209,6 +212,7 @@ $(document).ready(function(){
     function buscarPorFecha(dias, url) {
       $("#filtroFecha :input").attr("disabled", true);
       var spinner = document.getElementById("modalSpinner");
+      var palabraBuscada = document.getElementById("valorBusqueda");
       console.log(spinner);
       $('#modalSpinner').show();
       $.ajax({
@@ -216,7 +220,8 @@ $(document).ready(function(){
         type: "POST",
         dataType: "text",
         data: {
-          "diasARestar": dias
+          "diasARestar": dias,
+          "valor": palabraBuscada.value
         },
         async: true,
         success: function (data)
@@ -229,6 +234,7 @@ $(document).ready(function(){
             $('#videosEncontrados').hide();
             var divVideosEncontrados = document.getElementById("videosEncontradosFiltrados");
             console.log(dataObject);
+            console.log(dataObject.videosFiltradosAVer);
             console.log(dataObject.contenido);
             divVideosEncontrados.classList.remove("d-none");
             divVideosEncontrados.classList.add("d-block");
@@ -292,9 +298,12 @@ $(document).ready(function(){
               localStorage.setItem("contenido",data);
               var divContenidoBuscador = document.getElementById("contenidoBuscador");
               var dataObject = JSON.parse(data);
+              console.log(dataObject.canalesSerialize);
               divContenidoBuscador.innerHTML = '';
               divContenidoBuscador.innerHTML = dataObject.contenido;
               localStorage.setItem("contenido",dataObject.contenido);
+              var palabraBuscada = document.getElementById("valorBusqueda");
+              palabraBuscada.value = inputBusqueda.value;
               //console.log(data);
               
               //console.log(dataObject);
@@ -719,13 +728,14 @@ function arraysMatch(arr1, arr2) {
   $('#formSubirVideo').submit(function(e) {
     console.log("ESTOY EN SUBIR FORM VÍDEO");
       e.preventDefault();
-      permitirEditarForm('formSubirVideo');
+      //permitirEditarForm('formSubirVideo');
       var submit = document.getElementById("submitSubirVideo");
       //submit.setAttribute('disabled','disabled');
   
       var url = e.target.action;
       
       var formData = new FormData($('#formSubirVideo')[0]);
+      
       rellenarSpinner();
 
       $('#modalSubidaVideo').modal('hide');
@@ -736,7 +746,6 @@ function arraysMatch(arr1, arr2) {
         url: url,
         type: "POST",
         dataType: "json",
-        //dataType: "text",
         data: formData,
         processData: false,
         contentType: false,
@@ -877,9 +886,8 @@ function arraysMatch(arr1, arr2) {
 });
 
 //Borrar el vídeo dado
-function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion, locale) {
+function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion) {
   var borrar = confirm(mensajeConfirmacion);
-  console.log(locale);
   if(borrar) {
     $.ajax({
       url: url,
@@ -889,7 +897,6 @@ function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion, locale) 
         "idVideo" : idVideo,
         "idCanal": idCanal,
         "_token": token,
-        "_locale": locale
       },
       async: true,
       success: function (data)
@@ -918,6 +925,7 @@ function borrarVideo(url, idVideo, idCanal, token, mensajeConfirmacion, locale) 
                 },5000);
   
           } else if(data.code == 'error') {
+            console.log(error);
             var divMensajeErrorBorrado = document.getElementById("mensajeSubidaVideo");
             divMensajeErrorBorrado.classList.remove("d-none");
             divMensajeErrorBorrado.classList.add("d-block","alert", "alert-danger");

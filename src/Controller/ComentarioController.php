@@ -10,6 +10,7 @@ use App\Repository\ComentarioRepository;
 use App\Repository\CanalRepository;
 use App\Repository\VideoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,9 +66,9 @@ class ComentarioController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="comentario_new", methods={"GET","POST"})
+     * @Route({"es": "/comentario/nuevo","en": "/comment/new"}, name="comentario_new", methods={"GET","POST"})
      */
-    public function new(Request $request, UserInterface $canalActivo): Response
+    public function new(Request $request, UserInterface $canalActivo, TranslatorInterface $translator): Response
     {
         $comentario = new Comentario();
         $comentarioRepository = $this->getDoctrine()
@@ -92,7 +93,7 @@ class ComentarioController extends AbstractController
                 $comentario->setIdVideo($videoEntity);
                 $entityManager->persist($comentario);
                 $entityManager->flush();
-                $this->addFlash('success', 'Tu comentario se ha creado correctamente');
+                $this->addFlash('success', $translator->trans('Tu comentario se ha creado correctamente'));
 
                 /*$comentariosEnVideo = $comentarioRepository->findBy(['idVideo' => $videoEntity]);
                 $universalController = new UniversalController();
@@ -112,7 +113,7 @@ class ComentarioController extends AbstractController
                 $comentario->setCanalComentado($canalEntity);
                 $entityManager->persist($comentario);
                 $entityManager->flush();
-                $this->addFlash('success', 'Tu comentario se ha creado correctamente');
+                $this->addFlash('success', $translator->trans('Tu comentario se ha creado correctamente'));
 
                 /*$comentariosEnCanal = $comentarioRepository->findBy(['canalComentado' => $canalEntity]);
                 $universalController = new UniversalController();
@@ -163,9 +164,10 @@ class ComentarioController extends AbstractController
     }
 
     /**
-     * @Route("/deleteComment", name="comentario_delete", methods={"DELETE"})
+     * @Route({"es": "/comentario/borrar","en": "/comment/delete"}, name="comentario_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, CanalRepository $canalRepository, VideoRepository $videoRepository, ComentarioRepository $comentarioRepository): Response
+    public function delete(Request $request, CanalRepository $canalRepository, VideoRepository $videoRepository, 
+    ComentarioRepository $comentarioRepository, TranslatorInterface $translator): Response
     {
         $data = $request->request->all();
         $token = $data['_token'];
@@ -179,7 +181,7 @@ class ComentarioController extends AbstractController
             $entityManager->remove($comentarioABorrar);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Tu comentario se ha borrado correctamente');
+            $this->addFlash('success', $translator->trans('Tu comentario se ha borrado correctamente'));
             if($idVideo != null) {
                 $videoEntity = $videoRepository->findOneBy(['id' => $idVideo]);
                 return new JsonResponse($this->render('comentario/viewComments.html.twig', [

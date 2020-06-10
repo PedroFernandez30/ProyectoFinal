@@ -12,7 +12,7 @@ Vídeos: Vídeos
 Canales: Canales
 Todos: Todos
 Filtro: Filtro
-Hoy: Hoy
+Últimas 24 horas: Últimas 24 horas
 Esta semana: Esta semana
 Este mes: Este mes
 Este año: Este año
@@ -59,6 +59,7 @@ Fecha de publicación: Fecha de publicación
 ¿Estás seguro de borrar este vídeo?: ¿Estás seguro de borrar este vídeo?
 Borrar vídeo: Borrar vídeo
 #base.html.twig
+Iniciar sesión: Iniciar sesión
 Cargando...: Cargando...
 Bienvenido: Bienvenido
 Página principal: Página principal
@@ -70,3 +71,19 @@ Cerrar sesión: Cerrar sesión
 Borrar cuenta: Borrar cuenta
 ¿Estás seguro de borrar esta cuenta?: ¿Estás seguro de borrar esta cuenta?
 Iconos diseñados por: Iconos diseñados por
+#CanalController
+Datos actualizados con éxito: Datos actualizados con éxito
+Cuenta borrada con éxito: Cuenta borrada con éxito
+#VideoController
+Vídeo subido correctamente: Vídeo subido correctamente
+Vídeo borrado correctamente: Vídeo borrado correctamente
+Hubo un error al tratar de borrar el archivo: Hubo un error al tratar de borrar el archivo
+Entretenimiento: Entretenimiento
+#ComentarioController
+Tu comentario se ha creado correctamente: Tu comentario se ha creado correctamente
+Tu comentario se ha borrado correctamente: Tu comentario se ha borrado correctamente
+#SuscripcionController
+Te has suscrito a este canal: Te has suscrito a este canal
+Ya no estás suscrito a este canal: Ya no estás suscrito a este canal
+#RegistrationController
+Registrado correctamente: Registrado correctamente
